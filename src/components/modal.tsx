@@ -48,6 +48,7 @@ interface MasterSystemName {
 
 interface MasterApplication {
   id: string;
+  code: string;
   applicationName: string;
   systemId: string;
 }
@@ -139,16 +140,16 @@ export const MOCK_SYSTEM_NAMES: MasterSystemName[] = [
 ];
 
 export const MOCK_APPLICATIONS: MasterApplication[] = [
-  { id: 'APP001', applicationName: 'ERP Web Portal', systemId: 'SYS001' },
-  { id: 'APP002', applicationName: 'ERP Mobile App', systemId: 'SYS001' },
-  { id: 'APP003', applicationName: 'CRM Dashboard', systemId: 'SYS002' },
-  { id: 'APP004', applicationName: 'CRM Analytics', systemId: 'SYS002' },
-  { id: 'APP005', applicationName: 'HR Portal', systemId: 'SYS003' },
-  { id: 'APP006', applicationName: 'Payroll System', systemId: 'SYS003' },
-  { id: 'APP007', applicationName: 'Accounting Software', systemId: 'SYS004' },
-  { id: 'APP008', applicationName: 'Budget Planning', systemId: 'SYS004' },
-  { id: 'APP009', applicationName: 'Inventory Management', systemId: 'SYS005' },
-  { id: 'APP010', applicationName: 'Order Processing', systemId: 'SYS005' },
+  { id: 'APP001', code: 'ERP-WEB', applicationName: 'ERP Web Portal', systemId: 'SYS001' },
+  { id: 'APP002', code: 'ERP-MOB', applicationName: 'ERP Mobile App', systemId: 'SYS001' },
+  { id: 'APP003', code: 'CRM-DASH', applicationName: 'CRM Dashboard', systemId: 'SYS002' },
+  { id: 'APP004', code: 'CRM-ANALYTICS', applicationName: 'CRM Analytics', systemId: 'SYS002' },
+  { id: 'APP005', code: 'HR-PORTAL', applicationName: 'HR Portal', systemId: 'SYS003' },
+  { id: 'APP006', code: 'PAYROLL', applicationName: 'Payroll System', systemId: 'SYS003' },
+  { id: 'APP007', code: 'ACCT', applicationName: 'Accounting Software', systemId: 'SYS004' },
+  { id: 'APP008', code: 'BUDGET', applicationName: 'Budget Planning', systemId: 'SYS004' },
+  { id: 'APP009', code: 'INV', applicationName: 'Inventory Management', systemId: 'SYS005' },
+  { id: 'APP010', code: 'ORDER', applicationName: 'Order Processing', systemId: 'SYS005' },
 ];
 
 export const MOCK_PROJECTS: MasterProject[] = [
@@ -858,7 +859,7 @@ export const Modal: React.FC<ModalProps> = ({ activeModal, onClose, onConfirm, s
   // MODAL COMPONENT: Application Selector
   const ApplicationSelectorModal = () => {
     const filteredApplications = systemId
-      ? filterData(MOCK_APPLICATIONS.filter(app => app.systemId === systemId), ['applicationName'])
+      ? filterData(MOCK_APPLICATIONS.filter(app => app.systemId === systemId), ['code', 'applicationName'])
       : [];
     const paginatedApplications = getPaginatedData(filteredApplications);
     const totalPages = getTotalPages(filteredApplications);
@@ -874,69 +875,79 @@ export const Modal: React.FC<ModalProps> = ({ activeModal, onClose, onConfirm, s
           </div>
 
           <div className="modal-body">
-            <div className="modal-search">
-              <Search size={18} />
-              <input
-                type="text"
-                placeholder="Search by Application Name..."
-                value={searchQuery}
-                onChange={(e) => {
-                  setSearchQuery(e.target.value);
-                  setCurrentPage(1);
-                }}
-                className="search-input"
-                autoFocus
-              />
-            </div>
+            {systemId ? (
+              <>
+                <div className="modal-search">
+                  <Search size={18} />
+                  <input
+                    type="text"
+                    placeholder="Search by Code or Name..."
+                    value={searchQuery}
+                    onChange={(e) => {
+                      setSearchQuery(e.target.value);
+                      setCurrentPage(1);
+                    }}
+                    className="search-input"
+                    autoFocus
+                  />
+                </div>
 
-            <table className="modal-table">
-              <thead>
-                <tr>
-                  <th>Select</th>
-                  <th>Application Name</th>
-                </tr>
-              </thead>
-              <tbody>
-                {paginatedApplications.map((app) => (
-                  <tr
-                    key={app.id}
-                    onClick={() => handleSelectItem(app)}
-                    className={selectedItem?.id === app.id ? 'selected' : ''}
-                  >
-                    <td>
-                      <div className={`checkmark ${selectedItem?.id === app.id ? 'visible' : 'hidden'}`}>
-                        ✓
-                      </div>
-                    </td>
-                    <td>{app.applicationName}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+                <table className="modal-table">
+                  <thead>
+                    <tr>
+                      <th>Code</th>
+                      <th>Name</th>
+                      <th>Select</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {paginatedApplications.map((app) => (
+                      <tr
+                        key={app.id}
+                        onClick={() => handleSelectItem(app)}
+                        className={selectedItem?.id === app.id ? 'selected' : ''}
+                      >
+                        <td>{app.code}</td>
+                        <td>{app.applicationName}</td>
+                        <td>
+                          <div className={`checkmark ${selectedItem?.id === app.id ? 'visible' : 'hidden'}`}>
+                            ✓
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
 
-            {filteredApplications.length === 0 && (
-              <p className="no-results">No applications found for the selected system</p>
-            )}
+                {filteredApplications.length === 0 && (
+                  <p className="no-results">No applications found for the selected system</p>
+                )}
 
-            {totalPages > 1 && (
-              <div className="modal-pagination">
-                <button
-                  onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
-                  disabled={currentPage === 1}
-                  className="pagination-btn"
-                >
-                  &lt;
-                </button>
-                <span className="pagination-info">
-                  Page {currentPage} of {totalPages}
-                </span>
-                <button
-                  onClick={() => handlePageChange(Math.min(totalPages, currentPage + 1))}
-                  disabled={currentPage === totalPages}
-                  className="pagination-btn"
-                >
-                  &gt;
-                </button>
+                {totalPages > 1 && (
+                  <div className="modal-pagination">
+                    <button
+                      onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
+                      disabled={currentPage === 1}
+                      className="pagination-btn"
+                    >
+                      &lt;
+                    </button>
+                    <span className="pagination-info">
+                      Page {currentPage} of {totalPages}
+                    </span>
+                    <button
+                      onClick={() => handlePageChange(Math.min(totalPages, currentPage + 1))}
+                      disabled={currentPage === totalPages}
+                      className="pagination-btn"
+                    >
+                      &gt;
+                    </button>
+                  </div>
+                )}
+              </>
+            ) : (
+              <div className="no-results" style={{ textAlign: 'center', padding: '40px 20px' }}>
+                กรุณาเลือก System Name ก่อน เพื่อแสดงรายการ Application
               </div>
             )}
           </div>

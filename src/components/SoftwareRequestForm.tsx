@@ -875,7 +875,7 @@ export function SoftwareRequestForm() {
               <div className="input-with-actions">
                 <input
                   type="text"
-                  value={formData.systemName?.name || ''}
+                  value={formData.systemName?.code || ''}
                   readOnly
                   placeholder="โปรดเลือก System Name"
                   className="input-readonly"
