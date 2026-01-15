@@ -216,6 +216,8 @@ export function SoftwareRequestForm() {
           serviceId: selectedData.id,
           serviceName: selectedData.serviceName,
           supportGroupName: selectedData.supportGroupName,
+          systemName: null, // Clear system name when service changes
+          application: null, // Clear application when service changes
           ciStatus: 'Active' as CIStatus // Auto-change status when service is linked
         }));
         break;
@@ -911,7 +913,6 @@ export function SoftwareRequestForm() {
                     type="button"
                     className="action-btn select-btn"
                     onClick={() => openModal('application')}
-                    disabled={!formData.systemName}
                   >
                     Select
                   </button>
@@ -1343,7 +1344,13 @@ export function SoftwareRequestForm() {
         </div>
       </div>
 
-      <Modal activeModal={activeModal} onClose={closeModal} onConfirm={confirmSelection} systemId={formData.systemName?.id} />
+      <Modal 
+        activeModal={activeModal} 
+        onClose={closeModal} 
+        onConfirm={confirmSelection} 
+        serviceId={formData.serviceId}
+        systemId={formData.systemName?.id} 
+      />
     </div>
   );
 }

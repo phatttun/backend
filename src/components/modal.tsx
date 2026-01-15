@@ -44,6 +44,7 @@ interface MasterSystemName {
   id: string;
   code: string;
   name: string;
+  serviceId: string; // Link to service
 }
 
 interface MasterApplication {
@@ -83,6 +84,12 @@ export const MOCK_SERVICES: MasterService[] = [
   { id: 'SVC004', serviceName: 'Cloud Services', supportGroupName: 'Cloud Team' },
   { id: 'SVC005', serviceName: 'Security', supportGroupName: 'Security Team' },
   { id: 'SVC006', serviceName: 'Network Services', supportGroupName: 'Network Team' },
+  { id: 'SVC007', serviceName: 'Data Analytics', supportGroupName: 'Analytics Team' },
+  { id: 'SVC008', serviceName: 'Mobile Development', supportGroupName: 'Mobile Team' },
+  { id: 'SVC009', serviceName: 'Integration Services', supportGroupName: 'Integration Team' },
+  { id: 'SVC010', serviceName: 'Testing & QA', supportGroupName: 'QA Team' },
+  { id: 'SVC011', serviceName: 'DevOps', supportGroupName: 'DevOps Team' },
+  { id: 'SVC012', serviceName: 'Support Services', supportGroupName: 'Support Team' },
 ];
 
 export const MOCK_SUPPORT_GROUPS: MasterSupportGroup[] = [
@@ -92,6 +99,12 @@ export const MOCK_SUPPORT_GROUPS: MasterSupportGroup[] = [
   { id: 'SG004', supportGroupName: 'Cloud Team' },
   { id: 'SG005', supportGroupName: 'Security Team' },
   { id: 'SG006', supportGroupName: 'Network Team' },
+  { id: 'SG007', supportGroupName: 'Analytics Team' },
+  { id: 'SG008', supportGroupName: 'Mobile Team' },
+  { id: 'SG009', supportGroupName: 'Integration Team' },
+  { id: 'SG010', supportGroupName: 'QA Team' },
+  { id: 'SG011', supportGroupName: 'DevOps Team' },
+  { id: 'SG012', supportGroupName: 'Support Team' },
 ];
 
 export const MOCK_TYPES: MasterType[] = [
@@ -132,24 +145,236 @@ export const MOCK_CUSTOMERS: MasterCustomer[] = [
 ];
 
 export const MOCK_SYSTEM_NAMES: MasterSystemName[] = [
-  { id: 'SYS001', code: 'ERP', name: 'Enterprise Resource Planning' },
-  { id: 'SYS002', code: 'CRM', name: 'Customer Relationship Management' },
-  { id: 'SYS003', code: 'HRM', name: 'Human Resource Management' },
-  { id: 'SYS004', code: 'FIN', name: 'Financial System' },
-  { id: 'SYS005', code: 'SCM', name: 'Supply Chain Management' },
+  // Application Development (SVC001)
+  { id: 'SYS001', code: 'ERP', name: 'Enterprise Resource Planning', serviceId: 'SVC001' },
+  { id: 'SYS002', code: 'CRM', name: 'Customer Relationship Management', serviceId: 'SVC001' },
+  { id: 'SYS003', code: 'HRM', name: 'Human Resource Management', serviceId: 'SVC001' },
+  { id: 'SYS004', code: 'FIN', name: 'Financial System', serviceId: 'SVC001' },
+  { id: 'SYS005', code: 'SCM', name: 'Supply Chain Management', serviceId: 'SVC001' },
+  
+  // Infrastructure (SVC002)
+  { id: 'SYS006', code: 'INFRA-SERVER', name: 'Server Infrastructure', serviceId: 'SVC002' },
+  { id: 'SYS007', code: 'INFRA-NETWORK', name: 'Network Infrastructure', serviceId: 'SVC002' },
+  { id: 'SYS008', code: 'INFRA-STORAGE', name: 'Storage Infrastructure', serviceId: 'SVC002' },
+  { id: 'SYS009', code: 'INFRA-MONITOR', name: 'Infrastructure Monitoring', serviceId: 'SVC002' },
+  
+  // Database Management (SVC003)
+  { id: 'SYS010', code: 'DB-ORACLE', name: 'Oracle Database', serviceId: 'SVC003' },
+  { id: 'SYS011', code: 'DB-MYSQL', name: 'MySQL Database', serviceId: 'SVC003' },
+  { id: 'SYS012', code: 'DB-SQLSERVER', name: 'SQL Server Database', serviceId: 'SVC003' },
+  { id: 'SYS013', code: 'DB-MONGODB', name: 'MongoDB Database', serviceId: 'SVC003' },
+  
+  // Cloud Services (SVC004)
+  { id: 'SYS014', code: 'CLOUD-AWS', name: 'AWS Cloud Services', serviceId: 'SVC004' },
+  { id: 'SYS015', code: 'CLOUD-AZURE', name: 'Azure Cloud Services', serviceId: 'SVC004' },
+  { id: 'SYS016', code: 'CLOUD-GCP', name: 'Google Cloud Platform', serviceId: 'SVC004' },
+  
+  // Security (SVC005)
+  { id: 'SYS017', code: 'SEC-FIREWALL', name: 'Firewall Security', serviceId: 'SVC005' },
+  { id: 'SYS018', code: 'SEC-ENCRYPT', name: 'Data Encryption', serviceId: 'SVC005' },
+  { id: 'SYS019', code: 'SEC-AUTH', name: 'Authentication System', serviceId: 'SVC005' },
+  
+  // Network Services (SVC006)
+  { id: 'SYS020', code: 'NET-ROUTER', name: 'Network Routing', serviceId: 'SVC006' },
+  { id: 'SYS021', code: 'NET-SWITCH', name: 'Network Switching', serviceId: 'SVC006' },
+  { id: 'SYS022', code: 'NET-VPN', name: 'VPN Services', serviceId: 'SVC006' },
+  
+  // Data Analytics (SVC007)
+  { id: 'SYS023', code: 'ANALYTICS-BI', name: 'Business Intelligence', serviceId: 'SVC007' },
+  { id: 'SYS024', code: 'ANALYTICS-ML', name: 'Machine Learning', serviceId: 'SVC007' },
+  { id: 'SYS025', code: 'ANALYTICS-REPORT', name: 'Reporting System', serviceId: 'SVC007' },
+  
+  // Mobile Development (SVC008)
+  { id: 'SYS026', code: 'MOBILE-IOS', name: 'iOS Mobile Apps', serviceId: 'SVC008' },
+  { id: 'SYS027', code: 'MOBILE-ANDROID', name: 'Android Mobile Apps', serviceId: 'SVC008' },
+  { id: 'SYS028', code: 'MOBILE-HYBRID', name: 'Hybrid Mobile Apps', serviceId: 'SVC008' },
+  
+  // Integration Services (SVC009)
+  { id: 'SYS029', code: 'INTEGRATION-API', name: 'API Integration', serviceId: 'SVC009' },
+  { id: 'SYS030', code: 'INTEGRATION-ESB', name: 'Enterprise Service Bus', serviceId: 'SVC009' },
+  { id: 'SYS031', code: 'INTEGRATION-MQ', name: 'Message Queue', serviceId: 'SVC009' },
+  
+  // Testing & QA (SVC010)
+  { id: 'SYS032', code: 'QA-AUTOMATION', name: 'Test Automation', serviceId: 'SVC010' },
+  { id: 'SYS033', code: 'QA-MANUAL', name: 'Manual Testing', serviceId: 'SVC010' },
+  { id: 'SYS034', code: 'QA-PERFORMANCE', name: 'Performance Testing', serviceId: 'SVC010' },
+  
+  // DevOps (SVC011)
+  { id: 'SYS035', code: 'DEVOPS-CI', name: 'Continuous Integration', serviceId: 'SVC011' },
+  { id: 'SYS036', code: 'DEVOPS-CD', name: 'Continuous Deployment', serviceId: 'SVC011' },
+  { id: 'SYS037', code: 'DEVOPS-MONITOR', name: 'DevOps Monitoring', serviceId: 'SVC011' },
+  
+  // Support Services (SVC012)
+  { id: 'SYS038', code: 'SUPPORT-HELPDESK', name: 'Help Desk System', serviceId: 'SVC012' },
+  { id: 'SYS039', code: 'SUPPORT-TICKET', name: 'Ticket Management', serviceId: 'SVC012' },
+  { id: 'SYS040', code: 'SUPPORT-KB', name: 'Knowledge Base', serviceId: 'SVC012' },
 ];
 
 export const MOCK_APPLICATIONS: MasterApplication[] = [
+  // ERP (SYS001)
   { id: 'APP001', code: 'ERP-WEB', applicationName: 'ERP Web Portal', systemId: 'SYS001' },
   { id: 'APP002', code: 'ERP-MOB', applicationName: 'ERP Mobile App', systemId: 'SYS001' },
-  { id: 'APP003', code: 'CRM-DASH', applicationName: 'CRM Dashboard', systemId: 'SYS002' },
-  { id: 'APP004', code: 'CRM-ANALYTICS', applicationName: 'CRM Analytics', systemId: 'SYS002' },
-  { id: 'APP005', code: 'HR-PORTAL', applicationName: 'HR Portal', systemId: 'SYS003' },
-  { id: 'APP006', code: 'PAYROLL', applicationName: 'Payroll System', systemId: 'SYS003' },
-  { id: 'APP007', code: 'ACCT', applicationName: 'Accounting Software', systemId: 'SYS004' },
-  { id: 'APP008', code: 'BUDGET', applicationName: 'Budget Planning', systemId: 'SYS004' },
-  { id: 'APP009', code: 'INV', applicationName: 'Inventory Management', systemId: 'SYS005' },
-  { id: 'APP010', code: 'ORDER', applicationName: 'Order Processing', systemId: 'SYS005' },
+  { id: 'APP003', code: 'ERP-DESKTOP', applicationName: 'ERP Desktop Client', systemId: 'SYS001' },
+  
+  // CRM (SYS002)
+  { id: 'APP004', code: 'CRM-DASH', applicationName: 'CRM Dashboard', systemId: 'SYS002' },
+  { id: 'APP005', code: 'CRM-ANALYTICS', applicationName: 'CRM Analytics', systemId: 'SYS002' },
+  { id: 'APP006', code: 'CRM-MOBILE', applicationName: 'CRM Mobile App', systemId: 'SYS002' },
+  
+  // HRM (SYS003)
+  { id: 'APP007', code: 'HR-PORTAL', applicationName: 'HR Portal', systemId: 'SYS003' },
+  { id: 'APP008', code: 'PAYROLL', applicationName: 'Payroll System', systemId: 'SYS003' },
+  { id: 'APP009', code: 'HR-MOBILE', applicationName: 'HR Mobile App', systemId: 'SYS003' },
+  
+  // FIN (SYS004)
+  { id: 'APP010', code: 'ACCT', applicationName: 'Accounting Software', systemId: 'SYS004' },
+  { id: 'APP011', code: 'BUDGET', applicationName: 'Budget Planning', systemId: 'SYS004' },
+  { id: 'APP012', code: 'FIN-REPORT', applicationName: 'Financial Reporting', systemId: 'SYS004' },
+  
+  // SCM (SYS005)
+  { id: 'APP013', code: 'INV', applicationName: 'Inventory Management', systemId: 'SYS005' },
+  { id: 'APP014', code: 'ORDER', applicationName: 'Order Processing', systemId: 'SYS005' },
+  { id: 'APP015', code: 'SCM-DASH', applicationName: 'SCM Dashboard', systemId: 'SYS005' },
+  
+  // INFRA-SERVER (SYS006)
+  { id: 'APP016', code: 'SERVER-MGMT', applicationName: 'Server Management Console', systemId: 'SYS006' },
+  { id: 'APP017', code: 'SERVER-MONITOR', applicationName: 'Server Monitoring Tool', systemId: 'SYS006' },
+  
+  // INFRA-NETWORK (SYS007)
+  { id: 'APP018', code: 'NETWORK-MGMT', applicationName: 'Network Management', systemId: 'SYS007' },
+  { id: 'APP019', code: 'NETWORK-MONITOR', applicationName: 'Network Monitoring', systemId: 'SYS007' },
+  
+  // INFRA-STORAGE (SYS008)
+  { id: 'APP020', code: 'STORAGE-MGMT', applicationName: 'Storage Management', systemId: 'SYS008' },
+  { id: 'APP021', code: 'BACKUP-TOOL', applicationName: 'Backup Tool', systemId: 'SYS008' },
+  
+  // INFRA-MONITOR (SYS009)
+  { id: 'APP022', code: 'INFRA-ALERTS', applicationName: 'Infrastructure Alerts', systemId: 'SYS009' },
+  { id: 'APP023', code: 'INFRA-DASH', applicationName: 'Infrastructure Dashboard', systemId: 'SYS009' },
+  
+  // DB-ORACLE (SYS010)
+  { id: 'APP024', code: 'ORACLE-ADMIN', applicationName: 'Oracle Admin Console', systemId: 'SYS010' },
+  { id: 'APP025', code: 'ORACLE-MONITOR', applicationName: 'Oracle Monitor', systemId: 'SYS010' },
+  
+  // DB-MYSQL (SYS011)
+  { id: 'APP026', code: 'MYSQL-ADMIN', applicationName: 'MySQL Admin', systemId: 'SYS011' },
+  { id: 'APP027', code: 'MYSQL-WORKBENCH', applicationName: 'MySQL Workbench', systemId: 'SYS011' },
+  
+  // DB-SQLSERVER (SYS012)
+  { id: 'APP028', code: 'SQL-MGMT', applicationName: 'SQL Server Management', systemId: 'SYS012' },
+  { id: 'APP029', code: 'SQL-REPORT', applicationName: 'SQL Server Reporting', systemId: 'SYS012' },
+  
+  // DB-MONGODB (SYS013)
+  { id: 'APP030', code: 'MONGO-COMPASS', applicationName: 'MongoDB Compass', systemId: 'SYS013' },
+  { id: 'APP031', code: 'MONGO-ADMIN', applicationName: 'MongoDB Admin', systemId: 'SYS013' },
+  
+  // CLOUD-AWS (SYS014)
+  { id: 'APP032', code: 'AWS-CONSOLE', applicationName: 'AWS Management Console', systemId: 'SYS014' },
+  { id: 'APP033', code: 'AWS-CLI', applicationName: 'AWS CLI Tools', systemId: 'SYS014' },
+  
+  // CLOUD-AZURE (SYS015)
+  { id: 'APP034', code: 'AZURE-PORTAL', applicationName: 'Azure Portal', systemId: 'SYS015' },
+  { id: 'APP035', code: 'AZURE-CLI', applicationName: 'Azure CLI', systemId: 'SYS015' },
+  
+  // CLOUD-GCP (SYS016)
+  { id: 'APP036', code: 'GCP-CONSOLE', applicationName: 'Google Cloud Console', systemId: 'SYS016' },
+  { id: 'APP037', code: 'GCP-CLI', applicationName: 'GCP CLI Tools', systemId: 'SYS016' },
+  
+  // SEC-FIREWALL (SYS017)
+  { id: 'APP038', code: 'FIREWALL-MGMT', applicationName: 'Firewall Management', systemId: 'SYS017' },
+  { id: 'APP039', code: 'FIREWALL-LOG', applicationName: 'Firewall Logging', systemId: 'SYS017' },
+  
+  // SEC-ENCRYPT (SYS018)
+  { id: 'APP040', code: 'ENCRYPT-TOOL', applicationName: 'Encryption Tool', systemId: 'SYS018' },
+  { id: 'APP041', code: 'KEY-MGMT', applicationName: 'Key Management', systemId: 'SYS018' },
+  
+  // SEC-AUTH (SYS019)
+  { id: 'APP042', code: 'AUTH-SERVER', applicationName: 'Authentication Server', systemId: 'SYS019' },
+  { id: 'APP043', code: 'AUTH-CLIENT', applicationName: 'Authentication Client', systemId: 'SYS019' },
+  
+  // NET-ROUTER (SYS020)
+  { id: 'APP044', code: 'ROUTER-CONFIG', applicationName: 'Router Configuration', systemId: 'SYS020' },
+  { id: 'APP045', code: 'ROUTER-MONITOR', applicationName: 'Router Monitoring', systemId: 'SYS020' },
+  
+  // NET-SWITCH (SYS021)
+  { id: 'APP046', code: 'SWITCH-CONFIG', applicationName: 'Switch Configuration', systemId: 'SYS021' },
+  { id: 'APP047', code: 'SWITCH-MONITOR', applicationName: 'Switch Monitoring', systemId: 'SYS021' },
+  
+  // NET-VPN (SYS022)
+  { id: 'APP048', code: 'VPN-CLIENT', applicationName: 'VPN Client', systemId: 'SYS022' },
+  { id: 'APP049', code: 'VPN-SERVER', applicationName: 'VPN Server', systemId: 'SYS022' },
+  
+  // ANALYTICS-BI (SYS023)
+  { id: 'APP050', code: 'BI-DASHBOARD', applicationName: 'BI Dashboard', systemId: 'SYS023' },
+  { id: 'APP051', code: 'BI-REPORT', applicationName: 'BI Reporting Tool', systemId: 'SYS023' },
+  
+  // ANALYTICS-ML (SYS024)
+  { id: 'APP052', code: 'ML-STUDIO', applicationName: 'ML Studio', systemId: 'SYS024' },
+  { id: 'APP053', code: 'ML-MODEL', applicationName: 'ML Model Builder', systemId: 'SYS024' },
+  
+  // ANALYTICS-REPORT (SYS025)
+  { id: 'APP054', code: 'REPORT-BUILDER', applicationName: 'Report Builder', systemId: 'SYS025' },
+  { id: 'APP055', code: 'REPORT-VIEWER', applicationName: 'Report Viewer', systemId: 'SYS025' },
+  
+  // MOBILE-IOS (SYS026)
+  { id: 'APP056', code: 'IOS-XCODE', applicationName: 'iOS Xcode Project', systemId: 'SYS026' },
+  { id: 'APP057', code: 'IOS-SWIFT', applicationName: 'Swift iOS App', systemId: 'SYS026' },
+  
+  // MOBILE-ANDROID (SYS027)
+  { id: 'APP058', code: 'ANDROID-STUDIO', applicationName: 'Android Studio Project', systemId: 'SYS027' },
+  { id: 'APP059', code: 'ANDROID-KOTLIN', applicationName: 'Kotlin Android App', systemId: 'SYS027' },
+  
+  // MOBILE-HYBRID (SYS028)
+  { id: 'APP060', code: 'HYBRID-IONIC', applicationName: 'Ionic Hybrid App', systemId: 'SYS028' },
+  { id: 'APP061', code: 'HYBRID-REACT', applicationName: 'React Native App', systemId: 'SYS028' },
+  
+  // INTEGRATION-API (SYS029)
+  { id: 'APP062', code: 'API-GATEWAY', applicationName: 'API Gateway', systemId: 'SYS029' },
+  { id: 'APP063', code: 'API-CLIENT', applicationName: 'API Client', systemId: 'SYS029' },
+  
+  // INTEGRATION-ESB (SYS030)
+  { id: 'APP064', code: 'ESB-CONSOLE', applicationName: 'ESB Management Console', systemId: 'SYS030' },
+  { id: 'APP065', code: 'ESB-MONITOR', applicationName: 'ESB Monitoring', systemId: 'SYS030' },
+  
+  // INTEGRATION-MQ (SYS031)
+  { id: 'APP066', code: 'MQ-ADMIN', applicationName: 'Message Queue Admin', systemId: 'SYS031' },
+  { id: 'APP067', code: 'MQ-MONITOR', applicationName: 'Message Queue Monitor', systemId: 'SYS031' },
+  
+  // QA-AUTOMATION (SYS032)
+  { id: 'APP068', code: 'SELENIUM', applicationName: 'Selenium Test Suite', systemId: 'SYS032' },
+  { id: 'APP069', code: 'CYPRESS', applicationName: 'Cypress Test Suite', systemId: 'SYS032' },
+  
+  // QA-MANUAL (SYS033)
+  { id: 'APP070', code: 'TEST-RAIL', applicationName: 'TestRail', systemId: 'SYS033' },
+  { id: 'APP071', code: 'JIRA-XRAY', applicationName: 'Jira Xray', systemId: 'SYS033' },
+  
+  // QA-PERFORMANCE (SYS034)
+  { id: 'APP072', code: 'JMETER', applicationName: 'JMeter Load Testing', systemId: 'SYS034' },
+  { id: 'APP073', code: 'LOADRUNNER', applicationName: 'LoadRunner', systemId: 'SYS034' },
+  
+  // DEVOPS-CI (SYS035)
+  { id: 'APP074', code: 'JENKINS', applicationName: 'Jenkins CI', systemId: 'SYS035' },
+  { id: 'APP075', code: 'GITLAB-CI', applicationName: 'GitLab CI/CD', systemId: 'SYS035' },
+  
+  // DEVOPS-CD (SYS036)
+  { id: 'APP076', code: 'ANSIBLE', applicationName: 'Ansible Automation', systemId: 'SYS036' },
+  { id: 'APP077', code: 'TERRAFORM', applicationName: 'Terraform', systemId: 'SYS036' },
+  
+  // DEVOPS-MONITOR (SYS037)
+  { id: 'APP078', code: 'PROMETHEUS', applicationName: 'Prometheus Monitoring', systemId: 'SYS037' },
+  { id: 'APP079', code: 'GRAFANA', applicationName: 'Grafana Dashboard', systemId: 'SYS037' },
+  
+  // SUPPORT-HELPDESK (SYS038)
+  { id: 'APP080', code: 'HELPDESK-PRO', applicationName: 'HelpDesk Pro', systemId: 'SYS038' },
+  { id: 'APP081', code: 'HELPDESK-PLUS', applicationName: 'HelpDesk Plus', systemId: 'SYS038' },
+  
+  // SUPPORT-TICKET (SYS039)
+  { id: 'APP082', code: 'TICKET-SYSTEM', applicationName: 'Ticket Management System', systemId: 'SYS039' },
+  { id: 'APP083', code: 'TICKET-TRACKER', applicationName: 'Ticket Tracker', systemId: 'SYS039' },
+  
+  // SUPPORT-KB (SYS040)
+  { id: 'APP084', code: 'KB-SEARCH', applicationName: 'Knowledge Base Search', systemId: 'SYS040' },
+  { id: 'APP085', code: 'KB-EDITOR', applicationName: 'Knowledge Base Editor', systemId: 'SYS040' },
 ];
 
 export const MOCK_PROJECTS: MasterProject[] = [
@@ -174,16 +399,24 @@ export const MOCK_SR_RELEASES: MasterSRRelease[] = [
   { id: 'SR003', serviceName: 'Database Management', documentNumber: 'SR-003', status: 'Completed' },
   { id: 'SR004', serviceName: 'Cloud Services', documentNumber: 'SR-004', status: 'Active' },
   { id: 'SR005', serviceName: 'Security', documentNumber: 'SR-005', status: 'Pending' },
+  { id: 'SR006', serviceName: 'Network Services', documentNumber: 'SR-006', status: 'Active' },
+  { id: 'SR007', serviceName: 'Data Analytics', documentNumber: 'SR-007', status: 'Completed' },
+  { id: 'SR008', serviceName: 'Mobile Development', documentNumber: 'SR-008', status: 'Active' },
+  { id: 'SR009', serviceName: 'Integration Services', documentNumber: 'SR-009', status: 'Pending' },
+  { id: 'SR010', serviceName: 'Testing & QA', documentNumber: 'SR-010', status: 'Active' },
+  { id: 'SR011', serviceName: 'DevOps', documentNumber: 'SR-011', status: 'Completed' },
+  { id: 'SR012', serviceName: 'Support Services', documentNumber: 'SR-012', status: 'Active' },
 ];
 
 interface ModalProps {
   activeModal: string | null;
   onClose: () => void;
   onConfirm: (selectedData: any) => void;
+  serviceId?: string; // For filtering systems by service
   systemId?: string; // For filtering applications by system
 }
 
-export const Modal: React.FC<ModalProps> = ({ activeModal, onClose, onConfirm, systemId }) => {
+export const Modal: React.FC<ModalProps> = ({ activeModal, onClose, onConfirm, serviceId, systemId }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedItem, setSelectedItem] = useState<any>(null);
   const [currentPage, setCurrentPage] = useState(1);
@@ -752,7 +985,8 @@ export const Modal: React.FC<ModalProps> = ({ activeModal, onClose, onConfirm, s
 
   // MODAL COMPONENT: System Name Selector
   const SystemSelectorModal = () => {
-    const filteredSystems = filterData(MOCK_SYSTEM_NAMES, ['code', 'name']);
+    const systemsForService = serviceId ? MOCK_SYSTEM_NAMES.filter(system => system.serviceId === serviceId) : [];
+    const filteredSystems = filterData(systemsForService, ['code', 'name']);
     const paginatedSystems = getPaginatedData(filteredSystems);
     const totalPages = getTotalPages(filteredSystems);
 
@@ -767,72 +1001,81 @@ export const Modal: React.FC<ModalProps> = ({ activeModal, onClose, onConfirm, s
           </div>
 
           <div className="modal-body">
-            <div className="modal-search">
-              <Search size={18} />
-              <input
-                type="text"
-                placeholder="Search by Code or Name..."
-                value={searchQuery}
-                onChange={(e) => {
-                  setSearchQuery(e.target.value);
-                  setCurrentPage(1);
-                }}
-                className="search-input"
-                autoFocus
-              />
-            </div>
-
-            <table className="modal-table">
-              <thead>
-                <tr>
-                  <th>Code</th>
-                  <th>Name</th>
-                  <th>Select</th>
-                </tr>
-              </thead>
-              <tbody>
-                {paginatedSystems.map((system) => (
-                  <tr
-                    key={system.id}
-                    onClick={() => handleSelectItem(system)}
-                    className={selectedItem?.id === system.id ? 'selected' : ''}
-                  >
-                    <td>{system.code}</td>
-                    <td>{system.name}</td>
-                    <td>
-                      <div className={`checkmark ${selectedItem?.id === system.id ? 'visible' : 'hidden'}`}>
-                        ✓
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-
-            {filteredSystems.length === 0 && (
-              <p className="no-results">No systems found</p>
-            )}
-
-            {totalPages > 1 && (
-              <div className="modal-pagination">
-                <button
-                  onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
-                  disabled={currentPage === 1}
-                  className="pagination-btn"
-                >
-                  &lt;
-                </button>
-                <span className="pagination-info">
-                  Page {currentPage} of {totalPages}
-                </span>
-                <button
-                  onClick={() => handlePageChange(Math.min(totalPages, currentPage + 1))}
-                  disabled={currentPage === totalPages}
-                  className="pagination-btn"
-                >
-                  &gt;
-                </button>
+            {!serviceId ? (
+              <div style={{ textAlign: 'center', padding: '40px 20px', color: 'var(--gray-500)' }}>
+                <p style={{ fontSize: '16px', marginBottom: '8px' }}>กรุณาเลือก Service ก่อน เพื่อแสดงรายการ System Name</p>
+                <p style={{ fontSize: '14px' }}>Please select a Service first to view available System Names.</p>
               </div>
+            ) : (
+              <>
+                <div className="modal-search">
+                  <Search size={18} />
+                  <input
+                    type="text"
+                    placeholder="Search by Code or Name..."
+                    value={searchQuery}
+                    onChange={(e) => {
+                      setSearchQuery(e.target.value);
+                      setCurrentPage(1);
+                    }}
+                    className="search-input"
+                    autoFocus
+                  />
+                </div>
+
+                <table className="modal-table">
+                  <thead>
+                    <tr>
+                      <th>Code</th>
+                      <th>Name</th>
+                      <th>Select</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {paginatedSystems.map((system) => (
+                      <tr
+                        key={system.id}
+                        onClick={() => handleSelectItem(system)}
+                        className={selectedItem?.id === system.id ? 'selected' : ''}
+                      >
+                        <td>{system.code}</td>
+                        <td>{system.name}</td>
+                        <td>
+                          <div className={`checkmark ${selectedItem?.id === system.id ? 'visible' : 'hidden'}`}>
+                            ✓
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+
+                {filteredSystems.length === 0 && (
+                  <p className="no-results">No systems found</p>
+                )}
+
+                {totalPages > 1 && (
+                  <div className="modal-pagination">
+                    <button
+                      onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
+                      disabled={currentPage === 1}
+                      className="pagination-btn"
+                    >
+                      &lt;
+                    </button>
+                    <span className="pagination-info">
+                      Page {currentPage} of {totalPages}
+                    </span>
+                    <button
+                      onClick={() => handlePageChange(Math.min(totalPages, currentPage + 1))}
+                      disabled={currentPage === totalPages}
+                      className="pagination-btn"
+                    >
+                      &gt;
+                    </button>
+                  </div>
+                )}
+              </>
             )}
           </div>
 
@@ -845,7 +1088,7 @@ export const Modal: React.FC<ModalProps> = ({ activeModal, onClose, onConfirm, s
             </button>
             <button
               className="btn-primary"
-              disabled={!selectedItem}
+              disabled={!selectedItem || !serviceId}
               onClick={() => confirmSelection(selectedItem)}
             >
               Confirm
@@ -946,8 +1189,9 @@ export const Modal: React.FC<ModalProps> = ({ activeModal, onClose, onConfirm, s
                 )}
               </>
             ) : (
-              <div className="no-results" style={{ textAlign: 'center', padding: '40px 20px' }}>
-                กรุณาเลือก System Name ก่อน เพื่อแสดงรายการ Application
+              <div style={{ textAlign: 'center', padding: '40px 20px', color: 'var(--gray-500)' }}>
+                <p style={{ fontSize: '16px', marginBottom: '8px' }}>กรุณาเลือก System Name ก่อน เพื่อแสดงรายการ Application</p>
+                <p style={{ fontSize: '14px' }}>Please select a System Name first to view available Applications.</p>
               </div>
             )}
           </div>
@@ -961,7 +1205,7 @@ export const Modal: React.FC<ModalProps> = ({ activeModal, onClose, onConfirm, s
             </button>
             <button
               className="btn-primary"
-              disabled={!selectedItem}
+              disabled={!selectedItem || !systemId}
               onClick={() => confirmSelection(selectedItem)}
             >
               Confirm
