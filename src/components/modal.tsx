@@ -52,6 +52,28 @@ interface MasterApplication {
   systemId: string;
 }
 
+interface MasterProject {
+  id: string;
+  projectSaleNumber: string;
+  projectName: string;
+  poNumberGosoft: string;
+  poNumberCustomer: string;
+  supplier: string;
+}
+
+interface MasterSupplier {
+  id: string;
+  code: string;
+  name: string;
+}
+
+interface MasterSRRelease {
+  id: string;
+  serviceName: string;
+  documentNumber: string;
+  status: string;
+}
+
 // Mock Master Data
 export const MOCK_SERVICES: MasterService[] = [
   { id: 'SVC001', serviceName: 'Application Development', supportGroupName: 'Dev Team' },
@@ -127,6 +149,30 @@ export const MOCK_APPLICATIONS: MasterApplication[] = [
   { id: 'APP008', applicationName: 'Budget Planning', systemId: 'SYS004' },
   { id: 'APP009', applicationName: 'Inventory Management', systemId: 'SYS005' },
   { id: 'APP010', applicationName: 'Order Processing', systemId: 'SYS005' },
+];
+
+export const MOCK_PROJECTS: MasterProject[] = [
+  { id: 'P001', projectSaleNumber: 'PS001', projectName: 'ERP Implementation', poNumberGosoft: 'PO-G-001', poNumberCustomer: 'PO-C-001', supplier: 'Supplier A' },
+  { id: 'P002', projectSaleNumber: 'PS002', projectName: 'CRM Upgrade', poNumberGosoft: 'PO-G-002', poNumberCustomer: 'PO-C-002', supplier: 'Supplier B' },
+  { id: 'P003', projectSaleNumber: 'PS003', projectName: 'HR System Migration', poNumberGosoft: 'PO-G-003', poNumberCustomer: 'PO-C-003', supplier: 'Supplier C' },
+  { id: 'P004', projectSaleNumber: 'PS004', projectName: 'Financial Software', poNumberGosoft: 'PO-G-004', poNumberCustomer: 'PO-C-004', supplier: 'Supplier D' },
+  { id: 'P005', projectSaleNumber: 'PS005', projectName: 'Supply Chain Optimization', poNumberGosoft: 'PO-G-005', poNumberCustomer: 'PO-C-005', supplier: 'Supplier E' },
+];
+
+export const MOCK_SUPPLIERS: MasterSupplier[] = [
+  { id: 'S001', code: 'SUP001', name: 'Supplier A' },
+  { id: 'S002', code: 'SUP002', name: 'Supplier B' },
+  { id: 'S003', code: 'SUP003', name: 'Supplier C' },
+  { id: 'S004', code: 'SUP004', name: 'Supplier D' },
+  { id: 'S005', code: 'SUP005', name: 'Supplier E' },
+];
+
+export const MOCK_SR_RELEASES: MasterSRRelease[] = [
+  { id: 'SR001', serviceName: 'Application Development', documentNumber: 'SR-001', status: 'Active' },
+  { id: 'SR002', serviceName: 'Infrastructure', documentNumber: 'SR-002', status: 'Pending' },
+  { id: 'SR003', serviceName: 'Database Management', documentNumber: 'SR-003', status: 'Completed' },
+  { id: 'SR004', serviceName: 'Cloud Services', documentNumber: 'SR-004', status: 'Active' },
+  { id: 'SR005', serviceName: 'Security', documentNumber: 'SR-005', status: 'Pending' },
 ];
 
 interface ModalProps {
@@ -1133,6 +1179,305 @@ export const Modal: React.FC<ModalProps> = ({ activeModal, onClose, onConfirm, s
     );
   };
 
+  // MODAL COMPONENT: Project Selector
+  const ProjectSelectorModal = () => {
+    const filteredProjects = filterData(MOCK_PROJECTS, ['projectName', 'projectSaleNumber']);
+    const paginatedProjects = getPaginatedData(filteredProjects);
+    const totalPages = getTotalPages(filteredProjects);
+
+    return (
+      <div className={`modal-overlay ${!isFirstOpen ? 'no-animate' : ''}`} onClick={closeModal}>
+        <div className={`modal-content modal-large ${!isFirstOpen ? 'no-animate' : ''}`} onClick={e => e.stopPropagation()}>
+          <div className="modal-header">
+            <h2>Select Project</h2>
+            <button className="modal-close-btn" onClick={closeModal}>
+              <X size={20} />
+            </button>
+          </div>
+
+          <div className="modal-body">
+            <div className="modal-search">
+              <Search size={18} />
+              <input
+                type="text"
+                placeholder="Search by Project Name or Sale Number..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="search-input"
+                autoFocus
+              />
+            </div>
+
+            <table className="modal-table">
+              <thead>
+                <tr>
+                  <th>เลขที่โครงการขาย</th>
+                  <th>Project Name</th>
+                  <th>PO Number (Gosoft)</th>
+                  <th>PO Number (Customer)</th>
+                  <th>Supplier</th>
+                </tr>
+              </thead>
+              <tbody>
+                {paginatedProjects.map((project) => (
+                  <tr
+                    key={project.id}
+                    onClick={() => handleSelectItem(project)}
+                    className={selectedItem?.id === project.id ? 'selected-row' : ''}
+                  >
+                    <td>{project.projectSaleNumber}</td>
+                    <td>{project.projectName}</td>
+                    <td>{project.poNumberGosoft}</td>
+                    <td>{project.poNumberCustomer}</td>
+                    <td>{project.supplier}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+
+            {filteredProjects.length === 0 && (
+              <div className="no-data">No projects found</div>
+            )}
+
+            {totalPages > 1 && (
+              <div className="pagination">
+                <button
+                  onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
+                  disabled={currentPage === 1}
+                  className="pagination-btn"
+                >
+                  &lt;
+                </button>
+                <span className="pagination-info">
+                  Page {currentPage} of {totalPages}
+                </span>
+                <button
+                  onClick={() => handlePageChange(Math.min(totalPages, currentPage + 1))}
+                  disabled={currentPage === totalPages}
+                  className="pagination-btn"
+                >
+                  &gt;
+                </button>
+              </div>
+            )}
+          </div>
+
+          <div className="modal-footer">
+            <button
+              className="btn-secondary"
+              onClick={closeModal}
+            >
+              Cancel
+            </button>
+            <button
+              className="btn-primary"
+              disabled={!selectedItem}
+              onClick={() => confirmSelection(selectedItem)}
+            >
+              Confirm
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  // MODAL COMPONENT: Supplier Selector
+  const SupplierSelectorModal = () => {
+    const filteredSuppliers = filterData(MOCK_SUPPLIERS, ['code', 'name']);
+    const paginatedSuppliers = getPaginatedData(filteredSuppliers);
+    const totalPages = getTotalPages(filteredSuppliers);
+
+    return (
+      <div className={`modal-overlay ${!isFirstOpen ? 'no-animate' : ''}`} onClick={closeModal}>
+        <div className={`modal-content modal-medium ${!isFirstOpen ? 'no-animate' : ''}`} onClick={e => e.stopPropagation()}>
+          <div className="modal-header">
+            <h2>Select Supplier</h2>
+            <button className="modal-close-btn" onClick={closeModal}>
+              <X size={20} />
+            </button>
+          </div>
+
+          <div className="modal-body">
+            <div className="modal-search">
+              <Search size={18} />
+              <input
+                type="text"
+                placeholder="Search by Code or Name..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="search-input"
+                autoFocus
+              />
+            </div>
+
+            <table className="modal-table">
+              <thead>
+                <tr>
+                  <th>Code</th>
+                  <th>Name</th>
+                </tr>
+              </thead>
+              <tbody>
+                {paginatedSuppliers.map((supplier) => (
+                  <tr
+                    key={supplier.id}
+                    onClick={() => handleSelectItem(supplier)}
+                    className={selectedItem?.id === supplier.id ? 'selected-row' : ''}
+                  >
+                    <td>{supplier.code}</td>
+                    <td>{supplier.name}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+
+            {filteredSuppliers.length === 0 && (
+              <div className="no-data">No suppliers found</div>
+            )}
+
+            {totalPages > 1 && (
+              <div className="pagination">
+                <button
+                  onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
+                  disabled={currentPage === 1}
+                  className="pagination-btn"
+                >
+                  &lt;
+                </button>
+                <span className="pagination-info">
+                  Page {currentPage} of {totalPages}
+                </span>
+                <button
+                  onClick={() => handlePageChange(Math.min(totalPages, currentPage + 1))}
+                  disabled={currentPage === totalPages}
+                  className="pagination-btn"
+                >
+                  &gt;
+                </button>
+              </div>
+            )}
+          </div>
+
+          <div className="modal-footer">
+            <button
+              className="btn-secondary"
+              onClick={closeModal}
+            >
+              Cancel
+            </button>
+            <button
+              className="btn-primary"
+              disabled={!selectedItem}
+              onClick={() => confirmSelection(selectedItem)}
+            >
+              Confirm
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  // MODAL COMPONENT: SR/Release Management Selector
+  const SRReleaseSelectorModal = () => {
+    const filteredSRReleases = filterData(MOCK_SR_RELEASES, ['serviceName', 'documentNumber']);
+    const paginatedSRReleases = getPaginatedData(filteredSRReleases);
+    const totalPages = getTotalPages(filteredSRReleases);
+
+    return (
+      <div className={`modal-overlay ${!isFirstOpen ? 'no-animate' : ''}`} onClick={closeModal}>
+        <div className={`modal-content modal-medium ${!isFirstOpen ? 'no-animate' : ''}`} onClick={e => e.stopPropagation()}>
+          <div className="modal-header">
+            <h2>Select SR No. / Release Management</h2>
+            <button className="modal-close-btn" onClick={closeModal}>
+              <X size={20} />
+            </button>
+          </div>
+
+          <div className="modal-body">
+            <div className="modal-search">
+              <Search size={18} />
+              <input
+                type="text"
+                placeholder="Search by Service Name or Document Number..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="search-input"
+                autoFocus
+              />
+            </div>
+
+            <table className="modal-table">
+              <thead>
+                <tr>
+                  <th>Service Name</th>
+                  <th>Document Number</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {paginatedSRReleases.map((sr) => (
+                  <tr
+                    key={sr.id}
+                    onClick={() => handleSelectItem(sr)}
+                    className={selectedItem?.id === sr.id ? 'selected-row' : ''}
+                  >
+                    <td>{sr.serviceName}</td>
+                    <td>{sr.documentNumber}</td>
+                    <td>{sr.status}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+
+            {filteredSRReleases.length === 0 && (
+              <div className="no-data">No SR/Release found</div>
+            )}
+
+            {totalPages > 1 && (
+              <div className="pagination">
+                <button
+                  onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
+                  disabled={currentPage === 1}
+                  className="pagination-btn"
+                >
+                  &lt;
+                </button>
+                <span className="pagination-info">
+                  Page {currentPage} of {totalPages}
+                </span>
+                <button
+                  onClick={() => handlePageChange(Math.min(totalPages, currentPage + 1))}
+                  disabled={currentPage === totalPages}
+                  className="pagination-btn"
+                >
+                  &gt;
+                </button>
+              </div>
+            )}
+          </div>
+
+          <div className="modal-footer">
+            <button
+              className="btn-secondary"
+              onClick={closeModal}
+            >
+              Cancel
+            </button>
+            <button
+              className="btn-primary"
+              disabled={!selectedItem}
+              onClick={() => confirmSelection(selectedItem)}
+            >
+              Confirm
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   if (!activeModal) return null;
 
   switch (activeModal) {
@@ -1154,6 +1499,14 @@ export const Modal: React.FC<ModalProps> = ({ activeModal, onClose, onConfirm, s
       return <LocationSelectorModal />;
     case 'customer':
       return <CustomerSelectorModal />;
+    case 'project':
+      return <ProjectSelectorModal />;
+    case 'supplier':
+      return <SupplierSelectorModal />;
+    case 'extendSupplier':
+      return <SupplierSelectorModal />;
+    case 'srRelease':
+      return <SRReleaseSelectorModal />;
     default:
       return null;
   }

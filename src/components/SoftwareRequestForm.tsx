@@ -162,9 +162,27 @@ export function SoftwareRequestForm() {
     applicationUrl: '',
     
     // MA Information
-    needContinueMA: 'No',
+    needContinueMA: 'Yes',
+    pendingContinue: '',
+    projectName: '',
+    projectSaleNumber: '',
+    poNumberCustomer: '',
+    poNumberGosoft: '',
+    maPoNumberCustomer: '',
+    maPoNumberGosoft: '',
+    supplier: '',
+    supplierName: '',
+    buyDate: '',
+    warrantyStartDate: '',
+    warrantyEndDate: '',
     maStartDate: '',
     maEndDate: '',
+    maType: '',
+    extendSupplier: '',
+    extendSupplierName: '',
+    decommissionDate: '',
+    srNoReleaseManagement: '',
+    srNoReleaseManagementName: '',
     
     // Attachment / Remark
     parentCis: '',
@@ -260,6 +278,36 @@ export function SoftwareRequestForm() {
           customerId: selectedData.id
         }));
         break;
+      case 'project':
+        setFormData(prev => ({
+          ...prev,
+          projectName: selectedData.projectName,
+          projectSaleNumber: selectedData.projectSaleNumber,
+          poNumberGosoft: selectedData.poNumberGosoft,
+          poNumberCustomer: selectedData.poNumberCustomer
+        }));
+        break;
+      case 'supplier':
+        setFormData(prev => ({
+          ...prev,
+          supplier: selectedData.id,
+          supplierName: selectedData.name
+        }));
+        break;
+      case 'extendSupplier':
+        setFormData(prev => ({
+          ...prev,
+          extendSupplier: selectedData.id,
+          extendSupplierName: selectedData.name
+        }));
+        break;
+      case 'srRelease':
+        setFormData(prev => ({
+          ...prev,
+          srNoReleaseManagement: selectedData.documentNumber,
+          srNoReleaseManagementName: selectedData.documentNumber
+        }));
+        break;
     }
     closeModal();
   };
@@ -318,6 +366,42 @@ export function SoftwareRequestForm() {
     if (formData.ciName && formData.ciName.length > 250) {
       newErrors.ciName = 'CI Name cannot exceed 250 characters';
     }
+
+    // MA Information validation
+    if (formData.needContinueMA === 'Yes') {
+      if (!formData.pendingContinue) {
+        newErrors.pendingContinue = 'Pending Continue is required';
+      }
+      if (!formData.projectName) {
+        newErrors.projectName = 'Project Name is required';
+      }
+      if (!formData.maStartDate) {
+        newErrors.maStartDate = 'MA Start Date is required';
+      }
+      if (!formData.maEndDate) {
+        newErrors.maEndDate = 'MA End Date is required';
+      }
+      if (formData.maStartDate && formData.maEndDate) {
+        const startDate = new Date(formData.maStartDate);
+        const endDate = new Date(formData.maEndDate);
+        if (startDate >= endDate) {
+          newErrors.maEndDate = 'MA End Date must be after MA Start Date';
+        }
+      }
+    }
+
+    // Max length validations for PO numbers
+    const maxLengthFields = [
+      { field: 'poNumberCustomer', max: 20 },
+      { field: 'poNumberGosoft', max: 20 },
+      { field: 'maPoNumberCustomer', max: 20 },
+      { field: 'maPoNumberGosoft', max: 20 }
+    ];
+    maxLengthFields.forEach(({ field, max }) => {
+      if (formData[field as keyof typeof formData] && (formData[field as keyof typeof formData] as string).length > max) {
+        newErrors[field] = `Cannot exceed ${max} characters`;
+      }
+    });
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
@@ -886,8 +970,10 @@ export function SoftwareRequestForm() {
             <span className="section-icon">📅</span> MA Information
           </h2>
           <div className="form-grid cols-2">
-            <div className="form-field full-width">
-              <label className="form-field-label">Need Continue MA</label>
+            <div className="form-field">
+              <label className="form-field-label">
+                Need Continue MA <span className="required">*</span>
+              </label>
               <div className="radio-group">
                 <label className="radio-item">
                   <input
@@ -912,22 +998,283 @@ export function SoftwareRequestForm() {
               </div>
             </div>
             <div className="form-field">
-              <label className="form-field-label">MA Start Date</label>
+              <label className="form-field-label">
+                Pending Continue {formData.needContinueMA === 'Yes' && <span className="required">*</span>}
+              </label>
+              <div className="radio-group">
+                <label className="radio-item">
+                  <input
+                    type="radio"
+                    name="pendingContinue"
+                    value="Yes"
+                    checked={formData.pendingContinue === 'Yes'}
+                    onChange={(e) => handleInputChange('pendingContinue', e.target.value)}
+                    disabled={formData.needContinueMA === 'No'}
+                  />
+                  <span>Yes</span>
+                </label>
+                <label className="radio-item">
+                  <input
+                    type="radio"
+                    name="pendingContinue"
+                    value="No"
+                    checked={formData.pendingContinue === 'No'}
+                    onChange={(e) => handleInputChange('pendingContinue', e.target.value)}
+                    disabled={formData.needContinueMA === 'No'}
+                  />
+                  <span>No</span>
+                </label>
+              </div>
+              {errors.pendingContinue && (
+                <span className="error-message">{errors.pendingContinue}</span>
+              )}
+            </div>
+            <div className="form-field">
+              <label className="form-field-label">
+                Project Name {formData.needContinueMA === 'Yes' && <span className="required">*</span>}
+              </label>
+              <div className="input-with-actions">
+                <input
+                  type="text"
+                  value={formData.projectName}
+                  readOnly
+                  placeholder="โปรดเลือก Project Name"
+                  className="input-readonly"
+                  disabled={formData.needContinueMA === 'No'}
+                />
+                <div className="input-action-buttons">
+                  <button
+                    type="button"
+                    className="action-btn select-btn"
+                    onClick={() => openModal('project')}
+                    disabled={formData.needContinueMA === 'No'}
+                  >
+                    Select
+                  </button>
+                </div>
+              </div>
+              {errors.projectName && (
+                <span className="error-message">{errors.projectName}</span>
+              )}
+            </div>
+            <div className="form-field">
+              <label className="form-field-label">เลขที่โครงการขาย</label>
+              <input
+                type="text"
+                value={formData.projectSaleNumber}
+                readOnly
+                className="input-readonly"
+                placeholder="Auto-populated"
+                disabled={formData.needContinueMA === 'No'}
+              />
+            </div>
+            <div className="form-field">
+              <label className="form-field-label">PO Number (Customer)</label>
+              <ClearableInput
+                value={formData.poNumberCustomer}
+                onChange={(value) => handleInputChange('poNumberCustomer', value)}
+                onClear={() => handleInputChange('poNumberCustomer', '')}
+                placeholder="Please enter PO Number (Customer)"
+                maxLength={20}
+                disabled={formData.needContinueMA === 'No'}
+                error={!!errors.poNumberCustomer}
+              />
+              {errors.poNumberCustomer && (
+                <span className="error-message">{errors.poNumberCustomer}</span>
+              )}
+            </div>
+            <div className="form-field">
+              <label className="form-field-label">PO Number (Gosoft)</label>
+              <ClearableInput
+                value={formData.poNumberGosoft}
+                onChange={(value) => handleInputChange('poNumberGosoft', value)}
+                onClear={() => handleInputChange('poNumberGosoft', '')}
+                placeholder="Please enter PO Number (Gosoft)"
+                maxLength={20}
+                disabled={formData.needContinueMA === 'No'}
+                error={!!errors.poNumberGosoft}
+              />
+              {errors.poNumberGosoft && (
+                <span className="error-message">{errors.poNumberGosoft}</span>
+              )}
+            </div>
+            <div className="form-field">
+              <label className="form-field-label">MA PO Number (Customer)</label>
+              <ClearableInput
+                value={formData.maPoNumberCustomer}
+                onChange={(value) => handleInputChange('maPoNumberCustomer', value)}
+                onClear={() => handleInputChange('maPoNumberCustomer', '')}
+                placeholder="Please enter MA PO Number (Customer)"
+                maxLength={20}
+                disabled={formData.needContinueMA === 'No'}
+                error={!!errors.maPoNumberCustomer}
+              />
+              {errors.maPoNumberCustomer && (
+                <span className="error-message">{errors.maPoNumberCustomer}</span>
+              )}
+            </div>
+            <div className="form-field">
+              <label className="form-field-label">MA PO Number (Gosoft)</label>
+              <ClearableInput
+                value={formData.maPoNumberGosoft}
+                onChange={(value) => handleInputChange('maPoNumberGosoft', value)}
+                onClear={() => handleInputChange('maPoNumberGosoft', '')}
+                placeholder="Please enter MA PO Number (Gosoft)"
+                maxLength={20}
+                disabled={formData.needContinueMA === 'No'}
+                error={!!errors.maPoNumberGosoft}
+              />
+              {errors.maPoNumberGosoft && (
+                <span className="error-message">{errors.maPoNumberGosoft}</span>
+              )}
+            </div>
+            <div className="form-field">
+              <label className="form-field-label">Supplier</label>
+              <div className="input-with-actions">
+                <input
+                  type="text"
+                  value={formData.supplierName}
+                  readOnly
+                  placeholder="โปรดเลือก Supplier"
+                  className="input-readonly"
+                  disabled={formData.needContinueMA === 'No'}
+                />
+                <div className="input-action-buttons">
+                  <button
+                    type="button"
+                    className="action-btn select-btn"
+                    onClick={() => openModal('supplier')}
+                    disabled={formData.needContinueMA === 'No'}
+                  >
+                    Select
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div className="form-field">
+              <label className="form-field-label">Buy Date</label>
+              <input
+                type="date"
+                value={formData.buyDate}
+                onChange={(e) => handleInputChange('buyDate', e.target.value)}
+                disabled={formData.needContinueMA === 'No'}
+              />
+            </div>
+            <div className="form-field">
+              <label className="form-field-label">Warranty Start Date</label>
+              <input
+                type="date"
+                value={formData.warrantyStartDate}
+                onChange={(e) => handleInputChange('warrantyStartDate', e.target.value)}
+                disabled={formData.needContinueMA === 'No'}
+              />
+            </div>
+            <div className="form-field">
+              <label className="form-field-label">Warranty End Date</label>
+              <input
+                type="date"
+                value={formData.warrantyEndDate}
+                onChange={(e) => handleInputChange('warrantyEndDate', e.target.value)}
+                disabled={formData.needContinueMA === 'No'}
+              />
+            </div>
+            <div className="form-field">
+              <label className="form-field-label">
+                MA Start Date {formData.needContinueMA === 'Yes' && <span className="required">*</span>}
+              </label>
               <input
                 type="date"
                 value={formData.maStartDate}
                 onChange={(e) => handleInputChange('maStartDate', e.target.value)}
                 disabled={formData.needContinueMA === 'No'}
+                className={errors.maStartDate ? 'input-error' : ''}
               />
+              {errors.maStartDate && (
+                <span className="error-message">{errors.maStartDate}</span>
+              )}
             </div>
             <div className="form-field">
-              <label className="form-field-label">MA End Date</label>
+              <label className="form-field-label">
+                MA End Date {formData.needContinueMA === 'Yes' && <span className="required">*</span>}
+              </label>
               <input
                 type="date"
                 value={formData.maEndDate}
                 onChange={(e) => handleInputChange('maEndDate', e.target.value)}
                 disabled={formData.needContinueMA === 'No'}
+                className={errors.maEndDate ? 'input-error' : ''}
               />
+              {errors.maEndDate && (
+                <span className="error-message">{errors.maEndDate}</span>
+              )}
+            </div>
+            <div className="form-field">
+              <label className="form-field-label">MA Type</label>
+              <select
+                value={formData.maType}
+                onChange={(e) => handleInputChange('maType', e.target.value)}
+                disabled={formData.needContinueMA === 'No'}
+                className="form-field-select"
+              >
+                <option value="">Select MA Type</option>
+                <option value="8.5 x 5">8.5 x 5</option>
+                <option value="24 x 7">24 x 7</option>
+              </select>
+            </div>
+            <div className="form-field">
+              <label className="form-field-label">Extend Supplier</label>
+              <div className="input-with-actions">
+                <input
+                  type="text"
+                  value={formData.extendSupplierName}
+                  readOnly
+                  placeholder="โปรดเลือก Extend Supplier"
+                  className="input-readonly"
+                  disabled={formData.needContinueMA === 'No'}
+                />
+                <div className="input-action-buttons">
+                  <button
+                    type="button"
+                    className="action-btn select-btn"
+                    onClick={() => openModal('extendSupplier')}
+                    disabled={formData.needContinueMA === 'No'}
+                  >
+                    Select
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div className="form-field">
+              <label className="form-field-label">Decommission Date</label>
+              <input
+                type="date"
+                value={formData.decommissionDate}
+                onChange={(e) => handleInputChange('decommissionDate', e.target.value)}
+                disabled={formData.needContinueMA === 'No'}
+              />
+            </div>
+            <div className="form-field">
+              <label className="form-field-label">SR No. / Release Management</label>
+              <div className="input-with-actions">
+                <input
+                  type="text"
+                  value={formData.srNoReleaseManagementName}
+                  readOnly
+                  placeholder="โปรดเลือก SR No./Release Management"
+                  className="input-readonly"
+                  disabled={formData.needContinueMA === 'No'}
+                />
+                <div className="input-action-buttons">
+                  <button
+                    type="button"
+                    className="action-btn select-btn"
+                    onClick={() => openModal('srRelease')}
+                    disabled={formData.needContinueMA === 'No'}
+                  >
+                    Select
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
