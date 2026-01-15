@@ -521,7 +521,7 @@
   will-change: auto;
 }
 
-.modal-table tbody tr.selected td:first-child {
+.modal-table tbody tr.selected td:last-child {
   padding-left: 13px;
   will-change: padding;
 }
