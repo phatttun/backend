@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { Home as HomeIcon, Menu, Search, X } from 'lucide-react';
-import Sidebar from './Sidebar';
+import { Home as HomeIcon, Search, X } from 'lucide-react';
 import '../styles/SoftwareRequestForm.css';
 
 // Clearable Input Component
@@ -209,8 +208,6 @@ const getStatusBadgeColor = (status: CIStatus): string => {
 };
 
 export function SoftwareRequestForm() {
-  const [sidebarOpen, setSidebarOpen] = useState(true);
-
   const [formData, setFormData] = useState({
     // Header metadata
     createdDate: new Date().toLocaleDateString('en-US', { 
@@ -1209,10 +1206,7 @@ export function SoftwareRequestForm() {
   };
 
   return (
-    <div className="flex h-screen bg-gray-50 home-container">
-      {/* Sidebar Component */}
-      <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
-
+    <div className="bg-gray-50 home-container">
       {/* Main Content */}
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Header */}
@@ -1220,12 +1214,6 @@ export function SoftwareRequestForm() {
           <div className="flex items-center justify-between mb-4">
             {/* Breadcrumbs and Menu Toggle */}
             <div className="flex items-center gap-4">
-              <button
-                className="menu-toggle-btn"
-                onClick={() => setSidebarOpen(!sidebarOpen)}
-              >
-                <Menu size={24} />
-              </button>
               <nav className="breadcrumbs">
                 <div className="breadcrumb-item">
                   <a href="/" className="breadcrumb-link">

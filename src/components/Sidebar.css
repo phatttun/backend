@@ -490,3 +490,19 @@
     padding: 8px;
   }
 }
+
+/* Sidebar Layout */
+.sidebar-layout {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.sidebar-layout .sidebar {
+  flex-shrink: 0;
+}
+
+.sidebar-layout > div:last-child {
+  flex: 1;
+  overflow: auto;
+}

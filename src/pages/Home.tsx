@@ -7,10 +7,7 @@ import {
   ChevronLeft,
   ChevronRight,
   MoreVertical,
-  Menu,
-  LogOut,
 } from "lucide-react";
-import Sidebar from "../components/Sidebar";
 import '../styles/Home.css';
 
 interface RequestRow {
@@ -153,7 +150,6 @@ export default function Home() {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [sidebarOpen, setSidebarOpen] = useState(true);
   const itemsPerPage = 10;
   const totalItems = DUMMY_DATA.length;
   const totalPages = Math.ceil(totalItems / itemsPerPage);
@@ -170,23 +166,14 @@ export default function Home() {
   );
 
   return (
-    <div className="flex h-screen bg-gray-50 home-container">
-      {/* Sidebar Component */}
-      <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
-
+    <div className="bg-gray-50 home-container">
       {/* Main Content */}
-      <div className="flex-1 flex flex-col overflow-hidden" data-sidebar-open={sidebarOpen}>
+      <div className="flex-1 flex flex-col overflow-hidden">
         {/* Header */}
         <header className="bg-white border-b border-gray-200 px-8 py-4 shadow-sm header">
           <div className="flex items-center justify-between mb-4">
             {/* Breadcrumbs and Menu Toggle */}
             <div className="flex items-center gap-4">
-              <button
-                className="menu-toggle-btn"
-                onClick={() => setSidebarOpen(!sidebarOpen)}
-              >
-                <Menu size={24} />
-              </button>
               <nav className="breadcrumbs">
                 <div className="breadcrumb-item">
                   <a href="#" className="breadcrumb-link">
