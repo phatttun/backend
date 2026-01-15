@@ -302,7 +302,7 @@
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(226, 232, 240, 0.6);
   display: flex;
   flex-direction: column;
-  max-height: 90vh;
+  max-height: 80vh;
   overflow: hidden;
   will-change: transform, opacity;
   backface-visibility: hidden;
@@ -320,13 +320,13 @@
 }
 
 .modal-content.modal-large {
-  width: 90%;
-  max-width: 920px;
+  width: 80%;
+  max-width: 800px;
 }
 
 .modal-content.modal-medium {
-  width: 85%;
-  max-width: 720px;
+  width: 75%;
+  max-width: 600px;
 }
 
 @keyframes slideUp {
@@ -344,7 +344,7 @@
 
 /* Modal Header */
 .modal-header {
-  padding: 36px 40px;
+  padding: 24px 30px;
   border-bottom: 2px solid rgba(226, 232, 240, 0.8);
   display: flex;
   justify-content: space-between;
@@ -355,7 +355,7 @@
 
 .modal-header h2 {
   margin: 0;
-  font-size: 22px;
+  font-size: 18px;
   font-weight: 800;
   color: var(--gray-900);
   text-transform: uppercase;
@@ -370,15 +370,15 @@
   border: none;
   cursor: pointer;
   color: var(--gray-500);
-  padding: 12px;
+  padding: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all var(--transition-base);
   border-radius: 12px;
-  width: 48px;
-  height: 48px;
-  font-size: 22px;
+  width: 36px;
+  height: 36px;
+  font-size: 18px;
   flex-shrink: 0;
 }
 
@@ -394,7 +394,7 @@
 
 /* Modal Body */
 .modal-body {
-  padding: 36px 40px;
+  padding: 16px 20px;
   overflow-y: auto;
   flex: 1;
   background: white;
@@ -425,14 +425,14 @@
   display: flex;
   align-items: center;
   gap: 0;
-  margin-bottom: 28px;
+  margin-bottom: 16px;
   background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
   border: 2px solid #e5e7eb;
   border-radius: 14px;
   padding: 0;
   transition: all var(--transition-base);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-  height: 48px;
+  height: 40px;
   overflow: hidden;
 }
 
@@ -461,7 +461,7 @@
   background: none;
   border: none;
   outline: none;
-  font-size: 15px;
+  font-size: 14px;
   color: var(--gray-900);
   padding: 0;
   font-family: inherit;
@@ -479,11 +479,12 @@
 .modal-table {
   width: 100%;
   border-collapse: collapse;
-  margin-bottom: 28px;
+  margin-bottom: 16px;
   background: white;
   border-radius: 14px;
   overflow: hidden;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06), inset 0 0 0 1px rgba(226, 232, 240, 0.5);
+  table-layout: fixed;
 }
 
 .modal-table thead {
@@ -492,14 +493,24 @@
 }
 
 .modal-table th {
-  padding: 20px 18px;
+  padding: 8px 8px;
   text-align: left;
   font-weight: 800;
-  font-size: 13px;
+  font-size: 11px;
   color: var(--gray-900);
   text-transform: uppercase;
   letter-spacing: 0.8px;
   border-bottom: inherit;
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.modal-table th:last-child {
+  max-width: none;
+  width: 80px;
+  text-align: center;
 }
 
 .modal-table tbody tr {
@@ -527,22 +538,32 @@
 }
 
 .modal-table td {
-  padding: 18px 18px;
-  font-size: 15px;
+  padding: 8px 8px;
+  font-size: 13px;
   color: var(--gray-800);
   font-weight: 500;
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.modal-table td:last-child {
+  max-width: none;
+  width: 80px;
+  text-align: center;
 }
 
 .checkmark {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
+  width: 24px;
+  height: 24px;
   background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
   color: white;
   border-radius: 10px;
-  font-size: 18px;
+  font-size: 14px;
   font-weight: 800;
   box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
   will-change: transform, opacity;
@@ -566,9 +587,9 @@
 
 .no-results {
   text-align: center;
-  padding: 80px 20px;
+  padding: 40px 20px;
   color: var(--gray-500);
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 600;
   letter-spacing: 0.3px;
 }
@@ -578,31 +599,31 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 24px;
+  gap: 16px;
   margin: 28px 0;
-  padding: 24px 28px;
+  padding: 16px 20px;
   background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
   border-radius: 14px;
   border: 1px solid rgba(226, 232, 240, 0.8);
 }
 
 .pagination-info {
-  font-size: 14px;
+  font-size: 12px;
   color: var(--gray-900);
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  min-width: 160px;
+  min-width: 140px;
   text-align: center;
 }
 
 .pagination-btn {
-  padding: 12px 18px;
+  padding: 8px 12px;
   border: 2px solid #d1d5db;
   border-radius: 12px;
   background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
   color: var(--gray-900);
-  font-size: 15px;
+  font-size: 13px;
   font-weight: 700;
   cursor: pointer;
   transition: all var(--transition-base);
@@ -628,13 +649,20 @@
 
 /* Modal Footer */
 .modal-footer {
-  padding: 28px 40px;
+  padding: 20px 30px;
   border-top: 2px solid rgba(226, 232, 240, 0.8);
   display: flex;
   justify-content: flex-end;
   gap: 16px;
   background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
   position: relative;
+}
+
+.modal-footer .btn-primary,
+.modal-footer .btn-secondary {
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
 }
 
 .modal-footer::before {
