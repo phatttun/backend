@@ -40,6 +40,18 @@ interface MasterCustomer {
   customerName: string;
 }
 
+interface MasterSystemName {
+  id: string;
+  code: string;
+  name: string;
+}
+
+interface MasterApplication {
+  id: string;
+  applicationName: string;
+  systemId: string;
+}
+
 // Mock Master Data
 export const MOCK_SERVICES: MasterService[] = [
   { id: 'SVC001', serviceName: 'Application Development', supportGroupName: 'Dev Team' },
@@ -96,13 +108,35 @@ export const MOCK_CUSTOMERS: MasterCustomer[] = [
   { id: 'C003', customerName: 'Customer B' },
 ];
 
+export const MOCK_SYSTEM_NAMES: MasterSystemName[] = [
+  { id: 'SYS001', code: 'ERP', name: 'Enterprise Resource Planning' },
+  { id: 'SYS002', code: 'CRM', name: 'Customer Relationship Management' },
+  { id: 'SYS003', code: 'HRM', name: 'Human Resource Management' },
+  { id: 'SYS004', code: 'FIN', name: 'Financial System' },
+  { id: 'SYS005', code: 'SCM', name: 'Supply Chain Management' },
+];
+
+export const MOCK_APPLICATIONS: MasterApplication[] = [
+  { id: 'APP001', applicationName: 'ERP Web Portal', systemId: 'SYS001' },
+  { id: 'APP002', applicationName: 'ERP Mobile App', systemId: 'SYS001' },
+  { id: 'APP003', applicationName: 'CRM Dashboard', systemId: 'SYS002' },
+  { id: 'APP004', applicationName: 'CRM Analytics', systemId: 'SYS002' },
+  { id: 'APP005', applicationName: 'HR Portal', systemId: 'SYS003' },
+  { id: 'APP006', applicationName: 'Payroll System', systemId: 'SYS003' },
+  { id: 'APP007', applicationName: 'Accounting Software', systemId: 'SYS004' },
+  { id: 'APP008', applicationName: 'Budget Planning', systemId: 'SYS004' },
+  { id: 'APP009', applicationName: 'Inventory Management', systemId: 'SYS005' },
+  { id: 'APP010', applicationName: 'Order Processing', systemId: 'SYS005' },
+];
+
 interface ModalProps {
   activeModal: string | null;
   onClose: () => void;
   onConfirm: (selectedData: any) => void;
+  systemId?: string; // For filtering applications by system
 }
 
-export const Modal: React.FC<ModalProps> = ({ activeModal, onClose, onConfirm }) => {
+export const Modal: React.FC<ModalProps> = ({ activeModal, onClose, onConfirm, systemId }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedItem, setSelectedItem] = useState<any>(null);
   const [currentPage, setCurrentPage] = useState(1);
@@ -677,6 +711,218 @@ export const Modal: React.FC<ModalProps> = ({ activeModal, onClose, onConfirm })
     );
   };
 
+  // MODAL COMPONENT: System Name Selector
+  const SystemSelectorModal = () => {
+    const filteredSystems = filterData(MOCK_SYSTEM_NAMES, ['code', 'name']);
+    const paginatedSystems = getPaginatedData(filteredSystems);
+    const totalPages = getTotalPages(filteredSystems);
+
+    return (
+      <div className={`modal-overlay ${!isFirstOpen ? 'no-animate' : ''}`} onClick={closeModal}>
+        <div className={`modal-content modal-medium ${!isFirstOpen ? 'no-animate' : ''}`} onClick={e => e.stopPropagation()}>
+          <div className="modal-header">
+            <h2>Select System Name</h2>
+            <button className="modal-close-btn" onClick={closeModal}>
+              <X size={20} />
+            </button>
+          </div>
+
+          <div className="modal-body">
+            <div className="modal-search">
+              <Search size={18} />
+              <input
+                type="text"
+                placeholder="Search by Code or Name..."
+                value={searchQuery}
+                onChange={(e) => {
+                  setSearchQuery(e.target.value);
+                  setCurrentPage(1);
+                }}
+                className="search-input"
+                autoFocus
+              />
+            </div>
+
+            <table className="modal-table">
+              <thead>
+                <tr>
+                  <th>Select</th>
+                  <th>Code</th>
+                  <th>Name</th>
+                </tr>
+              </thead>
+              <tbody>
+                {paginatedSystems.map((system) => (
+                  <tr
+                    key={system.id}
+                    onClick={() => handleSelectItem(system)}
+                    className={selectedItem?.id === system.id ? 'selected' : ''}
+                  >
+                    <td>
+                      <div className={`checkmark ${selectedItem?.id === system.id ? 'visible' : 'hidden'}`}>
+                        ✓
+                      </div>
+                    </td>
+                    <td>{system.code}</td>
+                    <td>{system.name}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+
+            {filteredSystems.length === 0 && (
+              <p className="no-results">No systems found</p>
+            )}
+
+            {totalPages > 1 && (
+              <div className="modal-pagination">
+                <button
+                  onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
+                  disabled={currentPage === 1}
+                  className="pagination-btn"
+                >
+                  &lt;
+                </button>
+                <span className="pagination-info">
+                  Page {currentPage} of {totalPages}
+                </span>
+                <button
+                  onClick={() => handlePageChange(Math.min(totalPages, currentPage + 1))}
+                  disabled={currentPage === totalPages}
+                  className="pagination-btn"
+                >
+                  &gt;
+                </button>
+              </div>
+            )}
+          </div>
+
+          <div className="modal-footer">
+            <button
+              className="btn-secondary"
+              onClick={closeModal}
+            >
+              Cancel
+            </button>
+            <button
+              className="btn-primary"
+              disabled={!selectedItem}
+              onClick={() => confirmSelection(selectedItem)}
+            >
+              Confirm
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  // MODAL COMPONENT: Application Selector
+  const ApplicationSelectorModal = () => {
+    const filteredApplications = systemId
+      ? filterData(MOCK_APPLICATIONS.filter(app => app.systemId === systemId), ['applicationName'])
+      : [];
+    const paginatedApplications = getPaginatedData(filteredApplications);
+    const totalPages = getTotalPages(filteredApplications);
+
+    return (
+      <div className={`modal-overlay ${!isFirstOpen ? 'no-animate' : ''}`} onClick={closeModal}>
+        <div className={`modal-content modal-medium ${!isFirstOpen ? 'no-animate' : ''}`} onClick={e => e.stopPropagation()}>
+          <div className="modal-header">
+            <h2>Select Application</h2>
+            <button className="modal-close-btn" onClick={closeModal}>
+              <X size={20} />
+            </button>
+          </div>
+
+          <div className="modal-body">
+            <div className="modal-search">
+              <Search size={18} />
+              <input
+                type="text"
+                placeholder="Search by Application Name..."
+                value={searchQuery}
+                onChange={(e) => {
+                  setSearchQuery(e.target.value);
+                  setCurrentPage(1);
+                }}
+                className="search-input"
+                autoFocus
+              />
+            </div>
+
+            <table className="modal-table">
+              <thead>
+                <tr>
+                  <th>Select</th>
+                  <th>Application Name</th>
+                </tr>
+              </thead>
+              <tbody>
+                {paginatedApplications.map((app) => (
+                  <tr
+                    key={app.id}
+                    onClick={() => handleSelectItem(app)}
+                    className={selectedItem?.id === app.id ? 'selected' : ''}
+                  >
+                    <td>
+                      <div className={`checkmark ${selectedItem?.id === app.id ? 'visible' : 'hidden'}`}>
+                        ✓
+                      </div>
+                    </td>
+                    <td>{app.applicationName}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+
+            {filteredApplications.length === 0 && (
+              <p className="no-results">No applications found for the selected system</p>
+            )}
+
+            {totalPages > 1 && (
+              <div className="modal-pagination">
+                <button
+                  onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
+                  disabled={currentPage === 1}
+                  className="pagination-btn"
+                >
+                  &lt;
+                </button>
+                <span className="pagination-info">
+                  Page {currentPage} of {totalPages}
+                </span>
+                <button
+                  onClick={() => handlePageChange(Math.min(totalPages, currentPage + 1))}
+                  disabled={currentPage === totalPages}
+                  className="pagination-btn"
+                >
+                  &gt;
+                </button>
+              </div>
+            )}
+          </div>
+
+          <div className="modal-footer">
+            <button
+              className="btn-secondary"
+              onClick={closeModal}
+            >
+              Cancel
+            </button>
+            <button
+              className="btn-primary"
+              disabled={!selectedItem}
+              onClick={() => confirmSelection(selectedItem)}
+            >
+              Confirm
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   // MODAL COMPONENT: Location Selector
   const LocationSelectorModal = () => {
     const filteredLocations = filterData(MOCK_LOCATIONS, ['locationName', 'customerName']);
@@ -900,6 +1146,10 @@ export const Modal: React.FC<ModalProps> = ({ activeModal, onClose, onConfirm })
       return <FunctionSelectorModal />;
     case 'brand':
       return <BrandSelectorModal />;
+    case 'system':
+      return <SystemSelectorModal />;
+    case 'application':
+      return <ApplicationSelectorModal />;
     case 'location':
       return <LocationSelectorModal />;
     case 'customer':

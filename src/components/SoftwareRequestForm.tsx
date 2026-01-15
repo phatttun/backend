@@ -151,9 +151,15 @@ export function SoftwareRequestForm() {
     customerId: '',
     
     // Class Information
-    systemName: '',
-    application: '',
-    environment: '',
+    userGroup: '',
+    installReleaseDate: '',
+    systemLogPath: '',
+    systemName: null as { id: string; code: string; name: string } | null,
+    application: null as { id: string; applicationName: string; systemId: string } | null,
+    contractNo: '',
+    repositoryUrl: '',
+    endOfLife: '',
+    applicationUrl: '',
     
     // MA Information
     needContinueMA: 'No',
@@ -225,6 +231,19 @@ export function SoftwareRequestForm() {
           brandId: selectedData.id
         }));
         break;
+      case 'system':
+        setFormData(prev => ({
+          ...prev,
+          systemName: selectedData,
+          application: null // Clear application when system changes
+        }));
+        break;
+      case 'application':
+        setFormData(prev => ({
+          ...prev,
+          application: selectedData
+        }));
+        break;
       case 'location':
         setFormData(prev => ({
           ...prev,
@@ -278,9 +297,7 @@ export function SoftwareRequestForm() {
       { field: 'ciVersion', label: 'CI Version' },
       { field: 'service', label: 'Service' },
       { field: 'supportGroup', label: 'Support Group' },
-      { field: 'type', label: 'Type' },
-      { field: 'systemName', label: 'System Name' },
-      { field: 'application', label: 'Application' }
+      { field: 'type', label: 'Type' }
     ];
 
     requiredFields.forEach(({ field, label }) => {
@@ -288,6 +305,14 @@ export function SoftwareRequestForm() {
         newErrors[field] = `${label} is required`;
       }
     });
+
+    // Validate systemName and application as objects
+    if (!formData.systemName) {
+      newErrors.systemName = 'System Name is required';
+    }
+    if (!formData.application) {
+      newErrors.application = 'Application is required';
+    }
 
     // CI Name max length validation
     if (formData.ciName && formData.ciName.length > 250) {
@@ -302,8 +327,6 @@ export function SoftwareRequestForm() {
     console.log('Form submitted:', formData);
     alert('Form submitted successfully!');
   };
-
-  const environmentOptions = ['Development', 'Testing', 'Staging', 'Production'];
 
   return (
     <div className="bg-gray-50 home-container">
@@ -730,18 +753,59 @@ export function SoftwareRequestForm() {
           <h2 className="form-section-header">
             <span className="section-icon">📋</span> Class Information
           </h2>
-          <div className="form-grid cols-2">
+          <div className="form-grid cols-3">
+            <div className="form-field">
+              <label className="form-field-label">User Group</label>
+              <ClearableInput
+                value={formData.userGroup}
+                onChange={(value) => handleInputChange('userGroup', value)}
+                onClear={() => handleInputChange('userGroup', '')}
+                placeholder="Please enter User Group"
+                maxLength={250}
+              />
+            </div>
+            <div className="form-field">
+              <label className="form-field-label">Install / Release Date</label>
+              <input
+                type="date"
+                value={formData.installReleaseDate}
+                onChange={(e) => handleInputChange('installReleaseDate', e.target.value)}
+                placeholder="วว/ดด/ปปปป"
+                className="form-field-input"
+              />
+            </div>
+            <div className="form-field">
+              <label className="form-field-label">System Log Path</label>
+              <ClearableInput
+                value={formData.systemLogPath}
+                onChange={(value) => handleInputChange('systemLogPath', value)}
+                onClear={() => handleInputChange('systemLogPath', '')}
+                placeholder="Please enter System Log Path"
+                maxLength={250}
+              />
+            </div>
             <div className="form-field">
               <label className="form-field-label">
                 System Name <span className="required">*</span>
               </label>
-              <ClearableInput
-                value={formData.systemName}
-                onChange={(value) => handleInputChange('systemName', value)}
-                onClear={() => handleInputChange('systemName', '')}
-                placeholder="Enter system name"
-                error={!!errors.systemName}
-              />
+              <div className="input-with-actions">
+                <input
+                  type="text"
+                  value={formData.systemName?.name || ''}
+                  readOnly
+                  placeholder="โปรดเลือก System Name"
+                  className="input-readonly"
+                />
+                <div className="input-action-buttons">
+                  <button
+                    type="button"
+                    className="action-btn select-btn"
+                    onClick={() => openModal('system')}
+                  >
+                    Select
+                  </button>
+                </div>
+              </div>
               {errors.systemName && (
                 <span className="error-message">{errors.systemName}</span>
               )}
@@ -750,30 +814,68 @@ export function SoftwareRequestForm() {
               <label className="form-field-label">
                 Application <span className="required">*</span>
               </label>
-              <ClearableInput
-                value={formData.application}
-                onChange={(value) => handleInputChange('application', value)}
-                onClear={() => handleInputChange('application', '')}
-                placeholder="Enter application name"
-                error={!!errors.application}
-              />
+              <div className="input-with-actions">
+                <input
+                  type="text"
+                  value={formData.application?.applicationName || ''}
+                  readOnly
+                  placeholder="โปรดเลือก Application"
+                  className="input-readonly"
+                />
+                <div className="input-action-buttons">
+                  <button
+                    type="button"
+                    className="action-btn select-btn"
+                    onClick={() => openModal('application')}
+                    disabled={!formData.systemName}
+                  >
+                    Select
+                  </button>
+                </div>
+              </div>
               {errors.application && (
                 <span className="error-message">{errors.application}</span>
               )}
             </div>
-            <div className="form-field full-width">
-              <label className="form-field-label">Environment</label>
-              <select
-                value={formData.environment}
-                onChange={(e) => handleInputChange('environment', e.target.value)}
-              >
-                <option value="">Select environment...</option>
-                {environmentOptions.map((option) => (
-                  <option key={option} value={option}>
-                    {option}
-                  </option>
-                ))}
-              </select>
+            <div className="form-field">
+              <label className="form-field-label">Contract No.</label>
+              <ClearableInput
+                value={formData.contractNo}
+                onChange={(value) => handleInputChange('contractNo', value)}
+                onClear={() => handleInputChange('contractNo', '')}
+                placeholder="Please enter Contract No."
+                maxLength={250}
+              />
+            </div>
+            <div className="form-field">
+              <label className="form-field-label">Repository URL</label>
+              <ClearableInput
+                value={formData.repositoryUrl}
+                onChange={(value) => handleInputChange('repositoryUrl', value)}
+                onClear={() => handleInputChange('repositoryUrl', '')}
+                placeholder="Please enter Repository URL"
+                maxLength={250}
+              />
+            </div>
+            <div className="form-field">
+              <label className="form-field-label">End of Life</label>
+              <ClearableInput
+                value={formData.endOfLife}
+                onChange={(value) => handleInputChange('endOfLife', value)}
+                onClear={() => handleInputChange('endOfLife', '')}
+                placeholder="Please enter End of Life"
+                maxLength={250}
+              />
+            </div>
+            <div className="form-field">
+              <label className="form-field-label">Application URL</label>
+              <ClearableInput
+                value={formData.applicationUrl}
+                onChange={(value) => handleInputChange('applicationUrl', value)}
+                onClear={() => handleInputChange('applicationUrl', '')}
+                placeholder="Please enter Application URL"
+                maxLength={250}
+              />
             </div>
           </div>
         </div>
@@ -916,7 +1018,7 @@ export function SoftwareRequestForm() {
         </div>
       </div>
 
-      <Modal activeModal={activeModal} onClose={closeModal} onConfirm={confirmSelection} />
+      <Modal activeModal={activeModal} onClose={closeModal} onConfirm={confirmSelection} systemId={formData.systemName?.id} />
     </div>
   );
 }
