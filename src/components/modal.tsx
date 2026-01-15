@@ -270,9 +270,9 @@ export const Modal: React.FC<ModalProps> = ({ activeModal, onClose, onConfirm, s
             <table className="modal-table">
               <thead>
                 <tr>
-                  <th>Select</th>
                   <th>Service Name</th>
                   <th>Support Group Name</th>
+                  <th>Select</th>
                 </tr>
               </thead>
               <tbody>
@@ -282,11 +282,11 @@ export const Modal: React.FC<ModalProps> = ({ activeModal, onClose, onConfirm, s
                     className={`modal-table-row ${selectedItem?.id === service.id ? 'selected' : ''}`}
                     onClick={() => handleSelectItem(service)}
                   >
+                    <td>{service.serviceName}</td>
+                    <td>{service.supportGroupName}</td>
                     <td>
                       <span className={`checkmark ${selectedItem?.id === service.id ? 'visible' : 'hidden'}`}>✓</span>
                     </td>
-                    <td>{service.serviceName}</td>
-                    <td>{service.supportGroupName}</td>
                   </tr>
                 ))}
               </tbody>
@@ -374,8 +374,8 @@ export const Modal: React.FC<ModalProps> = ({ activeModal, onClose, onConfirm, s
             <table className="modal-table">
               <thead>
                 <tr>
-                  <th>Select</th>
                   <th>Support Group Name</th>
+                  <th>Select</th>
                 </tr>
               </thead>
               <tbody>
@@ -385,12 +385,10 @@ export const Modal: React.FC<ModalProps> = ({ activeModal, onClose, onConfirm, s
                     className={`modal-table-row ${selectedItem?.id === group.id ? 'selected' : ''}`}
                     onClick={() => handleSelectItem(group)}
                   >
-                    <td>
-                      {selectedItem?.id === group.id && (
-                        <span className="checkmark">✓</span>
-                      )}
-                    </td>
                     <td>{group.supportGroupName}</td>
+                    <td>
+                      <span className={`checkmark ${selectedItem?.id === group.id ? 'visible' : 'hidden'}`}>✓</span>
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -478,9 +476,9 @@ export const Modal: React.FC<ModalProps> = ({ activeModal, onClose, onConfirm, s
             <table className="modal-table">
               <thead>
                 <tr>
-                  <th>Select</th>
                   <th>Type Name</th>
                   <th>Category</th>
+                  <th>Select</th>
                 </tr>
               </thead>
               <tbody>
@@ -490,13 +488,11 @@ export const Modal: React.FC<ModalProps> = ({ activeModal, onClose, onConfirm, s
                     className={`modal-table-row ${selectedItem?.id === type.id ? 'selected' : ''}`}
                     onClick={() => handleSelectItem(type)}
                   >
-                    <td>
-                      {selectedItem?.id === type.id && (
-                        <span className="checkmark">✓</span>
-                      )}
-                    </td>
                     <td>{type.typeName}</td>
                     <td>{type.category}</td>
+                    <td>
+                      <span className={`checkmark ${selectedItem?.id === type.id ? 'visible' : 'hidden'}`}>✓</span>
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -584,8 +580,8 @@ export const Modal: React.FC<ModalProps> = ({ activeModal, onClose, onConfirm, s
             <table className="modal-table">
               <thead>
                 <tr>
-                  <th>Select</th>
                   <th>Function Name</th>
+                  <th>Select</th>
                 </tr>
               </thead>
               <tbody>
@@ -595,12 +591,10 @@ export const Modal: React.FC<ModalProps> = ({ activeModal, onClose, onConfirm, s
                     className={`modal-table-row ${selectedItem?.id === func.id ? 'selected' : ''}`}
                     onClick={() => handleSelectItem(func)}
                   >
-                    <td>
-                      {selectedItem?.id === func.id && (
-                        <span className="checkmark">✓</span>
-                      )}
-                    </td>
                     <td>{func.functionName}</td>
+                    <td>
+                      <span className={`checkmark ${selectedItem?.id === func.id ? 'visible' : 'hidden'}`}>✓</span>
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -688,8 +682,8 @@ export const Modal: React.FC<ModalProps> = ({ activeModal, onClose, onConfirm, s
             <table className="modal-table">
               <thead>
                 <tr>
-                  <th>Select</th>
                   <th>Brand Name</th>
+                  <th>Select</th>
                 </tr>
               </thead>
               <tbody>
@@ -699,12 +693,10 @@ export const Modal: React.FC<ModalProps> = ({ activeModal, onClose, onConfirm, s
                     className={`modal-table-row ${selectedItem?.id === brand.id ? 'selected' : ''}`}
                     onClick={() => handleSelectItem(brand)}
                   >
-                    <td>
-                      {selectedItem?.id === brand.id && (
-                        <span className="checkmark">✓</span>
-                      )}
-                    </td>
                     <td>{brand.brandName}</td>
+                    <td>
+                      <span className={`checkmark ${selectedItem?.id === brand.id ? 'visible' : 'hidden'}`}>✓</span>
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -1004,9 +996,9 @@ export const Modal: React.FC<ModalProps> = ({ activeModal, onClose, onConfirm, s
             <table className="modal-table">
               <thead>
                 <tr>
-                  <th>Select</th>
                   <th>Location Name</th>
                   <th>Customer</th>
+                  <th>Select</th>
                 </tr>
               </thead>
               <tbody>
@@ -1016,13 +1008,11 @@ export const Modal: React.FC<ModalProps> = ({ activeModal, onClose, onConfirm, s
                     className={`modal-table-row ${selectedItem?.id === location.id ? 'selected' : ''}`}
                     onClick={() => handleSelectItem(location)}
                   >
-                    <td>
-                      {selectedItem?.id === location.id && (
-                        <span className="checkmark">✓</span>
-                      )}
-                    </td>
                     <td>{location.locationName}</td>
                     <td>{location.customerName}</td>
+                    <td>
+                      <span className={`checkmark ${selectedItem?.id === location.id ? 'visible' : 'hidden'}`}>✓</span>
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -1110,8 +1100,8 @@ export const Modal: React.FC<ModalProps> = ({ activeModal, onClose, onConfirm, s
             <table className="modal-table">
               <thead>
                 <tr>
-                  <th>Select</th>
                   <th>Customer Name</th>
+                  <th>Select</th>
                 </tr>
               </thead>
               <tbody>
@@ -1121,12 +1111,10 @@ export const Modal: React.FC<ModalProps> = ({ activeModal, onClose, onConfirm, s
                     className={`modal-table-row ${selectedItem?.id === customer.id ? 'selected' : ''}`}
                     onClick={() => handleSelectItem(customer)}
                   >
-                    <td>
-                      {selectedItem?.id === customer.id && (
-                        <span className="checkmark">✓</span>
-                      )}
-                    </td>
                     <td>{customer.customerName}</td>
+                    <td>
+                      <span className={`checkmark ${selectedItem?.id === customer.id ? 'visible' : 'hidden'}`}>✓</span>
+                    </td>
                   </tr>
                 ))}
               </tbody>
