@@ -1211,6 +1211,7 @@ export const Modal: React.FC<ModalProps> = ({ activeModal, onClose, onConfirm, s
             <table className="modal-table">
               <thead>
                 <tr>
+                  <th>Select</th>
                   <th>เลขที่โครงการขาย</th>
                   <th>Project Name</th>
                   <th>PO Number (Gosoft)</th>
@@ -1223,8 +1224,13 @@ export const Modal: React.FC<ModalProps> = ({ activeModal, onClose, onConfirm, s
                   <tr
                     key={project.id}
                     onClick={() => handleSelectItem(project)}
-                    className={selectedItem?.id === project.id ? 'selected-row' : ''}
+                    className={selectedItem?.id === project.id ? 'selected' : ''}
                   >
+                    <td>
+                      <div className={`checkmark ${selectedItem?.id === project.id ? 'visible' : 'hidden'}`}>
+                        ✓
+                      </div>
+                    </td>
                     <td>{project.projectSaleNumber}</td>
                     <td>{project.projectName}</td>
                     <td>{project.poNumberGosoft}</td>
@@ -1314,6 +1320,7 @@ export const Modal: React.FC<ModalProps> = ({ activeModal, onClose, onConfirm, s
             <table className="modal-table">
               <thead>
                 <tr>
+                  <th>Select</th>
                   <th>Code</th>
                   <th>Name</th>
                 </tr>
@@ -1323,8 +1330,13 @@ export const Modal: React.FC<ModalProps> = ({ activeModal, onClose, onConfirm, s
                   <tr
                     key={supplier.id}
                     onClick={() => handleSelectItem(supplier)}
-                    className={selectedItem?.id === supplier.id ? 'selected-row' : ''}
+                    className={selectedItem?.id === supplier.id ? 'selected' : ''}
                   >
+                    <td>
+                      <div className={`checkmark ${selectedItem?.id === supplier.id ? 'visible' : 'hidden'}`}>
+                        ✓
+                      </div>
+                    </td>
                     <td>{supplier.code}</td>
                     <td>{supplier.name}</td>
                   </tr>
@@ -1411,6 +1423,7 @@ export const Modal: React.FC<ModalProps> = ({ activeModal, onClose, onConfirm, s
             <table className="modal-table">
               <thead>
                 <tr>
+                  <th>Select</th>
                   <th>Service Name</th>
                   <th>Document Number</th>
                   <th>Status</th>
@@ -1421,8 +1434,13 @@ export const Modal: React.FC<ModalProps> = ({ activeModal, onClose, onConfirm, s
                   <tr
                     key={sr.id}
                     onClick={() => handleSelectItem(sr)}
-                    className={selectedItem?.id === sr.id ? 'selected-row' : ''}
+                    className={selectedItem?.id === sr.id ? 'selected' : ''}
                   >
+                    <td>
+                      <div className={`checkmark ${selectedItem?.id === sr.id ? 'visible' : 'hidden'}`}>
+                        ✓
+                      </div>
+                    </td>
                     <td>{sr.serviceName}</td>
                     <td>{sr.documentNumber}</td>
                     <td>{sr.status}</td>
