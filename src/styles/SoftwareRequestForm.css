@@ -501,10 +501,9 @@
   text-transform: uppercase;
   letter-spacing: 0.8px;
   border-bottom: inherit;
-  max-width: 120px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  max-width: 200px;
+  white-space: normal;
+  word-wrap: break-word;
 }
 
 .modal-table th:last-child {
@@ -542,10 +541,9 @@
   font-size: 13px;
   color: var(--gray-800);
   font-weight: 500;
-  max-width: 120px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  max-width: 200px;
+  white-space: normal;
+  word-wrap: break-word;
 }
 
 .modal-table td:last-child {
