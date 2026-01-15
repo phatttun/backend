@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Home as HomeIcon, Search, X } from 'lucide-react';
 import '../styles/SoftwareRequestForm.css';
 import { Modal, MOCK_TYPES, MOCK_FUNCTIONS, MOCK_BRANDS, MOCK_LOCATIONS, MOCK_CUSTOMERS } from './modal';
+import Parent_CI from './Parent_CI';
 
 // Clearable Input Component
 interface ClearableInputProps {
@@ -185,7 +186,6 @@ export function SoftwareRequestForm() {
     srNoReleaseManagementName: '',
     
     // Attachment / Remark
-    parentCis: '',
     attachUrl: '',
     attachFile: null as File | null,
     remark: ''
@@ -1265,13 +1265,7 @@ export function SoftwareRequestForm() {
           </h2>
           <div className="form-grid cols-2">
             <div className="form-field full-width">
-              <label className="form-field-label">Parent CIs / Relation</label>
-              <ClearableInput
-                value={formData.parentCis}
-                onChange={(value) => handleInputChange('parentCis', value)}
-                onClear={() => handleInputChange('parentCis', '')}
-                placeholder="Enter parent CIs or relation"
-              />
+              <Parent_CI currentCIId={formData.ciId} />
             </div>
             <div className="form-field full-width">
               <label className="form-field-label">Attach URL</label>
