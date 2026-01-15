@@ -1009,7 +1009,6 @@ export function SoftwareRequestForm() {
                     value="Yes"
                     checked={formData.pendingContinue === 'Yes'}
                     onChange={(e) => handleInputChange('pendingContinue', e.target.value)}
-                    disabled={formData.needContinueMA === 'No'}
                   />
                   <span>Yes</span>
                 </label>
@@ -1020,7 +1019,6 @@ export function SoftwareRequestForm() {
                     value="No"
                     checked={formData.pendingContinue === 'No'}
                     onChange={(e) => handleInputChange('pendingContinue', e.target.value)}
-                    disabled={formData.needContinueMA === 'No'}
                   />
                   <span>No</span>
                 </label>
@@ -1040,14 +1038,12 @@ export function SoftwareRequestForm() {
                   readOnly
                   placeholder="โปรดเลือก Project Name"
                   className="input-readonly"
-                  disabled={formData.needContinueMA === 'No'}
                 />
                 <div className="input-action-buttons">
                   <button
                     type="button"
                     className="action-btn select-btn"
                     onClick={() => openModal('project')}
-                    disabled={formData.needContinueMA === 'No'}
                   >
                     Select
                   </button>
@@ -1065,7 +1061,6 @@ export function SoftwareRequestForm() {
                 readOnly
                 className="input-readonly"
                 placeholder="Auto-populated"
-                disabled={formData.needContinueMA === 'No'}
               />
             </div>
             <div className="form-field">
@@ -1076,7 +1071,6 @@ export function SoftwareRequestForm() {
                 onClear={() => handleInputChange('poNumberCustomer', '')}
                 placeholder="Please enter PO Number (Customer)"
                 maxLength={20}
-                disabled={formData.needContinueMA === 'No'}
                 error={!!errors.poNumberCustomer}
               />
               {errors.poNumberCustomer && (
@@ -1091,7 +1085,6 @@ export function SoftwareRequestForm() {
                 onClear={() => handleInputChange('poNumberGosoft', '')}
                 placeholder="Please enter PO Number (Gosoft)"
                 maxLength={20}
-                disabled={formData.needContinueMA === 'No'}
                 error={!!errors.poNumberGosoft}
               />
               {errors.poNumberGosoft && (
@@ -1106,7 +1099,6 @@ export function SoftwareRequestForm() {
                 onClear={() => handleInputChange('maPoNumberCustomer', '')}
                 placeholder="Please enter MA PO Number (Customer)"
                 maxLength={20}
-                disabled={formData.needContinueMA === 'No'}
                 error={!!errors.maPoNumberCustomer}
               />
               {errors.maPoNumberCustomer && (
@@ -1121,7 +1113,6 @@ export function SoftwareRequestForm() {
                 onClear={() => handleInputChange('maPoNumberGosoft', '')}
                 placeholder="Please enter MA PO Number (Gosoft)"
                 maxLength={20}
-                disabled={formData.needContinueMA === 'No'}
                 error={!!errors.maPoNumberGosoft}
               />
               {errors.maPoNumberGosoft && (
@@ -1137,14 +1128,12 @@ export function SoftwareRequestForm() {
                   readOnly
                   placeholder="โปรดเลือก Supplier"
                   className="input-readonly"
-                  disabled={formData.needContinueMA === 'No'}
                 />
                 <div className="input-action-buttons">
                   <button
                     type="button"
                     className="action-btn select-btn"
                     onClick={() => openModal('supplier')}
-                    disabled={formData.needContinueMA === 'No'}
                   >
                     Select
                   </button>
@@ -1157,7 +1146,6 @@ export function SoftwareRequestForm() {
                 type="date"
                 value={formData.buyDate}
                 onChange={(e) => handleInputChange('buyDate', e.target.value)}
-                disabled={formData.needContinueMA === 'No'}
               />
             </div>
             <div className="form-field">
@@ -1166,7 +1154,6 @@ export function SoftwareRequestForm() {
                 type="date"
                 value={formData.warrantyStartDate}
                 onChange={(e) => handleInputChange('warrantyStartDate', e.target.value)}
-                disabled={formData.needContinueMA === 'No'}
               />
             </div>
             <div className="form-field">
@@ -1175,7 +1162,6 @@ export function SoftwareRequestForm() {
                 type="date"
                 value={formData.warrantyEndDate}
                 onChange={(e) => handleInputChange('warrantyEndDate', e.target.value)}
-                disabled={formData.needContinueMA === 'No'}
               />
             </div>
             <div className="form-field">
@@ -1186,7 +1172,6 @@ export function SoftwareRequestForm() {
                 type="date"
                 value={formData.maStartDate}
                 onChange={(e) => handleInputChange('maStartDate', e.target.value)}
-                disabled={formData.needContinueMA === 'No'}
                 className={errors.maStartDate ? 'input-error' : ''}
               />
               {errors.maStartDate && (
@@ -1201,7 +1186,6 @@ export function SoftwareRequestForm() {
                 type="date"
                 value={formData.maEndDate}
                 onChange={(e) => handleInputChange('maEndDate', e.target.value)}
-                disabled={formData.needContinueMA === 'No'}
                 className={errors.maEndDate ? 'input-error' : ''}
               />
               {errors.maEndDate && (
@@ -1213,7 +1197,6 @@ export function SoftwareRequestForm() {
               <select
                 value={formData.maType}
                 onChange={(e) => handleInputChange('maType', e.target.value)}
-                disabled={formData.needContinueMA === 'No'}
                 className="form-field-select"
               >
                 <option value="">Select MA Type</option>
@@ -1230,14 +1213,12 @@ export function SoftwareRequestForm() {
                   readOnly
                   placeholder="โปรดเลือก Extend Supplier"
                   className="input-readonly"
-                  disabled={formData.needContinueMA === 'No'}
                 />
                 <div className="input-action-buttons">
                   <button
                     type="button"
                     className="action-btn select-btn"
                     onClick={() => openModal('extendSupplier')}
-                    disabled={formData.needContinueMA === 'No'}
                   >
                     Select
                   </button>
@@ -1250,7 +1231,6 @@ export function SoftwareRequestForm() {
                 type="date"
                 value={formData.decommissionDate}
                 onChange={(e) => handleInputChange('decommissionDate', e.target.value)}
-                disabled={formData.needContinueMA === 'No'}
               />
             </div>
             <div className="form-field">
@@ -1262,14 +1242,12 @@ export function SoftwareRequestForm() {
                   readOnly
                   placeholder="โปรดเลือก SR No./Release Management"
                   className="input-readonly"
-                  disabled={formData.needContinueMA === 'No'}
                 />
                 <div className="input-action-buttons">
                   <button
                     type="button"
                     className="action-btn select-btn"
                     onClick={() => openModal('srRelease')}
-                    disabled={formData.needContinueMA === 'No'}
                   >
                     Select
                   </button>
