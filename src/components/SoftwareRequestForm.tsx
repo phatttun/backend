@@ -543,9 +543,6 @@ export function SoftwareRequestForm() {
                   maxLength={250}
                   error={!!errors.ciName}
                 />
-                {formData.ciName && (
-                  <span className="char-counter">{formData.ciName.length}/250</span>
-                )}
               </div>
               {errors.ciName && (
                 <span className="error-message">{errors.ciName}</span>
@@ -1285,9 +1282,6 @@ export function SoftwareRequestForm() {
                   maxLength={500}
                   placeholder="Enter any additional remarks..."
                 />
-                {formData.remark && (
-                  <span className="char-counter">{formData.remark.length}/500</span>
-                )}
               </div>
             </div>
           </div>
