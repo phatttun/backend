@@ -187,7 +187,7 @@ export function SoftwareRequestForm() {
     srNoReleaseManagement: '',
     srNoReleaseManagementName: '',
     
-    // Attachment / Remark
+    // Remark
     remark: ''
   });
 
@@ -1245,21 +1245,30 @@ export function SoftwareRequestForm() {
           </div>
         </div>
 
-        {/* Attachment / Remark Section */}
+        {/* Parent CIs / Relations Section */}
         <div className="form-section">
-          <h2 className="form-section-header">
-            <span className="section-icon">📎</span> Attachment & Remark
-          </h2>
-          <div className="form-grid cols-2">
+          <div className="form-grid cols-1">
             <div className="form-field full-width">
               <Parent_CI currentCIId={formData.ciId} />
             </div>
+          </div>
+        </div>
+
+        {/* Attachments Section */}
+        <div className="form-section">
+          <div className="form-grid cols-2">
             <div className="form-field full-width">
               <Attach_URL />
             </div>
             <div className="form-field full-width">
               <Attach_File />
             </div>
+          </div>
+        </div>
+
+        {/* Remark Section */}
+        <div className="form-section">
+          <div className="form-grid cols-1">
             <div className="form-field full-width">
               <label className="form-field-label">Remark</label>
               <ClearableTextarea
