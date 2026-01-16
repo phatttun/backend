@@ -61,6 +61,7 @@ interface ClearableTextareaProps {
   rows?: number;
   disabled?: boolean;
   error?: boolean;
+  maxLength?: number;
 }
 
 const ClearableTextarea: React.FC<ClearableTextareaProps> = ({
@@ -70,7 +71,8 @@ const ClearableTextarea: React.FC<ClearableTextareaProps> = ({
   placeholder,
   rows = 4,
   disabled = false,
-  error = false
+  error = false,
+  maxLength
 }) => (
   <div className="clearable-textarea-wrapper">
     <textarea
@@ -79,6 +81,7 @@ const ClearableTextarea: React.FC<ClearableTextareaProps> = ({
       placeholder={placeholder}
       rows={rows}
       disabled={disabled}
+      maxLength={maxLength}
       className={`clearable-textarea ${error ? 'input-error' : ''}`}
     />
     {value && (
@@ -540,7 +543,9 @@ export function SoftwareRequestForm() {
                   maxLength={250}
                   error={!!errors.ciName}
                 />
-                <span className="char-counter">{formData.ciName.length}/250</span>
+                {formData.ciName && (
+                  <span className="char-counter">{formData.ciName.length}/250</span>
+                )}
               </div>
               {errors.ciName && (
                 <span className="error-message">{errors.ciName}</span>
@@ -1271,13 +1276,19 @@ export function SoftwareRequestForm() {
           <div className="form-grid cols-1">
             <div className="form-field full-width">
               <label className="form-field-label">Remark</label>
-              <ClearableTextarea
-                value={formData.remark}
-                onChange={(value) => handleInputChange('remark', value)}
-                onClear={() => handleInputChange('remark', '')}
-                rows={4}
-                placeholder="Enter any additional remarks..."
-              />
+              <div className="field-with-counter">
+                <ClearableTextarea
+                  value={formData.remark}
+                  onChange={(value) => handleInputChange('remark', value.slice(0, 500))}
+                  onClear={() => handleInputChange('remark', '')}
+                  rows={4}
+                  maxLength={500}
+                  placeholder="Enter any additional remarks..."
+                />
+                {formData.remark && (
+                  <span className="char-counter">{formData.remark.length}/500</span>
+                )}
+              </div>
             </div>
           </div>
         </div>
