@@ -3,6 +3,7 @@ import { Home as HomeIcon, Search, X } from 'lucide-react';
 import '../styles/SoftwareRequestForm.css';
 import { Modal, MOCK_TYPES, MOCK_FUNCTIONS, MOCK_BRANDS, MOCK_LOCATIONS, MOCK_CUSTOMERS } from './modal';
 import Parent_CI from './Parent_CI';
+import Attach_URL from './Attach_URL';
 
 // Clearable Input Component
 interface ClearableInputProps {
@@ -186,7 +187,6 @@ export function SoftwareRequestForm() {
     srNoReleaseManagementName: '',
     
     // Attachment / Remark
-    attachUrl: '',
     attachFile: null as File | null,
     remark: ''
   });
@@ -1268,14 +1268,7 @@ export function SoftwareRequestForm() {
               <Parent_CI currentCIId={formData.ciId} />
             </div>
             <div className="form-field full-width">
-              <label className="form-field-label">Attach URL</label>
-              <ClearableInput
-                value={formData.attachUrl}
-                onChange={(value) => handleInputChange('attachUrl', value)}
-                onClear={() => handleInputChange('attachUrl', '')}
-                placeholder="https://example.com/document"
-                type="url"
-              />
+              <Attach_URL />
             </div>
             <div className="form-field full-width">
               <label className="form-field-label">Attach File</label>
