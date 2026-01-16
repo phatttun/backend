@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import ReactDOM from 'react-dom';
 import { Search, X, Plus, Trash2 } from 'lucide-react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from './ui/accordion';
 import '../styles/SoftwareRequestForm.css';
@@ -26,6 +27,20 @@ const Attach_URL: React.FC<AttachURLProps> = () => {
     url: ''
   });
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
+
+  // Prevent body scroll when modal is open
+  useEffect(() => {
+    if (showModal) {
+      document.body.classList.add('modal-open');
+    } else {
+      document.body.classList.remove('modal-open');
+    }
+
+    // Cleanup on unmount
+    return () => {
+      document.body.classList.remove('modal-open');
+    };
+  }, [showModal]);
 
   // Filter attach URLs based on search query
   const filteredAttachURLs = attachURLs.filter(item =>
@@ -159,7 +174,7 @@ const Attach_URL: React.FC<AttachURLProps> = () => {
 
   return (
     <div className="attach-url-section">
-      <Accordion type="single" collapsible className="w-full">
+      <Accordion type="single" collapsible className="w-full" defaultValue="attach-url">
         <AccordionItem value="attach-url">
           <AccordionTrigger className="accordion-trigger">
             <div className="section-header">
@@ -243,7 +258,7 @@ const Attach_URL: React.FC<AttachURLProps> = () => {
         </AccordionItem>
       </Accordion>
 
-      {showModal && <AddAttachURLModal />}
+      {showModal && ReactDOM.createPortal(<AddAttachURLModal />, document.body)}
     </div>
   );
 };

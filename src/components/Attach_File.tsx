@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import ReactDOM from 'react-dom';
 import { Search, X, Plus, Trash2, FileText } from 'lucide-react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from './ui/accordion';
 import '../styles/SoftwareRequestForm.css';
@@ -30,6 +31,20 @@ const Attach_File: React.FC<AttachFileProps> = () => {
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
 
   const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+
+  // Prevent body scroll when modal is open
+  useEffect(() => {
+    if (showModal) {
+      document.body.classList.add('modal-open');
+    } else {
+      document.body.classList.remove('modal-open');
+    }
+
+    // Cleanup on unmount
+    return () => {
+      document.body.classList.remove('modal-open');
+    };
+  }, [showModal]);
 
   // Filter attach files based on search query
   const filteredAttachFiles = attachFiles.filter(item =>
@@ -190,7 +205,7 @@ const Attach_File: React.FC<AttachFileProps> = () => {
 
   return (
     <div className="attach-file-section">
-      <Accordion type="single" collapsible className="w-full">
+      <Accordion type="single" collapsible className="w-full" defaultValue="attach-file">
         <AccordionItem value="attach-file">
           <AccordionTrigger className="accordion-trigger">
             <div className="section-header">
@@ -275,7 +290,7 @@ const Attach_File: React.FC<AttachFileProps> = () => {
         </AccordionItem>
       </Accordion>
 
-      {showModal && <AddAttachFileModal />}
+      {showModal && ReactDOM.createPortal(<AddAttachFileModal />, document.body)}
     </div>
   );
 };

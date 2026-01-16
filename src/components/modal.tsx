@@ -420,7 +420,6 @@ export const Modal: React.FC<ModalProps> = ({ activeModal, onClose, onConfirm, s
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedItem, setSelectedItem] = useState<any>(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const [isFirstOpen, setIsFirstOpen] = useState(true);
   const itemsPerPage = 5;
 
   // Helper function to filter data based on search
@@ -461,12 +460,10 @@ export const Modal: React.FC<ModalProps> = ({ activeModal, onClose, onConfirm, s
     onClose();
     setSearchQuery('');
     setSelectedItem(null);
-    setIsFirstOpen(true);
   };
 
   const handlePageChange = (newPage: number) => {
     setCurrentPage(newPage);
-    setIsFirstOpen(false);
   };
 
   // MODAL COMPONENT: Service Selector
@@ -476,8 +473,8 @@ export const Modal: React.FC<ModalProps> = ({ activeModal, onClose, onConfirm, s
     const totalPages = getTotalPages(filteredServices);
 
     return (
-      <div className={`modal-overlay ${!isFirstOpen ? 'no-animate' : ''}`} onClick={closeModal}>
-        <div className={`modal-content modal-large ${!isFirstOpen ? 'no-animate' : ''}`} onClick={e => e.stopPropagation()}>
+      <div className="modal-overlay" onClick={closeModal}>
+        <div className="modal-content modal-large" onClick={e => e.stopPropagation()}>
           <div className="modal-header">
             <h2>Select Service</h2>
             <button className="modal-close-btn" onClick={closeModal}>
@@ -580,8 +577,8 @@ export const Modal: React.FC<ModalProps> = ({ activeModal, onClose, onConfirm, s
     const totalPages = getTotalPages(filteredGroups);
 
     return (
-      <div className={`modal-overlay ${!isFirstOpen ? 'no-animate' : ''}`} onClick={closeModal}>
-        <div className={`modal-content modal-medium ${!isFirstOpen ? 'no-animate' : ''}`} onClick={e => e.stopPropagation()}>
+      <div className="modal-overlay" onClick={closeModal}>
+        <div className="modal-content modal-medium" onClick={e => e.stopPropagation()}>
           <div className="modal-header">
             <h2>Select Support Group</h2>
             <button className="modal-close-btn" onClick={closeModal}>
@@ -682,8 +679,8 @@ export const Modal: React.FC<ModalProps> = ({ activeModal, onClose, onConfirm, s
     const totalPages = getTotalPages(filteredTypes);
 
     return (
-      <div className={`modal-overlay ${!isFirstOpen ? 'no-animate' : ''}`} onClick={closeModal}>
-        <div className={`modal-content modal-medium ${!isFirstOpen ? 'no-animate' : ''}`} onClick={e => e.stopPropagation()}>
+      <div className="modal-overlay" onClick={closeModal}>
+        <div className="modal-content modal-medium" onClick={e => e.stopPropagation()}>
           <div className="modal-header">
             <h2>Select Type</h2>
             <button className="modal-close-btn" onClick={closeModal}>
@@ -786,8 +783,8 @@ export const Modal: React.FC<ModalProps> = ({ activeModal, onClose, onConfirm, s
     const totalPages = getTotalPages(filteredFunctions);
 
     return (
-      <div className={`modal-overlay ${!isFirstOpen ? 'no-animate' : ''}`} onClick={closeModal}>
-        <div className={`modal-content modal-medium ${!isFirstOpen ? 'no-animate' : ''}`} onClick={e => e.stopPropagation()}>
+      <div className="modal-overlay" onClick={closeModal}>
+        <div className="modal-content modal-medium" onClick={e => e.stopPropagation()}>
           <div className="modal-header">
             <h2>Select Function</h2>
             <button className="modal-close-btn" onClick={closeModal}>
@@ -888,8 +885,8 @@ export const Modal: React.FC<ModalProps> = ({ activeModal, onClose, onConfirm, s
     const totalPages = getTotalPages(filteredBrands);
 
     return (
-      <div className={`modal-overlay ${!isFirstOpen ? 'no-animate' : ''}`} onClick={closeModal}>
-        <div className={`modal-content modal-medium ${!isFirstOpen ? 'no-animate' : ''}`} onClick={e => e.stopPropagation()}>
+      <div className="modal-overlay" onClick={closeModal}>
+        <div className="modal-content modal-medium" onClick={e => e.stopPropagation()}>
           <div className="modal-header">
             <h2>Select Brand</h2>
             <button className="modal-close-btn" onClick={closeModal}>
@@ -991,8 +988,8 @@ export const Modal: React.FC<ModalProps> = ({ activeModal, onClose, onConfirm, s
     const totalPages = getTotalPages(filteredSystems);
 
     return (
-      <div className={`modal-overlay ${!isFirstOpen ? 'no-animate' : ''}`} onClick={closeModal}>
-        <div className={`modal-content modal-medium ${!isFirstOpen ? 'no-animate' : ''}`} onClick={e => e.stopPropagation()}>
+      <div className="modal-overlay" onClick={closeModal}>
+        <div className="modal-content modal-medium" onClick={e => e.stopPropagation()}>
           <div className="modal-header">
             <h2>Select System Name</h2>
             <button className="modal-close-btn" onClick={closeModal}>
@@ -1108,8 +1105,8 @@ export const Modal: React.FC<ModalProps> = ({ activeModal, onClose, onConfirm, s
     const totalPages = getTotalPages(filteredApplications);
 
     return (
-      <div className={`modal-overlay ${!isFirstOpen ? 'no-animate' : ''}`} onClick={closeModal}>
-        <div className={`modal-content modal-medium ${!isFirstOpen ? 'no-animate' : ''}`} onClick={e => e.stopPropagation()}>
+      <div className="modal-overlay" onClick={closeModal}>
+        <div className="modal-content modal-medium" onClick={e => e.stopPropagation()}>
           <div className="modal-header">
             <h2>Select Application</h2>
             <button className="modal-close-btn" onClick={closeModal}>
@@ -1223,8 +1220,8 @@ export const Modal: React.FC<ModalProps> = ({ activeModal, onClose, onConfirm, s
     const totalPages = getTotalPages(filteredLocations);
 
     return (
-      <div className={`modal-overlay ${!isFirstOpen ? 'no-animate' : ''}`} onClick={closeModal}>
-        <div className={`modal-content modal-medium ${!isFirstOpen ? 'no-animate' : ''}`} onClick={e => e.stopPropagation()}>
+      <div className="modal-overlay" onClick={closeModal}>
+        <div className="modal-content modal-medium" onClick={e => e.stopPropagation()}>
           <div className="modal-header">
             <h2>Select Location</h2>
             <button className="modal-close-btn" onClick={closeModal}>
@@ -1327,8 +1324,8 @@ export const Modal: React.FC<ModalProps> = ({ activeModal, onClose, onConfirm, s
     const totalPages = getTotalPages(filteredCustomers);
 
     return (
-      <div className={`modal-overlay ${!isFirstOpen ? 'no-animate' : ''}`} onClick={closeModal}>
-        <div className={`modal-content modal-medium ${!isFirstOpen ? 'no-animate' : ''}`} onClick={e => e.stopPropagation()}>
+      <div className="modal-overlay" onClick={closeModal}>
+        <div className="modal-content modal-medium" onClick={e => e.stopPropagation()}>
           <div className="modal-header">
             <h2>Select Customer</h2>
             <button className="modal-close-btn" onClick={closeModal}>
@@ -1429,8 +1426,8 @@ export const Modal: React.FC<ModalProps> = ({ activeModal, onClose, onConfirm, s
     const totalPages = getTotalPages(filteredProjects);
 
     return (
-      <div className={`modal-overlay ${!isFirstOpen ? 'no-animate' : ''}`} onClick={closeModal}>
-        <div className={`modal-content modal-large ${!isFirstOpen ? 'no-animate' : ''}`} onClick={e => e.stopPropagation()}>
+      <div className="modal-overlay" onClick={closeModal}>
+        <div className="modal-content modal-large" onClick={e => e.stopPropagation()}>
           <div className="modal-header">
             <h2>Select Project</h2>
             <button className="modal-close-btn" onClick={closeModal}>
@@ -1538,8 +1535,8 @@ export const Modal: React.FC<ModalProps> = ({ activeModal, onClose, onConfirm, s
     const totalPages = getTotalPages(filteredSuppliers);
 
     return (
-      <div className={`modal-overlay ${!isFirstOpen ? 'no-animate' : ''}`} onClick={closeModal}>
-        <div className={`modal-content modal-medium ${!isFirstOpen ? 'no-animate' : ''}`} onClick={e => e.stopPropagation()}>
+      <div className="modal-overlay" onClick={closeModal}>
+        <div className="modal-content modal-medium" onClick={e => e.stopPropagation()}>
           <div className="modal-header">
             <h2>Select Supplier</h2>
             <button className="modal-close-btn" onClick={closeModal}>
@@ -1641,8 +1638,8 @@ export const Modal: React.FC<ModalProps> = ({ activeModal, onClose, onConfirm, s
     const totalPages = getTotalPages(filteredSRReleases);
 
     return (
-      <div className={`modal-overlay ${!isFirstOpen ? 'no-animate' : ''}`} onClick={closeModal}>
-        <div className={`modal-content modal-medium ${!isFirstOpen ? 'no-animate' : ''}`} onClick={e => e.stopPropagation()}>
+      <div className="modal-overlay" onClick={closeModal}>
+        <div className="modal-content modal-medium" onClick={e => e.stopPropagation()}>
           <div className="modal-header">
             <h2>Select SR No. / Release Management</h2>
             <button className="modal-close-btn" onClick={closeModal}>
@@ -1772,3 +1769,6 @@ export const Modal: React.FC<ModalProps> = ({ activeModal, onClose, onConfirm, s
       return null;
   }
 };
+
+
+

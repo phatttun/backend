@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import ReactDOM from 'react-dom';
 import { Search, X, Plus, Trash2 } from 'lucide-react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from './ui/accordion';
 import '../styles/SoftwareRequestForm.css';
@@ -45,6 +46,20 @@ const ParentCI: React.FC<ParentCIProps> = ({ currentCIId }) => {
   const [selectedCIs, setSelectedCIs] = useState<Set<string>>(new Set());
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 8;
+
+  // Prevent body scroll when modal is open
+  useEffect(() => {
+    if (showModal) {
+      document.body.classList.add('modal-open');
+    } else {
+      document.body.classList.remove('modal-open');
+    }
+
+    // Cleanup on unmount
+    return () => {
+      document.body.classList.remove('modal-open');
+    };
+  }, [showModal]);
 
   // Filter parent CIs based on search query
   const filteredParentCIs = parentCIs.filter(ci =>
@@ -193,7 +208,7 @@ const ParentCI: React.FC<ParentCIProps> = ({ currentCIId }) => {
 
   return (
     <div className="parent-ci-section">
-      <Accordion type="single" collapsible className="w-full">
+      <Accordion type="single" collapsible className="w-full" defaultValue="parent-ci">
         <AccordionItem value="parent-ci">
           <AccordionTrigger className="accordion-trigger">
             <div className="section-header">
@@ -264,7 +279,7 @@ const ParentCI: React.FC<ParentCIProps> = ({ currentCIId }) => {
         </AccordionItem>
       </Accordion>
 
-      {showModal && <SelectParentCIModal />}
+      {showModal && ReactDOM.createPortal(<SelectParentCIModal />, document.body)}
     </div>
   );
 };
