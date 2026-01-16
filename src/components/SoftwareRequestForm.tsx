@@ -4,6 +4,7 @@ import '../styles/SoftwareRequestForm.css';
 import { Modal, MOCK_TYPES, MOCK_FUNCTIONS, MOCK_BRANDS, MOCK_LOCATIONS, MOCK_CUSTOMERS } from './modal';
 import Parent_CI from './Parent_CI';
 import Attach_URL from './Attach_URL';
+import Attach_File from './Attach_File';
 
 // Clearable Input Component
 interface ClearableInputProps {
@@ -187,7 +188,6 @@ export function SoftwareRequestForm() {
     srNoReleaseManagementName: '',
     
     // Attachment / Remark
-    attachFile: null as File | null,
     remark: ''
   });
 
@@ -319,19 +319,6 @@ export function SoftwareRequestForm() {
     // Clear error when user starts typing
     if (errors[field]) {
       setErrors(prev => ({ ...prev, [field]: '' }));
-    }
-  };
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      const file = e.target.files[0];
-      // Simple file size validation (5MB max)
-      if (file.size > 5 * 1024 * 1024) {
-        setErrors(prev => ({ ...prev, attachFile: 'File size must be less than 5MB' }));
-        return;
-      }
-      setFormData(prev => ({ ...prev, attachFile: file }));
-      setErrors(prev => ({ ...prev, attachFile: '' }));
     }
   };
 
@@ -1271,27 +1258,7 @@ export function SoftwareRequestForm() {
               <Attach_URL />
             </div>
             <div className="form-field full-width">
-              <label className="form-field-label">Attach File</label>
-              <div className="file-input-wrapper">
-                <input
-                  type="file"
-                  id="attachFile"
-                  onChange={handleFileChange}
-                  className="file-input"
-                  accept=".pdf,.doc,.docx,.xls,.xlsx,.txt"
-                />
-                <label htmlFor="attachFile" className="file-input-label">
-                  Choose File
-                </label>
-              </div>
-              {formData.attachFile && (
-                <p className="file-selected-text">
-                  {formData.attachFile.name}
-                </p>
-              )}
-              {errors.attachFile && (
-                <span className="error-message">{errors.attachFile}</span>
-              )}
+              <Attach_File />
             </div>
             <div className="form-field full-width">
               <label className="form-field-label">Remark</label>
