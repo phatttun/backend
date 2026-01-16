@@ -1983,48 +1983,25 @@
   position: fixed;
   top: 0;
   left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(15, 23, 42, 0.8);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.45);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 1050;
-  will-change: opacity;
-  backface-visibility: hidden;
-  perspective: 1000px;
-  opacity: 1;
-  animation: fadeIn 0.3s ease-out;
-}
-
-.file-modal-overlay::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.1);
-  pointer-events: none;
+  pointer-events: auto;
 }
 
 .file-modal-content {
+  position: relative;
   background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
   border-radius: 24px;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(226, 232, 240, 0.6);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(226, 232, 240, 0.6);
   display: flex;
   flex-direction: column;
   max-height: 80vh;
   overflow: hidden;
-  will-change: transform, opacity;
-  backface-visibility: hidden;
-  perspective: 1000px;
-  transform: translateZ(0);
-  opacity: 1;
-  animation: slideUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-  position: relative;
   z-index: 1051;
 }
 

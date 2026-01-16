@@ -135,74 +135,6 @@ const Attach_File: React.FC<AttachFileProps> = () => {
     URL.revokeObjectURL(url);
   };
 
-  // Modal component
-  const AddAttachFileModal = () => (
-    <div className="modal-overlay file-modal-overlay" onClick={() => setShowModal(false)}>
-      <div className="modal-content modal-medium file-modal-content" onClick={e => e.stopPropagation()}>
-        <div className="modal-header">
-          <h2>Add Attach File</h2>
-          <button className="modal-close-btn" onClick={() => setShowModal(false)}>
-            <X size={20} />
-          </button>
-        </div>
-
-        <div className="modal-body">
-          <div className="form-field">
-            <label className="form-field-label">Description</label>
-            <input
-              type="text"
-              value={formData.description}
-              onChange={(e) => handleInputChange('description', e.target.value)}
-              placeholder="Please enter Description"
-              className="clearable-input"
-            />
-          </div>
-
-          <div className="form-field">
-            <label className="form-field-label">Attach File <span className="required">*</span></label>
-            <div className="file-input-wrapper">
-              <input
-                id="file-input"
-                type="file"
-                onChange={handleFileChange}
-                className="file-input"
-                accept="*/*"
-              />
-              <label htmlFor="file-input" className="file-input-label">
-                <FileText size={16} />
-                Choose File
-              </label>
-              {formData.file && (
-                <div className="file-info">
-                  <span className="file-name">{formData.file.name}</span>
-                  <span className="file-size">({formatFileSize(formData.file.size)})</span>
-                </div>
-              )}
-            </div>
-            {formErrors.file && (
-              <span className="error-message">{formErrors.file}</span>
-            )}
-          </div>
-        </div>
-
-        <div className="modal-footer">
-          <button
-            className="btn-secondary"
-            onClick={() => setShowModal(false)}
-          >
-            Cancel
-          </button>
-          <button
-            className="btn-primary"
-            onClick={handleAddAttachFile}
-          >
-            Confirm
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-
   return (
     <div className="attach-file-section">
       <Accordion type="single" collapsible className="w-full" defaultValue="attach-file">
@@ -290,7 +222,73 @@ const Attach_File: React.FC<AttachFileProps> = () => {
         </AccordionItem>
       </Accordion>
 
-      {showModal && ReactDOM.createPortal(<AddAttachFileModal />, document.body)}
+      {showModal && ReactDOM.createPortal(
+        <div className="modal-overlay file-modal-overlay" onClick={() => setShowModal(false)}>
+          <div className="modal-content modal-medium file-modal-content" onClick={e => e.stopPropagation()}>
+            <div className="modal-header">
+              <h2>Add Attach File</h2>
+              <button className="modal-close-btn" onClick={() => setShowModal(false)}>
+                <X size={20} />
+              </button>
+            </div>
+
+            <div className="modal-body">
+              <div className="form-field">
+                <label className="form-field-label">Description</label>
+                <input
+                  type="text"
+                  value={formData.description}
+                  onChange={(e) => handleInputChange('description', e.target.value)}
+                  placeholder="Please enter Description"
+                  className="clearable-input"
+                />
+              </div>
+
+              <div className="form-field">
+                <label className="form-field-label">Attach File <span className="required">*</span></label>
+                <div className="file-input-wrapper">
+                  <input
+                    id="file-input"
+                    type="file"
+                    onChange={handleFileChange}
+                    className="file-input"
+                    accept="*/*"
+                  />
+                  <label htmlFor="file-input" className="file-input-label">
+                    <FileText size={16} />
+                    Choose File
+                  </label>
+                  {formData.file && (
+                    <div className="file-info">
+                      <span className="file-name">{formData.file.name}</span>
+                      <span className="file-size">({formatFileSize(formData.file.size)})</span>
+                    </div>
+                  )}
+                </div>
+                {formErrors.file && (
+                  <span className="error-message">{formErrors.file}</span>
+                )}
+              </div>
+            </div>
+
+            <div className="modal-footer">
+              <button
+                className="btn-secondary"
+                onClick={() => setShowModal(false)}
+              >
+                Cancel
+              </button>
+              <button
+                className="btn-primary"
+                onClick={handleAddAttachFile}
+              >
+                Confirm
+              </button>
+            </div>
+          </div>
+        </div>,
+        document.body
+      )}
     </div>
   );
 };
