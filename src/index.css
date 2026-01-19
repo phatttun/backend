@@ -261,6 +261,8 @@
     transition: var(--transition);
     cursor: pointer;
     accent-color: var(--primary);
+    outline: none !important;
+    box-shadow: none !important;
   }
 
   input[type="radio"]:hover,
@@ -268,10 +270,13 @@
     transform: scale(1.05);
   }
 
+  /* Removed focus outline for radio/checkbox to prevent blue ring */
   input[type="radio"]:focus,
-  input[type="checkbox"]:focus {
-    outline: 2px solid var(--primary);
-    outline-offset: 2px;
+  input[type="radio"]:focus-visible,
+  input[type="checkbox"]:focus,
+  input[type="checkbox"]:focus-visible {
+    outline: none !important;
+    box-shadow: none !important;
   }
 }
 
@@ -555,6 +560,14 @@
   *:focus-visible {
     outline: 2px solid var(--ring);
     outline-offset: 2px;
+  }
+
+  /* Remove focus-visible outline specifically for radio and checkbox */
+  input[type="radio"]:focus-visible,
+  input[type="checkbox"]:focus-visible {
+    outline: none !important;
+    outline-offset: 0 !important;
+    box-shadow: none !important;
   }
 
   button:focus-visible,
