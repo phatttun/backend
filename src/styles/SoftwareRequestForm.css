@@ -1,8 +1,11 @@
 /* ===================================
    CLEARABLE INPUT & TEXTAREA STYLES
    =================================== */
+/* ส่วนนี้ใช้จัดแต่งขอ้ความขาด (input) และพื้นที่ขอ้ความ (textarea) 
+   ที่มีปุ่มปิด (clear button) เพื่อให้ผู้ใช้สามารถลบขอ้ความไดง่าย */
 
 /* Clearable Input Wrapper */
+/* ตัวห่อหุ้มของ input ที่สามารถลบขอ้ความไดต */
 .clearable-input-wrapper {
   position: relative;
   display: flex;
@@ -11,9 +14,9 @@
 }
 
 .clearable-input {
-  padding: 14px 44px 14px 16px;
-  border: 2px solid var(--gray-300);
-  border-radius: 10px;
+  padding: 0 50px 0 16px;
+  border: 1px solid #d9d9d9;
+  border-radius: 8px;
   font-size: 15px;
   font-weight: 500;
   color: var(--gray-900);
@@ -22,6 +25,9 @@
   font-family: inherit;
   width: 100%;
   box-sizing: border-box;
+  height: 40px;
+  display: flex;
+  align-items: center;
 }
 
 .clearable-input:hover:not(:disabled):not(:focus) {
@@ -62,19 +68,21 @@
 /* Clear Button */
 .clear-btn {
   position: absolute;
-  right: 12px;
+  right: 2px;
+  top: 50%;
+  transform: translateY(-50%);
   background: none;
   border: none;
   cursor: pointer;
-  padding: 8px;
+  padding: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
   color: var(--gray-400);
   transition: all var(--transition-base);
   border-radius: 8px;
-  width: 32px;
-  height: 32px;
+  width: 44px;
+  height: 44px;
   flex-shrink: 0;
 }
 
@@ -98,7 +106,7 @@
 }
 
 .clearable-textarea {
-  padding: 14px 44px 14px 16px;
+  padding: 14px 50px 14px 16px;
   border: 2px solid var(--gray-300);
   border-radius: 10px;
   font-size: 15px;
@@ -152,20 +160,20 @@
 /* Clear Button for Textarea */
 .clear-btn-textarea {
   position: absolute;
-  right: 12px;
-  top: 12px;
+  right: 8px;
+  top: 8px;
   background: none;
   border: none;
   cursor: pointer;
-  padding: 8px;
+  padding: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
   color: var(--gray-400);
   transition: all var(--transition-base);
   border-radius: 8px;
-  width: 32px;
-  height: 32px;
+  width: 44px;
+  height: 44px;
   flex-shrink: 0;
 }
 
@@ -214,6 +222,9 @@
 /* ===================================
    DESIGN TOKENS & COLOR PALETTE
    =================================== */
+/* ส่วนตัวแปร CSS สำหรับสี แต่งแต่ม
+   ประกอบด้วย: สีหลัก, สีเป็นกลาง, สีสถานะ, เงา และ animation 
+   ใช้ในทั้งหมด CSS ทั้งหมดในไฟล์นี้ */
 :root {
   /* Primary Colors */
   --primary: #3b82f6;
@@ -257,8 +268,11 @@
 /* ===================================
    MODAL STYLES - CMDB CI INFORMATION
    =================================== */
+/* ส่วนนี้จัดแต่งหน้าต่างป๊อปอัป (modal) สำหรับแสดงข้อมูล CI 
+   ประกอบด้วย: แถบมือดำ, หน้าต่างตาม, ตารางข้อมูล, ปุ่มควบคุม */
 
 /* Modal Overlay */
+/* พื้นหลังมืดของ modal */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -381,6 +395,11 @@
 
 .modal-close-btn:active {
   transform: rotate(90deg) scale(0.92);
+}
+
+.modal-close-btn:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
 }
 
 /* Modal Body */
@@ -636,6 +655,11 @@
   cursor: not-allowed;
 }
 
+.pagination-btn:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
 /* Modal Footer */
 .modal-footer {
   padding: 20px 30px;
@@ -667,14 +691,19 @@
 /* ===================================
    ENHANCED FORM FIELDS & PROFESSIONAL STYLING
    =================================== */
+/* ส่วนนี้จัดแต่งฟิลด์แบบฟอร์มต่างๆ เช่น input, textarea, select 
+   ประกอบด้วย: สไตล์พื้นฐาน, สถานะ hover/focus, ข้อความแสดงข้อผิดพลาด */
 
 /* Form Field Container */
+/* ตัวห่อหุ้มของฟิลด์แบบฟอร์ม */
 .form-field {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px; /* Reduced gap for better alignment */
   margin-bottom: 24px;
   animation: fadeInUp 0.4s ease-out;
+  min-height: 72px; /* Consistent minimum height */
+  justify-content: flex-start; /* Align content to top */
 }
 
 /* Form Field Label */
@@ -687,6 +716,10 @@
   display: flex;
   align-items: center;
   gap: 8px;
+  min-height: 20px; /* Consistent label height */
+  line-height: 1.4;
+  margin-bottom: 0; /* Remove default margin */
+  padding-bottom: 0; /* Ensure no extra padding */
 }
 
 .form-field-label .required {
@@ -703,15 +736,18 @@
 .form-field input[type="file"],
 .form-field textarea,
 .form-field select {
-  padding: 14px 16px;
-  border: 2px solid var(--gray-300);
-  border-radius: 10px;
+  padding: 10px 16px;
+  border: 1px solid #d9d9d9;
+  border-radius: 8px;
   font-size: 15px;
   font-weight: 500;
   color: var(--gray-900);
   background-color: white;
   transition: all var(--transition-base);
   font-family: inherit;
+  height: 40px;
+  box-sizing: border-box;
+  line-height: 20px;
 }
 
 /* Input Hover State */
@@ -771,6 +807,8 @@
   background-repeat: no-repeat;
   background-position: right 14px center;
   padding-right: 40px;
+  line-height: 20px;
+  vertical-align: middle;
 }
 
 /* CI Status Badge */
@@ -880,8 +918,6 @@
   background: transparent;
   color: var(--gray-900);
   height: 100%;
-  display: flex;
-  align-items: center;
 }
 
 .input-with-actions input::placeholder {
@@ -939,6 +975,11 @@
   cursor: not-allowed;
 }
 
+.action-btn:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
 .action-btn.search-btn {
   padding: 0 12px;
   border-right: none;
@@ -952,11 +993,11 @@
   font-weight: 600;
   background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
   border: none;
-  border-radius: 0;
+  border-radius: 8px;
   margin: 0;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: none;
-  height: 100%;
+  height: 44px;
   font-size: 12px;
   letter-spacing: 0.5px;
   text-transform: uppercase;
@@ -991,6 +1032,11 @@
 .action-btn.select-btn:active:not(:disabled) {
   background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+}
+
+.action-btn.select-btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);
 }
 
 /* Read-only Input */
@@ -1143,6 +1189,7 @@
 .form-grid {
   display: grid;
   gap: 20px;
+  align-items: start; /* Align items to top for consistent layout */
 }
 
 .form-grid.cols-1 {
@@ -1151,6 +1198,7 @@
 
 .form-grid.cols-2 {
   grid-template-columns: repeat(2, 1fr);
+  align-items: start; /* Ensure both columns align to top */
 }
 
 .form-grid.cols-3 {
@@ -1265,6 +1313,8 @@
 /* ===================================
    BREADCRUMB STYLES
    =================================== */
+/* ส่วนนี้จัดแต่งแนวทางนำทาง (breadcrumb) 
+   แสดงเส้นทางที่ผู้ใช้อยู่ในปัจจุบันในแอปพลิเคชัน */
 
 .breadcrumbs {
   display: flex;
@@ -1374,6 +1424,8 @@
 /* ===================================
    PARENT CI SECTION STYLES
    =================================== */
+/* ส่วนนี้จัดแต่งส่วน Parent CI (Configuration Item หลัก)
+   ประกอบด้วย: ตารางข้อมูล, ปุ่มเพิ่มเติม, ตัวค้นหา, ปุ่มลบ */
 
 .parent-ci-section {
   margin-bottom: 24px;
@@ -1470,6 +1522,11 @@
   box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
 }
 
+.btn-add-ci:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
 .parent-ci-table-container {
   background: white;
   border-radius: 12px;
@@ -1555,6 +1612,11 @@
   transform: scale(0.95);
 }
 
+.btn-delete:focus-visible {
+  outline: 2px solid #dc2626;
+  outline-offset: 2px;
+}
+
 /* Modal footer styles */
 .modal-footer {
   padding: 20px 30px;
@@ -1583,6 +1645,11 @@
   border-color: var(--gray-400);
   background: var(--gray-50);
   transform: translateY(-1px);
+}
+
+.btn-secondary:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
 }
 
 .btn-primary {
@@ -1618,9 +1685,16 @@
   box-shadow: none;
 }
 
+.btn-primary:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
 /* ===================================
    ATTACH URL SECTION STYLES
    =================================== */
+/* ส่วนนี้จัดแต่งส่วน Attach URL (แนบลิงค์เว็บไซต์)
+   ประกอบด้วย: ตารางลิงค์, ปุ่มเพิ่มลิงค์, ปุ่มลบ */
 
 .attach-url-section {
   margin-bottom: 24px;
@@ -1660,6 +1734,11 @@
 .btn-add-url:active {
   transform: translateY(0);
   box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+}
+
+.btn-add-url:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
 }
 
 .attach-url-table-container {
@@ -1749,7 +1828,7 @@
   font-size: 15px;
   font-weight: 500;
   color: var(--gray-900);
-  background-color: white;
+  background-color: transparent;
   transition: all var(--transition-base);
   font-family: inherit;
   box-sizing: border-box;
@@ -1786,6 +1865,8 @@
 /* ===================================
    ATTACH FILE SECTION STYLES
    =================================== */
+/* ส่วนนี้จัดแต่งส่วน Attach File (แนบไฟล์)
+   ประกอบด้วย: ตารางไฟล์, ปุ่มเพิ่มไฟล์, ปุ่มลบไฟล์ */
 
 .attach-file-section {
   margin-bottom: 24px;
@@ -1825,6 +1906,11 @@
 .btn-add-file:active {
   transform: translateY(0);
   box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+}
+
+.btn-add-file:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
 }
 
 .attach-file-table-container {
@@ -2009,3 +2095,386 @@
 body.modal-open {
   overflow: hidden;
 }
+
+/* ===================================
+   CLEARABLE SELECT INPUT STYLES
+   =================================== */
+/* ส่วนนี้จัดแต่งตัวเลือก (select) ที่มีปุ่มปิด (clear button)
+   ผู้ใช้สามารถลบการเลือกและค้นหาตัวเลือกใหม่ได้ */
+
+.clearable-select-input-wrapper {
+  display: flex;
+  gap: 0;
+  align-items: center;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  background: transparent;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: none;
+  height: 100%;
+  position: relative;
+}
+
+.clearable-select-input-wrapper:hover:not(.input-error) {
+  border-color: transparent;
+  box-shadow: none;
+}
+
+.clearable-select-input-wrapper:focus-within {
+  border-color: transparent;
+  box-shadow: none;
+}
+
+.clearable-select-input-wrapper.input-error {
+  border-color: transparent;
+  background: transparent;
+}
+
+.clearable-select-input-wrapper.input-error:focus-within {
+  box-shadow: none;
+}
+
+.clearable-select-input {
+  flex: 1;
+  border: 1.5px solid var(--border);
+  padding: 0.625rem 0.875rem;
+  outline: none;
+  font-size: 14px;
+  background: transparent;
+  color: var(--gray-900);
+  height: 100%;
+  display: flex;
+  align-items: center;
+  border-radius: var(--radius);
+}
+
+.clearable-select-input::placeholder {
+  color: var(--gray-500);
+}
+
+.clearable-select-input:disabled {
+  background: transparent;
+  color: var(--gray-600);
+}
+
+.clearable-select-input.has-value {
+  background: white !important;
+}
+
+.clearable-select-input.input-readonly {
+  background: white !important;
+  color: var(--gray-700);
+  border-color: #d9d9d9 !important;
+  border: 1px solid #d9d9d9 !important;
+  border-radius: 8px !important;
+  height: 40px !important;
+  box-sizing: border-box !important;
+}
+
+.clearable-select-input.input-readonly:focus {
+  outline: none;
+  box-shadow: none !important;
+}
+
+.clearable-select-input.input-readonly:hover {
+  background: white !important;
+  border-color: transparent !important;
+}
+
+.clearable-select-input.input-readonly.has-value {
+  background: white !important;
+  color: var(--gray-900);
+  border-color: #e5e7eb !important;
+}
+
+/* Special readonly fields: Service Name, Support Group Name, Category, เลขที่โครงการขาย */
+.input-readonly.special-readonly {
+  background: white !important;
+  color: var(--gray-700);
+  border-color: #d9d9d9 !important;
+  border: 1px solid #d9d9d9 !important;
+  border-radius: 8px !important;
+  height: 40px !important;
+  box-sizing: border-box !important;
+}
+
+.input-readonly.special-readonly:focus {
+  outline: none;
+  box-shadow: none !important;
+}
+
+.input-readonly.special-readonly:hover {
+  background: white !important;
+  border-color: transparent !important;
+}
+
+.input-readonly.special-readonly[value]:not([value=""]):not([value="Auto-populated"]) {
+  background: #f5f6f6 !important;
+  color: var(--gray-900);
+  border-color: #d9d9d9 !important;
+}
+
+/* CI ID Input - Match select input size */
+.ci-id-input {
+  border: 1px solid #d9d9d9 !important;
+  border-radius: 8px !important;
+  height: 40px !important;
+  box-sizing: border-box !important;
+  background: white !important;
+  color: var(--gray-700);
+  padding: 0 16px !important;
+  font-size: 15px !important;
+  font-weight: 500 !important;
+  font-family: inherit !important;
+}
+.select-action-buttons {
+  display: flex;
+  gap: 0;
+  align-items: center;
+  height: 100%;
+  flex-shrink: 0;
+  border-left: none;
+  position: relative;
+  z-index: 20;
+  pointer-events: auto;
+}
+
+/* Clear Select Button */
+.action-btn.clear-select-btn {
+  position: relative;
+  right: auto;
+  background: none;
+  border: none;
+  border-right: none;
+  padding: 8px 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gray-400);
+  transition: all var(--transition-base);
+  border-radius: 0;
+  width: auto;
+  height: 100%;
+  flex-shrink: 0;
+  font-size: 14px;
+  white-space: nowrap;
+  font-weight: 500;
+  z-index: 30;
+  pointer-events: auto;
+}
+
+.clearable-select-input-wrapper.has-value .action-btn.clear-select-btn {
+  color: var(--gray-700);
+}
+
+.action-btn.clear-select-btn:hover {
+  color: currentColor;
+  background: none;
+}
+
+.action-btn.clear-select-btn:active {
+  color: currentColor;
+  background: none;
+  transform: none;
+}
+
+.action-btn.clear-select-btn:focus-visible {
+  outline: none;
+  box-shadow: inset 0 0 0 2px #3b82f6;
+}
+
+/* Select Button for Clearable Select */
+.clearable-select-input-wrapper .action-btn.select-btn {
+  padding: 0 20px;
+  color: white;
+  font-weight: 600;
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  border: none;
+  border-radius: 0;
+  margin: 0;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: none;
+  height: 100%;
+  font-size: 12px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  min-width: 90px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.clearable-select-input-wrapper .action-btn.select-btn:hover:not(:disabled) {
+  color: white;
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  box-shadow: none;
+}
+
+.clearable-select-input-wrapper .action-btn.select-btn:active:not(:disabled) {
+  background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+  box-shadow: none;
+}
+
+.clearable-select-input-wrapper .action-btn.select-btn:focus-visible {
+  outline: none;
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.3);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .clearable-select-input-wrapper {
+    height: 40px;
+  }
+  
+  .action-btn.clear-select-btn,
+  .action-btn.search-btn-icon {
+    width: 40px;
+    padding: 0 10px;
+  }
+  
+  .clearable-select-input-wrapper .action-btn.select-btn {
+    padding: 0 16px;
+    min-width: 80px;
+    font-size: 11px;
+  }
+}
+
+
+
+/* ===================================
+   FIX: Clearable Select Unified Border
+   =================================== */
+.clearable-select-input-wrapper {
+  border: 1px solid #d9d9d9 !important;
+  border-radius: 8px;
+  overflow: hidden;
+  height: 40px;
+}
+
+.clearable-select-input-wrapper input,
+.clearable-select-input-wrapper .clearable-select-input {
+  border: none !important;
+  outline: none;
+}
+
+.clearable-select-input-wrapper .action-btn {
+  border: none !important;
+  border-radius: 0 !important;
+  height: 100%;
+}
+
+.clearable-select-input-wrapper .action-btn.select-btn {
+  background: #1677ff;
+  color: #ffffff;
+}
+
+
+
+/* ===================================
+   FIX: Clear Select Button Inline (No Box)
+   =================================== */
+.clearable-select-input-wrapper .clear-select-btn {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 10px !important;
+  margin: 0 !important;
+  width: auto !important;
+  min-width: unset !important;
+  color: #9ca3af;
+}
+
+.clearable-select-input-wrapper .clear-select-btn:hover {
+  background: transparent !important;
+  color: #374151;
+}
+
+.clearable-select-input-wrapper .clear-select-btn:active {
+  background: transparent !important;
+  transform: none !important;
+}
+
+
+/* ================================
+   OVERRIDE: SINGLE INPUT BORDER
+   SELECT & CLEAR INSIDE INPUT
+   ================================ */
+
+.input-with-actions {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 44px;
+  border: 2px solid var(--gray-300);
+  border-radius: 10px;
+  background: #ffffff;
+  overflow: hidden;
+  transition: all var(--transition-base);
+}
+
+.input-with-actions:hover {
+  border-color: var(--primary);
+}
+
+.input-with-actions:focus-within {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+}
+
+/* Text Input */
+.input-with-actions input {
+  flex: 1;
+  height: 100%;
+  padding: 0 96px 0 14px; /* space for clear + select */
+  border: none;
+  outline: none;
+  font-size: 14px;
+  font-weight: 500;
+  background: transparent;
+}
+
+/* Clear (X) Button inside input */
+.input-with-actions .clear-select-btn {
+  position: absolute !important;
+  right: 52px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: transparent !important;
+  color: var(--gray-400);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.input-with-actions .clear-select-btn:hover {
+  background: var(--gray-100) !important;
+  color: var(--danger);
+}
+
+/* Select (Search Icon) Button inside input */
+.input-with-actions .select-btn {
+  position: absolute;
+  right: 6px;
+  height: 32px;
+  width: 36px;
+  min-width: unset;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #2563eb, #3b82f6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+/* remove text in button, icon only */
+.input-with-actions .select-btn span,
+.input-with-actions .select-btn::before {
+  margin: 0;
+}
+
