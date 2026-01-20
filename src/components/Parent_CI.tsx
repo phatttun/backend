@@ -113,7 +113,7 @@ const ParentCI: React.FC<ParentCIProps> = ({ currentCIId }) => {
     <div className="modal-overlay" onClick={() => setShowModal(false)}>
       <div className="modal-content modal-large" onClick={e => e.stopPropagation()}>
         <div className="modal-header">
-          <h2>Select Parent CI</h2>
+          <h2>Parent CI</h2>
           <button className="modal-close-btn" onClick={() => setShowModal(false)}>
             <X size={20} />
           </button>

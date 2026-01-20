@@ -117,7 +117,7 @@ const Attach_URL: React.FC<AttachURLProps> = () => {
     <div className="modal-overlay" onClick={() => setShowModal(false)}>
       <div className="modal-content modal-medium" onClick={e => e.stopPropagation()}>
         <div className="modal-header">
-          <h2>Add Attach URL</h2>
+          <h2>Attach URL</h2>
           <button className="modal-close-btn" onClick={() => setShowModal(false)}>
             <X size={20} />
           </button>

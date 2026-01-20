@@ -11,33 +11,39 @@ interface MasterService {
 
 interface MasterSupportGroup {
   id: string;
+  code: string;
   supportGroupName: string;
 }
 
 interface MasterType {
   id: string;
+  code: string;
   typeName: string;
   category: string;
 }
 
 interface MasterFunction {
   id: string;
+  code: string;
   functionName: string;
 }
 
 interface MasterBrand {
   id: string;
+  code: string;
   brandName: string;
 }
 
 interface MasterLocation {
   id: string;
+  code: string;
   locationName: string;
   customerName: string;
 }
 
 interface MasterCustomer {
   id: string;
+  code: string;
   customerName: string;
 }
 
@@ -94,55 +100,55 @@ export const MOCK_SERVICES: MasterService[] = [
 ];
 
 export const MOCK_SUPPORT_GROUPS: MasterSupportGroup[] = [
-  { id: 'SG001', supportGroupName: 'Dev Team' },
-  { id: 'SG002', supportGroupName: 'Infra Team' },
-  { id: 'SG003', supportGroupName: 'DB Team' },
-  { id: 'SG004', supportGroupName: 'Cloud Team' },
-  { id: 'SG005', supportGroupName: 'Security Team' },
-  { id: 'SG006', supportGroupName: 'Network Team' },
-  { id: 'SG007', supportGroupName: 'Analytics Team' },
-  { id: 'SG008', supportGroupName: 'Mobile Team' },
-  { id: 'SG009', supportGroupName: 'Integration Team' },
-  { id: 'SG010', supportGroupName: 'QA Team' },
-  { id: 'SG011', supportGroupName: 'DevOps Team' },
-  { id: 'SG012', supportGroupName: 'Support Team' },
+  { id: 'SG001', code: 'SG001', supportGroupName: 'Dev Team' },
+  { id: 'SG002', code: 'SG002', supportGroupName: 'Infra Team' },
+  { id: 'SG003', code: 'SG003', supportGroupName: 'DB Team' },
+  { id: 'SG004', code: 'SG004', supportGroupName: 'Cloud Team' },
+  { id: 'SG005', code: 'SG005', supportGroupName: 'Security Team' },
+  { id: 'SG006', code: 'SG006', supportGroupName: 'Network Team' },
+  { id: 'SG007', code: 'SG007', supportGroupName: 'Analytics Team' },
+  { id: 'SG008', code: 'SG008', supportGroupName: 'Mobile Team' },
+  { id: 'SG009', code: 'SG009', supportGroupName: 'Integration Team' },
+  { id: 'SG010', code: 'SG010', supportGroupName: 'QA Team' },
+  { id: 'SG011', code: 'SG011', supportGroupName: 'DevOps Team' },
+  { id: 'SG012', code: 'SG012', supportGroupName: 'Support Team' },
 ];
 
 export const MOCK_TYPES: MasterType[] = [
-  { id: 'T001', typeName: 'Server', category: 'Hardware' },
-  { id: 'T002', typeName: 'Laptop', category: 'Hardware' },
-  { id: 'T003', typeName: 'Software Application', category: 'Software' },
-  { id: 'T004', typeName: 'Database', category: 'Software' },
-  { id: 'T005', typeName: 'Network Switch', category: 'Network Link' },
-  { id: 'T006', typeName: 'Documentation', category: 'Document' },
+  { id: 'T001', code: 'T001', typeName: 'Server', category: 'Hardware' },
+  { id: 'T002', code: 'T002', typeName: 'Laptop', category: 'Hardware' },
+  { id: 'T003', code: 'T003', typeName: 'Software Application', category: 'Software' },
+  { id: 'T004', code: 'T004', typeName: 'Database', category: 'Software' },
+  { id: 'T005', code: 'T005', typeName: 'Network Switch', category: 'Network Link' },
+  { id: 'T006', code: 'T006', typeName: 'Documentation', category: 'Document' },
 ];
 
 export const MOCK_FUNCTIONS: MasterFunction[] = [
-  { id: 'F001', functionName: 'Web Server' },
-  { id: 'F002', functionName: 'Database Server' },
-  { id: 'F003', functionName: 'Load Balancer' },
-  { id: 'F004', functionName: 'Backup Server' },
-  { id: 'F005', functionName: 'Monitoring Server' },
+  { id: 'F001', code: 'F001', functionName: 'Web Server' },
+  { id: 'F002', code: 'F002', functionName: 'Database Server' },
+  { id: 'F003', code: 'F003', functionName: 'Load Balancer' },
+  { id: 'F004', code: 'F004', functionName: 'Backup Server' },
+  { id: 'F005', code: 'F005', functionName: 'Monitoring Server' },
 ];
 
 export const MOCK_BRANDS: MasterBrand[] = [
-  { id: 'B001', brandName: 'Dell' },
-  { id: 'B002', brandName: 'HP' },
-  { id: 'B003', brandName: 'Cisco' },
-  { id: 'B004', brandName: 'IBM' },
-  { id: 'B005', brandName: 'Oracle' },
+  { id: 'B001', code: 'B001', brandName: 'Dell' },
+  { id: 'B002', code: 'B002', brandName: 'HP' },
+  { id: 'B003', code: 'B003', brandName: 'Cisco' },
+  { id: 'B004', code: 'B004', brandName: 'IBM' },
+  { id: 'B005', code: 'B005', brandName: 'Oracle' },
 ];
 
 export const MOCK_LOCATIONS: MasterLocation[] = [
-  { id: 'L001', locationName: 'Data Center A', customerName: 'Internal' },
-  { id: 'L002', locationName: 'Data Center B', customerName: 'Internal' },
-  { id: 'L003', locationName: 'Cloud Region US-East', customerName: 'Cloud Provider' },
+  { id: 'L001', code: 'L001', locationName: 'Data Center A', customerName: 'Internal' },
+  { id: 'L002', code: 'L002', locationName: 'Data Center B', customerName: 'Internal' },
+  { id: 'L003', code: 'L003', locationName: 'Cloud Region US-East', customerName: 'Cloud Provider' },
 ];
 
 export const MOCK_CUSTOMERS: MasterCustomer[] = [
-  { id: 'C001', customerName: 'Internal' },
-  { id: 'C002', customerName: 'Customer A' },
-  { id: 'C003', customerName: 'Customer B' },
+  { id: 'C001', code: 'C001', customerName: 'Internal' },
+  { id: 'C002', code: 'C002', customerName: 'Customer A' },
+  { id: 'C003', code: 'C003', customerName: 'Customer B' },
 ];
 
 export const MOCK_SYSTEM_NAMES: MasterSystemName[] = [
@@ -490,7 +496,7 @@ export const Modal: React.FC<ModalProps> = ({ activeModal, onClose, onConfirm, s
       <div className="modal-overlay" onClick={closeModal}>
         <div className="modal-content modal-large" onClick={e => e.stopPropagation()}>
           <div className="modal-header">
-            <h2>Select Service</h2>
+            <h2>Service</h2>
             <button className="modal-close-btn" onClick={closeModal}>
               <X size={20} />
             </button>
@@ -594,7 +600,7 @@ export const Modal: React.FC<ModalProps> = ({ activeModal, onClose, onConfirm, s
       <div className="modal-overlay" onClick={closeModal}>
         <div className="modal-content modal-medium" onClick={e => e.stopPropagation()}>
           <div className="modal-header">
-            <h2>Select Support Group</h2>
+            <h2>Support Group</h2>
             <button className="modal-close-btn" onClick={closeModal}>
               <X size={20} />
             </button>
@@ -619,7 +625,8 @@ export const Modal: React.FC<ModalProps> = ({ activeModal, onClose, onConfirm, s
             <table className="modal-table">
               <thead>
                 <tr>
-                  <th>Support Group Name</th>
+                  <th>Code</th>
+                  <th>Name</th>
                   <th>Select</th>
                 </tr>
               </thead>
@@ -630,6 +637,7 @@ export const Modal: React.FC<ModalProps> = ({ activeModal, onClose, onConfirm, s
                     className={`modal-table-row ${selectedItem?.id === group.id ? 'selected' : ''}`}
                     onClick={() => handleSelectItem(group)}
                   >
+                    <td>{group.code}</td>
                     <td>{group.supportGroupName}</td>
                     <td>
                       <span className={`checkmark ${selectedItem?.id === group.id ? 'visible' : 'hidden'}`}>✓</span>
@@ -696,7 +704,7 @@ export const Modal: React.FC<ModalProps> = ({ activeModal, onClose, onConfirm, s
       <div className="modal-overlay" onClick={closeModal}>
         <div className="modal-content modal-medium" onClick={e => e.stopPropagation()}>
           <div className="modal-header">
-            <h2>Select Type</h2>
+            <h2>Type</h2>
             <button className="modal-close-btn" onClick={closeModal}>
               <X size={20} />
             </button>
@@ -721,7 +729,8 @@ export const Modal: React.FC<ModalProps> = ({ activeModal, onClose, onConfirm, s
             <table className="modal-table">
               <thead>
                 <tr>
-                  <th>Type Name</th>
+                  <th>Code</th>
+                  <th>Name</th>
                   <th>Category</th>
                   <th>Select</th>
                 </tr>
@@ -733,6 +742,7 @@ export const Modal: React.FC<ModalProps> = ({ activeModal, onClose, onConfirm, s
                     className={`modal-table-row ${selectedItem?.id === type.id ? 'selected' : ''}`}
                     onClick={() => handleSelectItem(type)}
                   >
+                    <td>{type.code}</td>
                     <td>{type.typeName}</td>
                     <td>{type.category}</td>
                     <td>
@@ -800,7 +810,7 @@ export const Modal: React.FC<ModalProps> = ({ activeModal, onClose, onConfirm, s
       <div className="modal-overlay" onClick={closeModal}>
         <div className="modal-content modal-medium" onClick={e => e.stopPropagation()}>
           <div className="modal-header">
-            <h2>Select Function</h2>
+            <h2>Function</h2>
             <button className="modal-close-btn" onClick={closeModal}>
               <X size={20} />
             </button>
@@ -825,7 +835,8 @@ export const Modal: React.FC<ModalProps> = ({ activeModal, onClose, onConfirm, s
             <table className="modal-table">
               <thead>
                 <tr>
-                  <th>Function Name</th>
+                  <th>Code</th>
+                  <th>Name</th>
                   <th>Select</th>
                 </tr>
               </thead>
@@ -836,6 +847,7 @@ export const Modal: React.FC<ModalProps> = ({ activeModal, onClose, onConfirm, s
                     className={`modal-table-row ${selectedItem?.id === func.id ? 'selected' : ''}`}
                     onClick={() => handleSelectItem(func)}
                   >
+                    <td>{func.code}</td>
                     <td>{func.functionName}</td>
                     <td>
                       <span className={`checkmark ${selectedItem?.id === func.id ? 'visible' : 'hidden'}`}>✓</span>
@@ -902,7 +914,7 @@ export const Modal: React.FC<ModalProps> = ({ activeModal, onClose, onConfirm, s
       <div className="modal-overlay" onClick={closeModal}>
         <div className="modal-content modal-medium" onClick={e => e.stopPropagation()}>
           <div className="modal-header">
-            <h2>Select Brand</h2>
+            <h2>Brand</h2>
             <button className="modal-close-btn" onClick={closeModal}>
               <X size={20} />
             </button>
@@ -927,7 +939,8 @@ export const Modal: React.FC<ModalProps> = ({ activeModal, onClose, onConfirm, s
             <table className="modal-table">
               <thead>
                 <tr>
-                  <th>Brand Name</th>
+                  <th>Code</th>
+                  <th>Name</th>
                   <th>Select</th>
                 </tr>
               </thead>
@@ -938,6 +951,7 @@ export const Modal: React.FC<ModalProps> = ({ activeModal, onClose, onConfirm, s
                     className={`modal-table-row ${selectedItem?.id === brand.id ? 'selected' : ''}`}
                     onClick={() => handleSelectItem(brand)}
                   >
+                    <td>{brand.code}</td>
                     <td>{brand.brandName}</td>
                     <td>
                       <span className={`checkmark ${selectedItem?.id === brand.id ? 'visible' : 'hidden'}`}>✓</span>
@@ -1005,7 +1019,7 @@ export const Modal: React.FC<ModalProps> = ({ activeModal, onClose, onConfirm, s
       <div className="modal-overlay" onClick={closeModal}>
         <div className="modal-content modal-medium" onClick={e => e.stopPropagation()}>
           <div className="modal-header">
-            <h2>Select System Name</h2>
+            <h2>System Name</h2>
             <button className="modal-close-btn" onClick={closeModal}>
               <X size={20} />
             </button>
@@ -1122,7 +1136,7 @@ export const Modal: React.FC<ModalProps> = ({ activeModal, onClose, onConfirm, s
       <div className="modal-overlay" onClick={closeModal}>
         <div className="modal-content modal-medium" onClick={e => e.stopPropagation()}>
           <div className="modal-header">
-            <h2>Select Application</h2>
+            <h2>Application</h2>
             <button className="modal-close-btn" onClick={closeModal}>
               <X size={20} />
             </button>
@@ -1237,7 +1251,7 @@ export const Modal: React.FC<ModalProps> = ({ activeModal, onClose, onConfirm, s
       <div className="modal-overlay" onClick={closeModal}>
         <div className="modal-content modal-medium" onClick={e => e.stopPropagation()}>
           <div className="modal-header">
-            <h2>Select Location</h2>
+            <h2>Location</h2>
             <button className="modal-close-btn" onClick={closeModal}>
               <X size={20} />
             </button>
@@ -1262,7 +1276,8 @@ export const Modal: React.FC<ModalProps> = ({ activeModal, onClose, onConfirm, s
             <table className="modal-table">
               <thead>
                 <tr>
-                  <th>Location Name</th>
+                  <th>Code</th>
+                  <th>Name</th>
                   <th>Customer</th>
                   <th>Select</th>
                 </tr>
@@ -1274,6 +1289,7 @@ export const Modal: React.FC<ModalProps> = ({ activeModal, onClose, onConfirm, s
                     className={`modal-table-row ${selectedItem?.id === location.id ? 'selected' : ''}`}
                     onClick={() => handleSelectItem(location)}
                   >
+                    <td>{location.code}</td>
                     <td>{location.locationName}</td>
                     <td>{location.customerName}</td>
                     <td>
@@ -1341,7 +1357,7 @@ export const Modal: React.FC<ModalProps> = ({ activeModal, onClose, onConfirm, s
       <div className="modal-overlay" onClick={closeModal}>
         <div className="modal-content modal-medium" onClick={e => e.stopPropagation()}>
           <div className="modal-header">
-            <h2>Select Customer</h2>
+            <h2>Customer</h2>
             <button className="modal-close-btn" onClick={closeModal}>
               <X size={20} />
             </button>
@@ -1366,7 +1382,8 @@ export const Modal: React.FC<ModalProps> = ({ activeModal, onClose, onConfirm, s
             <table className="modal-table">
               <thead>
                 <tr>
-                  <th>Customer Name</th>
+                  <th>Code</th>
+                  <th>Name</th>
                   <th>Select</th>
                 </tr>
               </thead>
@@ -1377,6 +1394,7 @@ export const Modal: React.FC<ModalProps> = ({ activeModal, onClose, onConfirm, s
                     className={`modal-table-row ${selectedItem?.id === customer.id ? 'selected' : ''}`}
                     onClick={() => handleSelectItem(customer)}
                   >
+                    <td>{customer.code}</td>
                     <td>{customer.customerName}</td>
                     <td>
                       <span className={`checkmark ${selectedItem?.id === customer.id ? 'visible' : 'hidden'}`}>✓</span>
@@ -1443,7 +1461,7 @@ export const Modal: React.FC<ModalProps> = ({ activeModal, onClose, onConfirm, s
       <div className="modal-overlay" onClick={closeModal}>
         <div className="modal-content modal-large" onClick={e => e.stopPropagation()}>
           <div className="modal-header">
-            <h2>Select Project</h2>
+            <h2>Project</h2>
             <button className="modal-close-btn" onClick={closeModal}>
               <X size={20} />
             </button>
@@ -1552,7 +1570,7 @@ export const Modal: React.FC<ModalProps> = ({ activeModal, onClose, onConfirm, s
       <div className="modal-overlay" onClick={closeModal}>
         <div className="modal-content modal-medium" onClick={e => e.stopPropagation()}>
           <div className="modal-header">
-            <h2>Select Supplier</h2>
+            <h2>Supplier</h2>
             <button className="modal-close-btn" onClick={closeModal}>
               <X size={20} />
             </button>
@@ -1790,6 +1808,5 @@ export const Modal: React.FC<ModalProps> = ({ activeModal, onClose, onConfirm, s
     document.body
   );
 };
-
 
 

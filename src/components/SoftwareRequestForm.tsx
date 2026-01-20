@@ -123,7 +123,7 @@ const getStatusBadgeColor = (status: CIStatus): string => {
 export function SoftwareRequestForm() {
   const [formData, setFormData] = useState({
     // Header metadata
-    requestNo: 'REQ-' + Date.now().toString().slice(-8),
+    requestNo: '-',
     createdDate: new Date().toLocaleDateString('en-US', { 
       year: 'numeric', 
       month: 'long', 
