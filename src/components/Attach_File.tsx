@@ -166,7 +166,7 @@ const Attach_File: React.FC<AttachFileProps> = () => {
                 onClick={() => setShowModal(true)}
               >
                 <Plus size={16} />
-                Add Attach File
+                แนบเอกสาร
               </button>
             </div>
 

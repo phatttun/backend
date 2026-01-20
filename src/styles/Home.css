@@ -880,6 +880,10 @@ td.action-cell {
   overflow-y: auto;
 }
 
+body.modal-open .content-area {
+  overflow: hidden;
+}
+
 /* Toolbar */
 .toolbar {
   display: flex;

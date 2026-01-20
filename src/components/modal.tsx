@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import ReactDOM from 'react-dom';
 import { Search, X } from 'lucide-react';
 
 // Type definitions for Master Data
@@ -421,6 +422,19 @@ export const Modal: React.FC<ModalProps> = ({ activeModal, onClose, onConfirm, s
   const [selectedItem, setSelectedItem] = useState<any>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
+
+  // Prevent body scroll when modal is open
+  React.useEffect(() => {
+    if (activeModal) {
+      document.body.classList.add('modal-open');
+    } else {
+      document.body.classList.remove('modal-open');
+    }
+
+    return () => {
+      document.body.classList.remove('modal-open');
+    };
+  }, [activeModal]);
 
   // Helper function to filter data based on search
   const filterData = (data: any[], searchFields: string[]): any[] => {
@@ -1738,36 +1752,43 @@ export const Modal: React.FC<ModalProps> = ({ activeModal, onClose, onConfirm, s
 
   if (!activeModal) return null;
 
-  switch (activeModal) {
-    case 'service':
-      return <ServiceSelectorModal />;
-    case 'supportGroup':
-      return <SupportGroupSelectorModal />;
-    case 'type':
-      return <TypeSelectorModal />;
-    case 'function':
-      return <FunctionSelectorModal />;
-    case 'brand':
-      return <BrandSelectorModal />;
-    case 'system':
-      return <SystemSelectorModal />;
-    case 'application':
-      return <ApplicationSelectorModal />;
-    case 'location':
-      return <LocationSelectorModal />;
-    case 'customer':
-      return <CustomerSelectorModal />;
-    case 'project':
-      return <ProjectSelectorModal />;
-    case 'supplier':
-      return <SupplierSelectorModal />;
-    case 'extendSupplier':
-      return <SupplierSelectorModal />;
-    case 'srRelease':
-      return <SRReleaseSelectorModal />;
-    default:
-      return null;
-  }
+  const modalContent = (() => {
+    switch (activeModal) {
+      case 'service':
+        return <ServiceSelectorModal />;
+      case 'supportGroup':
+        return <SupportGroupSelectorModal />;
+      case 'type':
+        return <TypeSelectorModal />;
+      case 'function':
+        return <FunctionSelectorModal />;
+      case 'brand':
+        return <BrandSelectorModal />;
+      case 'system':
+        return <SystemSelectorModal />;
+      case 'application':
+        return <ApplicationSelectorModal />;
+      case 'location':
+        return <LocationSelectorModal />;
+      case 'customer':
+        return <CustomerSelectorModal />;
+      case 'project':
+        return <ProjectSelectorModal />;
+      case 'supplier':
+        return <SupplierSelectorModal />;
+      case 'extendSupplier':
+        return <SupplierSelectorModal />;
+      case 'srRelease':
+        return <SRReleaseSelectorModal />;
+      default:
+        return null;
+    }
+  })();
+
+  return ReactDOM.createPortal(
+    modalContent,
+    document.body
+  );
 };
 
 
