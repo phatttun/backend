@@ -1182,7 +1182,7 @@ export function SoftwareRequestForm() {
               }
             }}
           >
-            Cancel
+            ยกเลิก
           </button>
           <button
             type="submit"
