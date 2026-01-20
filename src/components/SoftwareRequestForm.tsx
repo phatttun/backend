@@ -215,22 +215,39 @@ export function SoftwareRequestForm() {
     setActiveModal(null);
   };
 
+  // Helper function to clear error for a field
+  const clearFieldError = (field: string | string[]) => {
+    setErrors(prev => {
+      const newErrors = { ...prev };
+      if (Array.isArray(field)) {
+        field.forEach(f => delete newErrors[f]);
+      } else {
+        delete newErrors[field];
+      }
+      return newErrors;
+    });
+  };
+
   // Confirm selection
   const confirmSelection = (selectedData: any) => {
     switch (activeModal) {
       case 'service':
+        clearFieldError('service');
+        clearFieldError('supportGroup');
         setFormData(prev => ({
           ...prev,
           service: selectedData.id,
           serviceId: selectedData.id,
           serviceName: selectedData.serviceName,
+          supportGroup: selectedData.supportGroupName,
+          supportGroupId: selectedData.id,
           supportGroupName: selectedData.supportGroupName,
           systemName: null, // Clear system name when service changes
-          application: null, // Clear application when service changes
-          ciStatus: 'Active' as CIStatus // Auto-change status when service is linked
+          application: null // Clear application when service changes
         }));
         break;
       case 'supportGroup':
+        clearFieldError('supportGroup');
         setFormData(prev => ({
           ...prev,
           supportGroup: selectedData.id,
@@ -239,6 +256,7 @@ export function SoftwareRequestForm() {
         }));
         break;
       case 'type':
+        clearFieldError('type');
         setFormData(prev => ({
           ...prev,
           type: selectedData.id,
@@ -247,6 +265,7 @@ export function SoftwareRequestForm() {
         }));
         break;
       case 'function':
+        clearFieldError('function');
         setFormData(prev => ({
           ...prev,
           function: selectedData.id,
@@ -254,6 +273,7 @@ export function SoftwareRequestForm() {
         }));
         break;
       case 'brand':
+        clearFieldError('brand');
         setFormData(prev => ({
           ...prev,
           brand: selectedData.id,
@@ -261,6 +281,7 @@ export function SoftwareRequestForm() {
         }));
         break;
       case 'system':
+        clearFieldError('systemName');
         setFormData(prev => ({
           ...prev,
           systemName: selectedData,
@@ -268,12 +289,14 @@ export function SoftwareRequestForm() {
         }));
         break;
       case 'application':
+        clearFieldError('application');
         setFormData(prev => ({
           ...prev,
           application: selectedData
         }));
         break;
       case 'location':
+        clearFieldError('location');
         setFormData(prev => ({
           ...prev,
           location: selectedData.id,
@@ -283,6 +306,7 @@ export function SoftwareRequestForm() {
         }));
         break;
       case 'customer':
+        clearFieldError('customer');
         setFormData(prev => ({
           ...prev,
           customer: selectedData.id,
@@ -290,6 +314,7 @@ export function SoftwareRequestForm() {
         }));
         break;
       case 'project':
+        clearFieldError('projectName');
         setFormData(prev => ({
           ...prev,
           projectName: selectedData.projectName,
@@ -299,6 +324,7 @@ export function SoftwareRequestForm() {
         }));
         break;
       case 'supplier':
+        clearFieldError('supplier');
         setFormData(prev => ({
           ...prev,
           supplier: selectedData.id,
@@ -306,6 +332,7 @@ export function SoftwareRequestForm() {
         }));
         break;
       case 'extendSupplier':
+        clearFieldError('extendSupplier');
         setFormData(prev => ({
           ...prev,
           extendSupplier: selectedData.id,
@@ -313,6 +340,7 @@ export function SoftwareRequestForm() {
         }));
         break;
       case 'srRelease':
+        clearFieldError('srNoReleaseManagement');
         setFormData(prev => ({
           ...prev,
           srNoReleaseManagement: selectedData.documentNumber,
@@ -325,9 +353,9 @@ export function SoftwareRequestForm() {
 
   const handleInputChange = (field: string, value: any) => {
     setFormData(prev => ({ ...prev, [field]: value }));
-    // Clear error when user starts typing
+    // Clear error when user starts typing/changing value
     if (errors[field]) {
-      setErrors(prev => ({ ...prev, [field]: '' }));
+      clearFieldError(field);
     }
   };
 
@@ -409,15 +437,18 @@ export function SoftwareRequestForm() {
       const fieldElement = fieldRefs.current[firstErrorField];
       
       if (fieldElement) {
-        fieldElement.scrollIntoView({ 
-          behavior: 'smooth', 
-          block: 'center' 
-        });
-        // Optional: focus on the field if it's focusable
-        const inputElement = fieldElement.querySelector('input, textarea, [role="button"]') as HTMLElement;
-        if (inputElement) {
-          inputElement.focus();
-        }
+        // Use setTimeout to ensure the error state is rendered before scrolling
+        setTimeout(() => {
+          fieldElement.scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'center' 
+          });
+          // Optional: focus on the field if it's focusable
+          const inputElement = fieldElement.querySelector('input, textarea, [role="button"]') as HTMLElement;
+          if (inputElement) {
+            inputElement.focus();
+          }
+        }, 0);
       }
       return;
     }
@@ -490,7 +521,12 @@ export function SoftwareRequestForm() {
             />
           </div>
         </div>
-        <div className="form-header-reason">
+        <div 
+          className="form-header-reason"
+          ref={(el) => {
+            if (el) fieldRefs.current['reasonRequest'] = el;
+          }}
+        >
           <label className="form-field-label">
             Reason Request <span className="required">*</span>
           </label>
@@ -618,7 +654,9 @@ export function SoftwareRequestForm() {
 
             {/* Service Name (Auto-populated) */}
             <div className="form-field">
-              <label className="form-field-label">Service Name</label>
+              <label className="form-field-label">
+                Service Name <span className="required">*</span>
+              </label>
               <input
                 type="text"
                 value={formData.serviceName}
@@ -660,7 +698,9 @@ export function SoftwareRequestForm() {
 
             {/* Support Group Name (Auto-populated) */}
             <div className="form-field">
-              <label className="form-field-label">Support Group Name</label>
+              <label className="form-field-label">
+                Support Group Name <span className="required">*</span>
+              </label>
               <input
                 type="text"
                 value={formData.supportGroupName}
@@ -701,7 +741,9 @@ export function SoftwareRequestForm() {
             </div>
 
             <div className="form-field">
-              <label className="form-field-label">Category</label>
+              <label className="form-field-label">
+                Category <span className="required">*</span>
+              </label>
               <input
                 type="text"
                 value={formData.category}
