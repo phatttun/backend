@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Home as HomeIcon, X } from 'lucide-react';
 import '../styles/SoftwareRequestForm.css';
 import { Modal, MOCK_TYPES, MOCK_FUNCTIONS, MOCK_BRANDS, MOCK_LOCATIONS, MOCK_CUSTOMERS } from './modal';
@@ -196,6 +196,9 @@ export function SoftwareRequestForm() {
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
+  
+  // Create refs for form fields to enable auto-scroll
+  const fieldRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
   // Modal state management
   const [activeModal, setActiveModal] = useState<string | null>(null);
@@ -401,6 +404,22 @@ export function SoftwareRequestForm() {
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
+      
+      // Scroll to the first field with an error
+      const firstErrorField = Object.keys(newErrors)[0];
+      const fieldElement = fieldRefs.current[firstErrorField];
+      
+      if (fieldElement) {
+        fieldElement.scrollIntoView({ 
+          behavior: 'smooth', 
+          block: 'center' 
+        });
+        // Optional: focus on the field if it's focusable
+        const inputElement = fieldElement.querySelector('input, textarea, [role="button"]') as HTMLElement;
+        if (inputElement) {
+          inputElement.focus();
+        }
+      }
       return;
     }
 
@@ -470,7 +489,12 @@ export function SoftwareRequestForm() {
       <form onSubmit={handleSubmit} className="form-wrapper">
         {/* Reason Request */}
         <div className="form-section">
-          <div className="form-field full-width">
+          <div 
+            className="form-field full-width"
+            ref={(el) => {
+              if (el) fieldRefs.current['reasonRequest'] = el;
+            }}
+          >
             <label className="form-field-label">
               Reason Request <span className="required">*</span>
             </label>
@@ -512,7 +536,12 @@ export function SoftwareRequestForm() {
                 className="input-readonly ci-id-input"
               />
             </div>
-            <div className="form-field">
+            <div 
+              className="form-field"
+              ref={(el) => {
+                if (el) fieldRefs.current['ciVersion'] = el;
+              }}
+            >
               <label className="form-field-label">
                 CI Version <span className="required">*</span>
               </label>
@@ -532,7 +561,12 @@ export function SoftwareRequestForm() {
 
           {/* CI Name Row */}
           <div className="form-grid cols-1">
-            <div className="form-field">
+            <div 
+              className="form-field"
+              ref={(el) => {
+                if (el) fieldRefs.current['ciName'] = el;
+              }}
+            >
               <label className="form-field-label">
                 CI Name <span className="required">*</span>
               </label>
@@ -554,7 +588,12 @@ export function SoftwareRequestForm() {
 
           {/* Service Selection Row */}
           <div className="form-grid cols-2">
-            <div className="form-field">
+            <div 
+              className="form-field"
+              ref={(el) => {
+                if (el) fieldRefs.current['service'] = el;
+              }}
+            >
               <label className="form-field-label">
                 Service <span className="required">*</span>
               </label>
@@ -594,7 +633,12 @@ export function SoftwareRequestForm() {
 
           {/* Support Group Selection Row */}
           <div className="form-grid cols-2">
-            <div className="form-field">
+            <div 
+              className="form-field"
+              ref={(el) => {
+                if (el) fieldRefs.current['supportGroup'] = el;
+              }}
+            >
               <label className="form-field-label">
                 Support Group <span className="required">*</span>
               </label>
@@ -631,7 +675,12 @@ export function SoftwareRequestForm() {
 
           {/* Type and Category Row */}
           <div className="form-grid cols-2">
-            <div className="form-field">
+            <div 
+              className="form-field"
+              ref={(el) => {
+                if (el) fieldRefs.current['type'] = el;
+              }}
+            >
               <label className="form-field-label">
                 Type <span className="required">*</span>
               </label>
@@ -767,7 +816,12 @@ export function SoftwareRequestForm() {
                 maxLength={250}
               />
             </div>
-            <div className="form-field">
+            <div 
+              className="form-field"
+              ref={(el) => {
+                if (el) fieldRefs.current['systemName'] = el;
+              }}
+            >
               <label className="form-field-label">
                 System Name <span className="required">*</span>
               </label>
@@ -787,7 +841,12 @@ export function SoftwareRequestForm() {
                 <span className="error-message">{errors.systemName}</span>
               )}
             </div>
-            <div className="form-field">
+            <div 
+              className="form-field"
+              ref={(el) => {
+                if (el) fieldRefs.current['application'] = el;
+              }}
+            >
               <label className="form-field-label">
                 Application <span className="required">*</span>
               </label>
@@ -882,7 +941,12 @@ export function SoftwareRequestForm() {
                 </label>
               </div>
             </div>
-            <div className="form-field">
+            <div 
+              className="form-field"
+              ref={(el) => {
+                if (el) fieldRefs.current['pendingContinue'] = el;
+              }}
+            >
               <label className="form-field-label">
                 Pending Continue {formData.needContinueMA === 'Yes' && <span className="required">*</span>}
               </label>
@@ -912,7 +976,12 @@ export function SoftwareRequestForm() {
                 <span className="error-message">{errors.pendingContinue}</span>
               )}
             </div>
-            <div className="form-field">
+            <div 
+              className="form-field"
+              ref={(el) => {
+                if (el) fieldRefs.current['projectName'] = el;
+              }}
+            >
               <label className="form-field-label">
                 Project Name {formData.needContinueMA === 'Yes' && <span className="required">*</span>}
               </label>
@@ -1038,7 +1107,12 @@ export function SoftwareRequestForm() {
                 onChange={(e) => handleInputChange('warrantyEndDate', e.target.value)}
               />
             </div>
-            <div className="form-field">
+            <div 
+              className="form-field"
+              ref={(el) => {
+                if (el) fieldRefs.current['maStartDate'] = el;
+              }}
+            >
               <label className="form-field-label">
                 MA Start Date {formData.needContinueMA === 'Yes' && <span className="required">*</span>}
               </label>
@@ -1052,7 +1126,12 @@ export function SoftwareRequestForm() {
                 <span className="error-message">{errors.maStartDate}</span>
               )}
             </div>
-            <div className="form-field">
+            <div 
+              className="form-field"
+              ref={(el) => {
+                if (el) fieldRefs.current['maEndDate'] = el;
+              }}
+            >
               <label className="form-field-label">
                 MA End Date {formData.needContinueMA === 'Yes' && <span className="required">*</span>}
               </label>
