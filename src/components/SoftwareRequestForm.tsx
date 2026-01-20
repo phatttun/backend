@@ -541,7 +541,7 @@ export function SoftwareRequestForm() {
                   value={formData.ciName}
                   onChange={(value) => handleInputChange('ciName', value.slice(0, 250))}
                   onClear={() => handleInputChange('ciName', '')}
-                  placeholder="Enter CI name (max 250 characters)"
+                  placeholder="Please enter CI name"
                   maxLength={250}
                   error={!!errors.ciName}
                 />
@@ -570,7 +570,7 @@ export function SoftwareRequestForm() {
                   handleInputChange('systemName', null);
                   handleInputChange('application', null);
                 }}
-                placeholder="Select a service..."
+                placeholder="โปรดเลือก service"
                 error={!!errors.service}
                 selectTitle="Select"
               />
@@ -587,7 +587,7 @@ export function SoftwareRequestForm() {
                 value={formData.serviceName}
                 readOnly
                 className="input-readonly special-readonly"
-                placeholder="Auto-populated"
+                placeholder="Service Name"
               />
             </div>
           </div>
@@ -607,7 +607,7 @@ export function SoftwareRequestForm() {
                   handleInputChange('supportGroupId', '');
                   handleInputChange('supportGroupName', '');
                 }}
-                placeholder="Select a support group..."
+                placeholder="โปรดเลือก Support Group"
                 error={!!errors.supportGroup}
                 selectTitle="Select"
               />
@@ -624,7 +624,7 @@ export function SoftwareRequestForm() {
                 value={formData.supportGroupName}
                 readOnly
                 className="input-readonly special-readonly"
-                placeholder="Auto-populated"
+                placeholder="Support Group"
               />
             </div>
           </div>
@@ -644,7 +644,7 @@ export function SoftwareRequestForm() {
                   handleInputChange('typeId', '');
                   handleInputChange('category', '');
                 }}
-                placeholder="Select a type..."
+                placeholder="โปรดเลือก Type"
                 error={!!errors.type}
                 selectTitle="Select"
               />
@@ -660,7 +660,7 @@ export function SoftwareRequestForm() {
                 value={formData.category}
                 readOnly
                 className="input-readonly special-readonly"
-                placeholder="Auto-populated"
+                placeholder="Category"
               />
             </div>
           </div>
@@ -677,7 +677,7 @@ export function SoftwareRequestForm() {
                   handleInputChange('function', '');
                   handleInputChange('functionId', '');
                 }}
-                placeholder="Select a function..."
+                placeholder="โปรดเลือก Function"
                 selectTitle="Select"
               />
             </div>
@@ -692,7 +692,7 @@ export function SoftwareRequestForm() {
                   handleInputChange('brand', '');
                   handleInputChange('brandId', '');
                 }}
-                placeholder="Select a brand..."
+                placeholder="โปรดเลือก Brand"
                 selectTitle="Select"
               />
             </div>
@@ -709,7 +709,7 @@ export function SoftwareRequestForm() {
                   handleInputChange('customer', '');
                   handleInputChange('customerId', '');
                 }}
-                placeholder="Select a location..."
+                placeholder="โปรดเลือก Location..."
                 selectTitle="Select"
               />
             </div>
@@ -724,7 +724,7 @@ export function SoftwareRequestForm() {
                   handleInputChange('customer', '');
                   handleInputChange('customerId', '');
                 }}
-                placeholder="Select a customer..."
+                placeholder="โปรดเลือก Customer"
                 selectTitle="Select"
               />
             </div>
@@ -941,7 +941,7 @@ export function SoftwareRequestForm() {
                 value={formData.projectSaleNumber}
                 readOnly
                 className="input-readonly special-readonly"
-                placeholder="Auto-populated"
+                placeholder="เลขที่โครงการขาย"
               />
             </div>
             <div className="form-field">
@@ -1140,14 +1140,16 @@ export function SoftwareRequestForm() {
           </div>
         </div>
 
-        {/* Attach URL Section */}
+        {/* Attachments Section */}
         <div className="form-section">
-          <Attach_URL />
-        </div>
-
-        {/* Attach File Section */}
-        <div className="form-section">
-          <Attach_File />
+          <div className="form-grid cols-2">
+            <div className="form-field full-width">
+              <Attach_URL />
+            </div>
+            <div className="form-field full-width">
+              <Attach_File />
+            </div>
+          </div>
         </div>
 
         {/* Remark Section */}
