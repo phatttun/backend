@@ -2100,6 +2100,140 @@ body.modal-open {
 }
 
 /* ===================================
+   FORM HEADER STYLES
+   =================================== */
+/* ส่วนนี้จัดแต่งส่วนหัวของฟอร์ม (form header)
+   ประกอบด้วย: หัวข้อ, Request No, Created Date, Request Status, Created By */
+
+.form-header {
+  background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
+  border: 2px solid #e5e7eb;
+  border-radius: 16px;
+  padding: 24px 28px;
+  margin-bottom: 28px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06), inset 0 0 0 1px rgba(226, 232, 240, 0.5);
+}
+
+.form-header h1 {
+  margin: 0 0 24px 0;
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--gray-900);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.form-header-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  align-items: flex-start;
+}
+
+/* Responsive adjustments for smaller screens with sidebar */
+@media (max-width: 1400px) {
+  .form-header-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 1200px) {
+  .form-header-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.form-header-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-header-field label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--gray-700);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.form-header-field input {
+  padding: 10px 14px;
+  border: 1px solid #d9d9d9;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--gray-900);
+  background-color: white;
+  font-family: inherit;
+  box-sizing: border-box;
+  height: 38px;
+}
+
+.form-header-field input:read-only {
+  background-color: #f9fafb;
+  color: var(--gray-700);
+  border-color: #e5e7eb;
+  cursor: default;
+}
+
+.form-header-field input:focus {
+  outline: none;
+  border-color: var(--primary);
+  background-color: white;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
+}
+
+/* Responsive Design for Form Header */
+@media (max-width: 1200px) {
+  .form-header-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .form-header {
+    padding: 20px 24px;
+    margin-bottom: 20px;
+  }
+
+  .form-header h1 {
+    font-size: 24px;
+    margin-bottom: 16px;
+  }
+
+  .form-header-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .form-header-reason {
+    margin-top: 16px;
+    padding-top: 16px;
+  }
+}
+
+/* Form Header Reason Section */
+.form-header-reason {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.form-header-reason .form-field-label {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--gray-900);
+  text-transform: none;
+}
+
+/* ===================================
    CLEARABLE SELECT INPUT STYLES
    =================================== */
 /* ส่วนนี้จัดแต่งตัวเลือก (select) ที่มีปุ่มปิด (clear button)

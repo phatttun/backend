@@ -123,6 +123,7 @@ const getStatusBadgeColor = (status: CIStatus): string => {
 export function SoftwareRequestForm() {
   const [formData, setFormData] = useState({
     // Header metadata
+    requestNo: 'REQ-' + Date.now().toString().slice(-8),
     createdDate: new Date().toLocaleDateString('en-US', { 
       year: 'numeric', 
       month: 'long', 
@@ -130,8 +131,6 @@ export function SoftwareRequestForm() {
     }),
     requestStatus: 'Draft',
     createdBy: 'John Smith',
-    
-    // Main required field
     reasonRequest: '',
     
     // CI Information - UPDATED FIELDS
@@ -459,6 +458,14 @@ export function SoftwareRequestForm() {
         <h1>Software Request</h1>
         <div className="form-header-grid">
           <div className="form-header-field">
+            <label>Request No</label>
+            <input
+              type="text"
+              value={formData.requestNo}
+              readOnly
+            />
+          </div>
+          <div className="form-header-field">
             <label>Created Date</label>
             <input
               type="text"
@@ -483,35 +490,26 @@ export function SoftwareRequestForm() {
             />
           </div>
         </div>
+        <div className="form-header-reason">
+          <label className="form-field-label">
+            Reason Request <span className="required">*</span>
+          </label>
+          <ClearableTextarea
+            value={formData.reasonRequest}
+            onChange={(value) => handleInputChange('reasonRequest', value)}
+            onClear={() => handleInputChange('reasonRequest', '')}
+            rows={4}
+            placeholder="Enter the reason for this software request..."
+            error={!!errors.reasonRequest}
+          />
+          {errors.reasonRequest && (
+            <span className="error-message">{errors.reasonRequest}</span>
+          )}
+        </div>
       </div>
 
       {/* Form Body */}
       <form onSubmit={handleSubmit} className="form-wrapper">
-        {/* Reason Request */}
-        <div className="form-section">
-          <div 
-            className="form-field full-width"
-            ref={(el) => {
-              if (el) fieldRefs.current['reasonRequest'] = el;
-            }}
-          >
-            <label className="form-field-label">
-              Reason Request <span className="required">*</span>
-            </label>
-            <ClearableTextarea
-              value={formData.reasonRequest}
-              onChange={(value) => handleInputChange('reasonRequest', value)}
-              onClear={() => handleInputChange('reasonRequest', '')}
-              rows={4}
-              placeholder="Enter the reason for this software request..."
-              error={!!errors.reasonRequest}
-            />
-            {errors.reasonRequest && (
-              <span className="error-message">{errors.reasonRequest}</span>
-            )}
-          </div>
-        </div>
-
         {/* CI Information Section */}
         <div className="form-section">
           <div className="form-section-header-with-status">
