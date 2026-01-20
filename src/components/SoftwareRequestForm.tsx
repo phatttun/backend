@@ -393,6 +393,23 @@ export function SoftwareRequestForm() {
       newErrors.ciName = 'CI Name cannot exceed 250 characters';
     }
 
+    // Warranty dates validation
+    if (formData.warrantyStartDate && formData.buyDate) {
+      const buyDate = new Date(formData.buyDate);
+      const warrantyStartDate = new Date(formData.warrantyStartDate);
+      if (warrantyStartDate < buyDate) {
+        newErrors.warrantyStartDate = 'Warranty Start Date must be >= Buy Date';
+      }
+    }
+
+    if (formData.warrantyStartDate && formData.warrantyEndDate) {
+      const warrantyStartDate = new Date(formData.warrantyStartDate);
+      const warrantyEndDate = new Date(formData.warrantyEndDate);
+      if (warrantyEndDate <= warrantyStartDate) {
+        newErrors.warrantyEndDate = 'Warranty End Date must be > Warranty Start Date';
+      }
+    }
+
     // MA Information validation
     if (formData.needContinueMA === 'Yes') {
       if (!formData.pendingContinue) {
@@ -407,11 +424,18 @@ export function SoftwareRequestForm() {
       if (!formData.maEndDate) {
         newErrors.maEndDate = 'MA End Date is required';
       }
+      if (formData.maStartDate && formData.buyDate) {
+        const buyDate = new Date(formData.buyDate);
+        const maStartDate = new Date(formData.maStartDate);
+        if (maStartDate < buyDate) {
+          newErrors.maStartDate = 'MA Start Date must be >= Buy Date';
+        }
+      }
       if (formData.maStartDate && formData.maEndDate) {
         const startDate = new Date(formData.maStartDate);
         const endDate = new Date(formData.maEndDate);
-        if (startDate >= endDate) {
-          newErrors.maEndDate = 'MA End Date must be after MA Start Date';
+        if (endDate <= startDate) {
+          newErrors.maEndDate = 'MA End Date must be > MA Start Date';
         }
       }
     }
@@ -532,9 +556,10 @@ export function SoftwareRequestForm() {
           </label>
           <ClearableTextarea
             value={formData.reasonRequest}
-            onChange={(value) => handleInputChange('reasonRequest', value)}
+            onChange={(value) => handleInputChange('reasonRequest', value.slice(0, 500))}
             onClear={() => handleInputChange('reasonRequest', '')}
             rows={4}
+            maxLength={500}
             placeholder="Enter the reason for this software request..."
             error={!!errors.reasonRequest}
           />
@@ -1129,6 +1154,7 @@ export function SoftwareRequestForm() {
                 type="date"
                 value={formData.buyDate}
                 onChange={(e) => handleInputChange('buyDate', e.target.value)}
+                max={new Date().toISOString().split('T')[0]}
               />
             </div>
             <div className="form-field">
@@ -1137,6 +1163,8 @@ export function SoftwareRequestForm() {
                 type="date"
                 value={formData.warrantyStartDate}
                 onChange={(e) => handleInputChange('warrantyStartDate', e.target.value)}
+                min={formData.buyDate ? formData.buyDate : undefined}
+                max={formData.warrantyEndDate ? formData.warrantyEndDate : undefined}
               />
             </div>
             <div className="form-field">
@@ -1145,6 +1173,7 @@ export function SoftwareRequestForm() {
                 type="date"
                 value={formData.warrantyEndDate}
                 onChange={(e) => handleInputChange('warrantyEndDate', e.target.value)}
+                min={formData.warrantyStartDate ? formData.warrantyStartDate : undefined}
               />
             </div>
             <div 
@@ -1161,6 +1190,8 @@ export function SoftwareRequestForm() {
                 value={formData.maStartDate}
                 onChange={(e) => handleInputChange('maStartDate', e.target.value)}
                 className={errors.maStartDate ? 'input-error' : ''}
+                min={formData.buyDate ? formData.buyDate : undefined}
+                max={formData.maEndDate ? formData.maEndDate : undefined}
               />
               {errors.maStartDate && (
                 <span className="error-message">{errors.maStartDate}</span>
@@ -1180,6 +1211,7 @@ export function SoftwareRequestForm() {
                 value={formData.maEndDate}
                 onChange={(e) => handleInputChange('maEndDate', e.target.value)}
                 className={errors.maEndDate ? 'input-error' : ''}
+                min={formData.maStartDate ? formData.maStartDate : undefined}
               />
               {errors.maEndDate && (
                 <span className="error-message">{errors.maEndDate}</span>
