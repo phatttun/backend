@@ -510,39 +510,28 @@ export function SoftwareRequestForm() {
           <div className="form-container">
       {/* Header Section */}
       <div className="form-header">
-        <h1>Software Request</h1>
-        <div className="form-header-grid">
-          <div className="form-header-field">
-            <label>Request No</label>
-            <input
-              type="text"
-              value={formData.requestNo}
-              readOnly
-            />
+        <div className="form-header-top">
+          <div className="form-header-title">
+            <h1>Software Request</h1>
           </div>
-          <div className="form-header-field">
-            <label>Created Date</label>
-            <input
-              type="text"
-              value={formData.createdDate}
-              readOnly
-            />
+          <div className={`form-header-status ${formData.requestStatus.toLowerCase().replace(/\s+/g, '-')}`}>
+            {formData.requestStatus}
           </div>
-          <div className="form-header-field">
-            <label>Request Status</label>
-            <input
-              type="text"
-              value={formData.requestStatus}
-              readOnly
-            />
+        </div>
+        <div className="form-header-metadata">
+          <div className="metadata-item">
+            <span className="metadata-label">Request No</span>
+            <span className="metadata-value">{formData.requestNo}</span>
           </div>
-          <div className="form-header-field">
-            <label>Created By</label>
-            <input
-              type="text"
-              value={formData.createdBy}
-              readOnly
-            />
+          <div className="metadata-divider"></div>
+          <div className="metadata-item">
+            <span className="metadata-label">Created Date</span>
+            <span className="metadata-value">{formData.createdDate}</span>
+          </div>
+          <div className="metadata-divider"></div>
+          <div className="metadata-item">
+            <span className="metadata-label">Created By</span>
+            <span className="metadata-value">{formData.createdBy}</span>
           </div>
         </div>
         <div 

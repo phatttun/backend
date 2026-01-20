@@ -2106,113 +2106,153 @@ body.modal-open {
    ประกอบด้วย: หัวข้อ, Request No, Created Date, Request Status, Created By */
 
 .form-header {
-  background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
-  border: 2px solid #e5e7eb;
-  border-radius: 16px;
-  padding: 24px 28px;
-  margin-bottom: 28px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06), inset 0 0 0 1px rgba(226, 232, 240, 0.5);
+  padding: 40px 48px;
+  margin: 0 0 32px 0;
+  border-bottom: 2px solid #e5e7eb;
+  background: #ffffff;
+  transition: all var(--transition-base);
 }
 
-.form-header h1 {
-  margin: 0 0 24px 0;
-  font-size: 28px;
-  font-weight: 800;
-  color: var(--gray-900);
-  text-transform: uppercase;
-  letter-spacing: 1px;
+.form-header-top {
   display: flex;
   align-items: center;
-  gap: 12px;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
 }
 
-.form-header-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
-  align-items: flex-start;
+.form-header-title h1 {
+  margin: 0;
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--gray-900);
+  letter-spacing: -0.5px;
 }
 
-/* Responsive adjustments for smaller screens with sidebar */
-@media (max-width: 1400px) {
-  .form-header-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
+.form-header-status {
+  display: inline-block;
+  padding: 8px 16px;
+  border-radius: 24px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
 }
 
-@media (max-width: 1200px) {
-  .form-header-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
+.form-header-status.draft {
+  background-color: #f3f4f6;
+  color: #6b7280;
 }
 
-.form-header-field {
+.form-header-status.submitted {
+  background-color: #e0f2fe;
+  color: #0284c7;
+}
+
+.form-header-status.approved {
+  background-color: #dcfce7;
+  color: #16a34a;
+}
+
+.form-header-status.rejected {
+  background-color: #fee2e2;
+  color: #dc2626;
+}
+
+.form-header-metadata {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  flex-wrap: wrap;
+}
+
+.metadata-item {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 4px;
+  padding: 0 24px;
+  flex: 0 1 auto;
 }
 
-.form-header-field label {
-  font-size: 11px;
+.metadata-item:first-child {
+  padding-left: 0;
+}
+
+.metadata-label {
+  font-size: 12px;
   font-weight: 700;
-  color: var(--gray-700);
+  color: var(--gray-600);
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 
-.form-header-field input {
-  padding: 10px 14px;
-  border: 1px solid #d9d9d9;
-  border-radius: 8px;
-  font-size: 13px;
-  font-weight: 500;
+.metadata-value {
+  font-size: 16px;
+  font-weight: 600;
   color: var(--gray-900);
-  background-color: white;
-  font-family: inherit;
-  box-sizing: border-box;
-  height: 38px;
+  line-height: 1.4;
 }
 
-.form-header-field input:read-only {
-  background-color: #f9fafb;
-  color: var(--gray-700);
-  border-color: #e5e7eb;
-  cursor: default;
+.metadata-divider {
+  width: 1px;
+  height: 32px;
+  background-color: #e5e7eb;
+  margin: 0 12px;
 }
 
-.form-header-field input:focus {
-  outline: none;
-  border-color: var(--primary);
-  background-color: white;
-  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
-}
-
-/* Responsive Design for Form Header */
-@media (max-width: 1200px) {
-  .form-header-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 768px) {
-  .form-header {
-    padding: 20px 24px;
-    margin-bottom: 20px;
-  }
-
-  .form-header h1 {
-    font-size: 24px;
-    margin-bottom: 16px;
-  }
-
-  .form-header-grid {
-    grid-template-columns: 1fr;
+/* Responsive adjustments for smaller screens with sidebar */
+@media (max-width: 1400px) {
+  .form-header-metadata {
     gap: 16px;
   }
 
-  .form-header-reason {
-    margin-top: 16px;
-    padding-top: 16px;
+  .metadata-item {
+    padding: 0 20px;
+  }
+
+  .metadata-divider {
+    margin: 0 8px;
+  }
+}
+
+@media (max-width: 1200px) {
+  .form-header {
+    padding: 28px 0;
+    margin-bottom: 28px;
+  }
+
+  .form-header-top {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+  }
+
+  .form-header-status {
+    align-self: flex-start;
+  }
+
+  .form-header-title h1 {
+    font-size: 28px;
+  }
+
+  .form-header-metadata {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .metadata-item {
+    padding: 8px 0;
+  }
+
+  .metadata-item:first-child {
+    padding-left: 0;
+  }
+
+  .metadata-divider {
+    display: none;
   }
 }
 
