@@ -1164,7 +1164,7 @@ export function SoftwareRequestForm() {
                   onClear={() => handleInputChange('remark', '')}
                   rows={4}
                   maxLength={500}
-                  placeholder="Enter any additional remarks..."
+                  placeholder="Please enter Remark"
                 />
               </div>
             </div>
@@ -1188,7 +1188,7 @@ export function SoftwareRequestForm() {
             type="submit"
             className="btn-primary"
           >
-            Submit Request
+            บันทึกข้อมูล
           </button>
         </div>
       </form>

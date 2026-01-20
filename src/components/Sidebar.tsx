@@ -8,6 +8,9 @@ import {
   ChevronRight,
   Menu,
   User,
+  Search,
+  Settings,
+  HelpCircle,
 } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
@@ -22,27 +25,27 @@ const MENU = [
   {
     label: "Main",
     items: [
-      { id: "home", label: "Home", icon: <Home size={20} /> },
+      { id: "home", label: "Home", icon: <Home size={20} />, shortcut: "⌘H" },
     ],
   },
   {
     label: "CMDB",
     items: [
-      { id: "Master", label: "Master", icon: <Server size={20} /> },
+      { id: "Master", label: "Master", icon: <Server size={20} />, shortcut: "⌘M" },
     ],
   },
   {
     label: "Management",
     items: [
-      { id: "forms", label: "Forms", icon: <FileText size={20} /> },
+      { id: "forms", label: "Forms", icon: <FileText size={20} />, shortcut: "⌘F" },
     ],
   },
-
 ];
 
 export default function Sidebar({ sidebarOpen, setSidebarOpen }: SidebarProps) {
-  const [active, setActive] = useState("dashboard");
+  const [active, setActive] = useState("home");
   const [isMobile, setIsMobile] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
   const sidebarRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
 
@@ -78,22 +81,30 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }: SidebarProps) {
   // Handle click on nav item
   const handleNavClick = (id: string) => {
     setActive(id);
-    
+
     // Navigate based on id
     const routes: Record<string, string> = {
       home: "/",
       Master: "/master",
       forms: "/request-form",
     };
-    
+
     if (routes[id]) {
       navigate(routes[id]);
     }
-    
+
     if (isMobile) {
       setSidebarOpen(false);
     }
   };
+
+  // Filter menu items based on search
+  const filteredMenu = MENU.map(section => ({
+    ...section,
+    items: section.items.filter(item =>
+      item.label.toLowerCase().includes(searchQuery.toLowerCase())
+    )
+  })).filter(section => section.items.length > 0);
 
   return (
     <>
@@ -105,7 +116,7 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }: SidebarProps) {
         {/* Header */}
         <header className="sidebar-header">
           <div className="sidebar-logo">
-            <Database size={24} />
+            <Database size={28} />
             <span>CMDB System</span>
           </div>
 
@@ -120,9 +131,25 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }: SidebarProps) {
           )}
         </header>
 
+        {/* Search Bar */}
+        {sidebarOpen && (
+          <div className="sidebar-search">
+            <div className="search-input-wrapper">
+              <Search size={16} className="search-icon" />
+              <input
+                type="text"
+                placeholder="Search menu..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="search-input"
+              />
+            </div>
+          </div>
+        )}
+
         {/* Menu */}
         <nav className="sidebar-nav">
-          {MENU.map(section => (
+          {filteredMenu.map(section => (
             <div key={section.label} className="nav-section">
               {sidebarOpen && (
                 <div className="nav-label">{section.label}</div>
@@ -138,6 +165,9 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }: SidebarProps) {
                 >
                   {item.icon}
                   <span>{item.label}</span>
+                  {sidebarOpen && item.shortcut && (
+                    <span className="nav-shortcut">{item.shortcut}</span>
+                  )}
                 </button>
               ))}
             </div>
@@ -154,8 +184,28 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }: SidebarProps) {
             </div>
           </div>
 
-          <button 
-            className="logout-btn" 
+          <div className="footer-actions">
+            <button
+              className="footer-action-btn"
+              title={!sidebarOpen ? "Settings" : undefined}
+              aria-label="Settings"
+            >
+              <Settings size={16} />
+              {sidebarOpen && <span>Settings</span>}
+            </button>
+
+            <button
+              className="footer-action-btn"
+              title={!sidebarOpen ? "Help" : undefined}
+              aria-label="Help"
+            >
+              <HelpCircle size={16} />
+              {sidebarOpen && <span>Help</span>}
+            </button>
+          </div>
+
+          <button
+            className="logout-btn"
             title={!sidebarOpen ? "Logout" : undefined}
             aria-label="Logout"
           >

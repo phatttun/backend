@@ -657,7 +657,7 @@ export const Modal: React.FC<ModalProps> = ({ activeModal, onClose, onConfirm, s
               className="btn-secondary"
               onClick={closeModal}
             >
-              Cancel
+              ยกเลิก
             </button>
             <button
               className="btn-primary"

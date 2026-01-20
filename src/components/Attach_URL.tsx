@@ -203,7 +203,7 @@ const Attach_URL: React.FC<AttachURLProps> = () => {
                 onClick={() => setShowModal(true)}
               >
                 <Plus size={16} />
-                Add Attach URL
+                แนบ URL
               </button>
             </div>
 

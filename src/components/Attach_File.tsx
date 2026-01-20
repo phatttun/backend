@@ -226,7 +226,7 @@ const Attach_File: React.FC<AttachFileProps> = () => {
         <div className="modal-overlay file-modal-overlay" onClick={() => setShowModal(false)}>
           <div className="modal-content modal-medium file-modal-content" onClick={e => e.stopPropagation()}>
             <div className="modal-header">
-              <h2>Add Attach File</h2>
+              <h2>แนบเอกสาร</h2>
               <button className="modal-close-btn" onClick={() => setShowModal(false)}>
                 <X size={20} />
               </button>

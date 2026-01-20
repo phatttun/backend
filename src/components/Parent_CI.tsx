@@ -45,7 +45,7 @@ const ParentCI: React.FC<ParentCIProps> = ({ currentCIId }) => {
   const [modalSearchQuery, setModalSearchQuery] = useState('');
   const [selectedCIs, setSelectedCIs] = useState<Set<string>>(new Set());
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 8;
+  const itemsPerPage = 5;
 
   // Prevent body scroll when modal is open
   useEffect(() => {
