@@ -1,0 +1,105 @@
+{
+  "info": {
+    "_postman_id": "software-api-collection",
+    "name": "Software Request API",
+    "description": "API collection for testing Software Request endpoints",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "1. Get All Requests (Draft)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/software-requests",
+          "host": ["{{base_url}}"],
+          "path": ["software-requests"]
+        },
+        "description": "Retrieve all Draft requests"
+      },
+      "response": []
+    },
+    {
+      "name": "2. Create New Request",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"ciName\": \"Test CI\",\n  \"ciVersion\": \"1.0\",\n  \"serviceName\": \"Test Service\",\n  \"createdBy\": \"John Doe\",\n  \"reasonRequest\": \"Test reason\",\n  \"ciStatus\": \"Active\",\n  \"service\": \"Service 1\",\n  \"supportGroup\": \"Support Team\",\n  \"type\": \"Type A\",\n  \"category\": \"Category 1\",\n  \"function\": \"Function 1\",\n  \"brand\": \"Brand 1\",\n  \"location\": \"Location 1\",\n  \"customer\": \"Customer 1\",\n  \"userGroup\": \"Users\",\n  \"installReleaseDate\": \"2026-01-22\",\n  \"remark\": \"Test remark\"\n}\n"
+        },
+        "url": {
+          "raw": "{{base_url}}/software-requests",
+          "host": ["{{base_url}}"],
+          "path": ["software-requests"]
+        },
+        "description": "Create a new Draft request"
+      },
+      "response": []
+    },
+    {
+      "name": "3. Get Request by ID",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/software-requests/1",
+          "host": ["{{base_url}}"],
+          "path": ["software-requests", "1"]
+        },
+        "description": "Get a specific request by ID (replace 1 with actual ID)"
+      },
+      "response": []
+    },
+    {
+      "name": "4. Update Request (Draft)",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"ciName\": \"Updated CI Name\",\n  \"ciVersion\": \"2.0\",\n  \"serviceName\": \"Updated Service\",\n  \"createdBy\": \"Jane Doe\",\n  \"reasonRequest\": \"Updated reason\",\n  \"ciStatus\": \"Inactive\",\n  \"service\": \"Service 2\",\n  \"supportGroup\": \"Support Team 2\",\n  \"type\": \"Type B\",\n  \"category\": \"Category 2\",\n  \"function\": \"Function 2\",\n  \"brand\": \"Brand 2\",\n  \"location\": \"Location 2\",\n  \"customer\": \"Customer 2\",\n  \"userGroup\": \"Admin\",\n  \"installReleaseDate\": \"2026-02-22\",\n  \"remark\": \"Updated remark\",\n  \"parentCIs\": [\n    {\n      \"id\": \"CI-001\",\n      \"ciName\": \"Payment Gateway Service\"\n    }\n  ],\n  \"attachURLs\": [\n    {\n      \"id\": \"URL-1\",\n      \"description\": \"Documentation\",\n      \"url\": \"https://example.com/docs\",\n      \"step\": 1,\n      \"updateBy\": \"Requester\",\n      \"updateDate\": \"2026-01-22\"\n    }\n  ],\n  \"attachFiles\": [\n    {\n      \"id\": \"FILE-1\",\n      \"description\": \"Specification\",\n      \"fileName\": \"spec.pdf\",\n      \"fileSize\": 102400,\n      \"step\": 1,\n      \"updateBy\": \"Requester\",\n      \"updateDate\": \"2026-01-22\"\n    }\n  ]\n}\n"
+        },
+        "url": {
+          "raw": "{{base_url}}/software-requests/1",
+          "host": ["{{base_url}}"],
+          "path": ["software-requests", "1"]
+        },
+        "description": "Update a Draft request (replace 1 with actual ID)"
+      },
+      "response": []
+    },
+    {
+      "name": "5. Delete Request",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/software-requests/1",
+          "host": ["{{base_url}}"],
+          "path": ["software-requests", "1"]
+        },
+        "description": "Delete a request (replace 1 with actual ID)"
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8080",
+      "type": "string"
+    }
+  ]
+}

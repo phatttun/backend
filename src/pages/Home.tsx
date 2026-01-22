@@ -205,10 +205,10 @@ export default function Home() {
                         onClick={() => navigate(`/request-form/${row.id}`)}
                       >
                         <td className="px-3 py-2 text-xs text-gray-800 font-medium cell-bold">
-                          {row.requestNo}
+                          {row.requestNo || "-"}
                         </td>
                         <td className="px-3 py-2 text-xs text-gray-600">
-                          {row.ciId}
+                          {row.ciId || "-"}
                         </td>
                         <td className="px-3 py-2 text-xs text-gray-600 cell-truncate">
                           {row.ciName}
@@ -241,7 +241,7 @@ export default function Home() {
                           </span>
                         </td>
                         <td className="px-3 py-2 text-xs text-gray-600">
-                          {row.currentOperator}
+                          {row.currentOperator || "-"}
                         </td>
                         <td className="px-3 py-2 text-center">
                           <button className="action-btn">
