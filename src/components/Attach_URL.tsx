@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import ReactDOM from 'react-dom';
 import { Search, X, Plus, Trash2 } from 'lucide-react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from './ui/accordion';
@@ -16,9 +16,90 @@ interface AttachURLItem {
 
 interface AttachURLProps {
   attachURLs: AttachURLItem[];
-  setAttachURLs: (urls: AttachURLItem[]) => void;
+  setAttachURLs: React.Dispatch<React.SetStateAction<AttachURLItem[]>>;
   isViewMode?: boolean;
 }
+
+interface AddAttachURLModalProps {
+  formData: { description: string; url: string };
+  handleInputChange: (field: string, value: string) => void;
+  formErrors: Record<string, string>;
+  handleAddAttachURL: (e?: React.MouseEvent) => void;
+  setShowModal: (show: boolean) => void;
+  urlInputRef: React.RefObject<HTMLInputElement | null>;
+  isViewMode: boolean;
+}
+
+const AddAttachURLModal: React.FC<AddAttachURLModalProps> = ({
+  formData,
+  handleInputChange,
+  formErrors,
+  handleAddAttachURL,
+  setShowModal,
+  urlInputRef,
+  isViewMode
+}) => (
+  <div className="modal-overlay" onClick={() => setShowModal(false)}>
+    <div className="modal-content modal-medium" onClick={e => e.stopPropagation()}>
+      <div className="modal-header">
+        <h2>Attach URL</h2>
+        <button type="button" className="modal-close-btn" onClick={() => setShowModal(false)}>
+          <X size={20} />
+        </button>
+      </div>
+
+      <div className="modal-body">
+        <div className="form-field">
+          <label className="form-field-label">Description</label>
+          <input
+            type="text"
+            value={formData.description}
+            onChange={(e) => handleInputChange('description', e.target.value)}
+            placeholder="Please enter Description"
+            className={`clearable-input ${formErrors.description ? 'input-error' : ''}`}
+          />
+          {formErrors.description && (
+            <span className="error-message">{formErrors.description}</span>
+          )}
+        </div>
+
+        <div className="form-field">
+          <label className="form-field-label">Attach URL <span className="required">*</span></label>
+          <input
+            type="text"
+            value={formData.url}
+            onChange={(e) => handleInputChange('url', e.target.value)}
+            placeholder="Please enter Attach URL"
+            className={`clearable-input ${formErrors.url ? 'input-error' : ''}`}
+            ref={urlInputRef}
+          />
+          {formErrors.url && (
+            <span className="error-message">{formErrors.url}</span>
+          )}
+        </div>
+      </div>
+
+      <div className="modal-footer">
+        <button
+          type="button"
+          className="btn-secondary"
+          onClick={() => setShowModal(false)}
+          disabled={isViewMode}
+        >
+          Cancel
+        </button>
+        <button
+          type="button"
+          className="btn-primary"
+          onClick={handleAddAttachURL}
+          disabled={isViewMode}
+        >
+          Confirm
+        </button>
+      </div>
+    </div>
+  </div>
+);
 
 const Attach_URL: React.FC<AttachURLProps> = ({ attachURLs, setAttachURLs, isViewMode = false }) => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -28,6 +109,7 @@ const Attach_URL: React.FC<AttachURLProps> = ({ attachURLs, setAttachURLs, isVie
     url: ''
   });
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
+  const urlInputRef = useRef<HTMLInputElement>(null);
 
   // Prevent body scroll when modal is open
   useEffect(() => {
@@ -41,6 +123,16 @@ const Attach_URL: React.FC<AttachURLProps> = ({ attachURLs, setAttachURLs, isVie
     return () => {
       document.body.classList.remove('modal-open');
     };
+  }, [showModal]);
+
+  // Focus on URL input when modal opens
+  useEffect(() => {
+    if (showModal && urlInputRef.current) {
+      // Use setTimeout to ensure the modal is rendered
+      setTimeout(() => {
+        urlInputRef.current?.focus();
+      }, 100);
+    }
   }, [showModal]);
 
   // Filter attach URLs based on search query
@@ -116,70 +208,6 @@ const Attach_URL: React.FC<AttachURLProps> = ({ attachURLs, setAttachURLs, isVie
       return updated.map((item, index) => ({ ...item, step: index + 1 }));
     });
   };
-
-  // Modal component
-  const AddAttachURLModal = () => (
-    <div className="modal-overlay" onClick={() => setShowModal(false)}>
-      <div className="modal-content modal-medium" onClick={e => e.stopPropagation()}>
-        <div className="modal-header">
-          <h2>Attach URL</h2>
-          <button type="button" className="modal-close-btn" onClick={() => setShowModal(false)}>
-            <X size={20} />
-          </button>
-        </div>
-
-        <div className="modal-body">
-          <div className="form-field">
-            <label className="form-field-label">Description</label>
-            <input
-              type="text"
-              value={formData.description}
-              onChange={(e) => handleInputChange('description', e.target.value)}
-              placeholder="Please enter Description"
-              className={`clearable-input ${formErrors.description ? 'input-error' : ''}`}
-              autoFocus
-            />
-            {formErrors.description && (
-              <span className="error-message">{formErrors.description}</span>
-            )}
-          </div>
-
-          <div className="form-field">
-            <label className="form-field-label">Attach URL <span className="required">*</span></label>
-            <input
-              type="url"
-              value={formData.url}
-              onChange={(e) => handleInputChange('url', e.target.value)}
-              placeholder="Please enter Attach URL"
-              className={`clearable-input ${formErrors.url ? 'input-error' : ''}`}
-            />
-            {formErrors.url && (
-              <span className="error-message">{formErrors.url}</span>
-            )}
-          </div>
-        </div>
-
-        <div className="modal-footer">
-          <button
-            type="button"
-            className="btn-secondary"
-            onClick={() => setShowModal(false)}
-            disabled={isViewMode}
-          >
-            Cancel
-          </button>
-          <button
-            type="button"
-            className="btn-primary"
-            onClick={handleAddAttachURL}
-            disabled={isViewMode}
-          >
-            Confirm
-          </button>
-        </div>
-      </div>
-    </div>
-  );
 
   return (
     <div className="attach-url-section">
@@ -271,7 +299,18 @@ const Attach_URL: React.FC<AttachURLProps> = ({ attachURLs, setAttachURLs, isVie
         </AccordionItem>
       </Accordion>
 
-      {showModal && ReactDOM.createPortal(<AddAttachURLModal />, document.body)}
+      {showModal && ReactDOM.createPortal(
+        <AddAttachURLModal
+          formData={formData}
+          handleInputChange={handleInputChange}
+          formErrors={formErrors}
+          handleAddAttachURL={handleAddAttachURL}
+          setShowModal={setShowModal}
+          urlInputRef={urlInputRef}
+          isViewMode={isViewMode}
+        />, 
+        document.body
+      )}
     </div>
   );
 };
