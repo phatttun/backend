@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { Home as HomeIcon, ArrowLeft } from "lucide-react";
+import { Home as HomeIcon } from "lucide-react";
 
 interface SoftwareRequest {
   id: number;
@@ -31,6 +31,47 @@ export default function RequestDetail() {
         });
     }
   }, [id]);
+
+  async function handleSave() {
+    if (!request) return;
+    try {
+      const response = await fetch(`http://localhost:8080/software-requests/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(request.form_data),
+      });
+      if (response.ok) {
+        alert('บันทึกข้อมูลเรียบร้อยแล้ว');
+        navigate('/');
+      } else {
+        alert('เกิดข้อผิดพลาดในการบันทึกข้อมูล');
+      }
+    } catch (error) {
+      console.error('Error saving request:', error);
+      alert('เกิดข้อผิดพลาดในการบันทึกข้อมูล');
+    }
+  }
+
+  async function handleCancel() {
+    if (confirm('คุณต้องการยกเลิก Draft นี้หรือไม่? ข้อมูลจะถูกลบออกจากระบบ')) {
+      try {
+        const response = await fetch(`http://localhost:8080/software-requests/${id}`, {
+          method: 'DELETE',
+        });
+        if (response.ok) {
+          alert('ยกเลิกเรียบร้อยแล้ว');
+          navigate('/');
+        } else {
+          alert('เกิดข้อผิดพลาดในการยกเลิก');
+        }
+      } catch (error) {
+        console.error('Error deleting request:', error);
+        alert('เกิดข้อผิดพลาดในการยกเลิก');
+      }
+    }
+  }
 
   if (loading) {
     return (
@@ -134,6 +175,20 @@ export default function RequestDetail() {
               <pre className="bg-gray-100 p-4 rounded text-xs overflow-auto">
                 {JSON.stringify(request.form_data, null, 2)}
               </pre>
+            </div>
+            <div className="flex gap-4 mt-6">
+              <button
+                onClick={handleSave}
+                className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+              >
+                บันทึกข้อมูล
+              </button>
+              <button
+                onClick={handleCancel}
+                className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
+              >
+                ยกเลิก
+              </button>
             </div>
           </div>
         </div>

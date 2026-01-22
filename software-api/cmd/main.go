@@ -32,6 +32,8 @@ func main() {
 	r.POST("/software-requests", handlers.CreateSoftwareRequest)
 	r.GET("/software-requests", handlers.GetSoftwareRequests)
 	r.GET("/software-requests/:id", handlers.GetSoftwareRequestByID)
+	r.PUT("/software-requests/:id", handlers.UpdateSoftwareRequest)
+	r.DELETE("/software-requests/:id", handlers.DeleteSoftwareRequest)
 
 	// Start server
 	log.Println("Server starting on :8080")

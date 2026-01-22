@@ -556,6 +556,54 @@ export function SoftwareRequestForm() {
       });
   };
 
+  const handleSave = async () => {
+    if (!id) return;
+    try {
+      console.log('Saving form data:', formData);
+      const response = await fetch(`http://localhost:8080/software-requests/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+      
+      console.log('Response status:', response.status);
+      const responseData = await response.json();
+      console.log('Response data:', responseData);
+      
+      if (response.ok) {
+        alert('บันทึกข้อมูลเรียบร้อยแล้ว');
+        navigate('/');
+      } else {
+        alert(`เกิดข้อผิดพลาดในการบันทึกข้อมูล: ${responseData.error || 'Unknown error'}`);
+      }
+    } catch (error) {
+      console.error('Error saving request:', error);
+      alert(`เกิดข้อผิดพลาดในการบันทึกข้อมูล: ${error}`);
+    }
+  };
+
+  const handleCancel = async () => {
+    if (!id) return;
+    if (confirm('คุณต้องการยกเลิก Draft นี้หรือไม่? ข้อมูลจะถูกลบออกจากระบบ')) {
+      try {
+        const response = await fetch(`http://localhost:8080/software-requests/${id}`, {
+          method: 'DELETE',
+        });
+        if (response.ok) {
+          alert('ยกเลิกเรียบร้อยแล้ว');
+          navigate('/');
+        } else {
+          alert('เกิดข้อผิดพลาดในการยกเลิก');
+        }
+      } catch (error) {
+        console.error('Error deleting request:', error);
+        alert('เกิดข้อผิดพลาดในการยกเลิก');
+      }
+    }
+  };
+
   return (
     <div className="bg-gray-50 home-container">
       {/* Main Content */}
@@ -1406,26 +1454,43 @@ export function SoftwareRequestForm() {
 
         {/* Form Actions */}
         <div className="form-actions">
-          <button
-            type="button"
-            className="btn-secondary"
-            onClick={() => {
-              if (isViewMode) {
-                navigate('/');
-              } else if (confirm('Are you sure you want to cancel? All changes will be lost.')) {
-                window.location.reload();
-              }
-            }}
-          >
-            {isViewMode ? 'ย้อนกลับ' : 'ยกเลิก'}
-          </button>
-          {!isViewMode && (
-            <button
-              type="submit"
-              className="btn-primary"
-            >
-              บันทึกข้อมูล
-            </button>
+          {isViewMode ? (
+            <>
+              <button
+                type="button"
+                className="btn-secondary"
+                onClick={handleCancel}
+              >
+                ยกเลิก
+              </button>
+              <button
+                type="button"
+                className="btn-primary"
+                onClick={handleSave}
+              >
+                บันทึกข้อมูล
+              </button>
+            </>
+          ) : (
+            <>
+              <button
+                type="button"
+                className="btn-secondary"
+                onClick={() => {
+                  if (confirm('Are you sure you want to cancel? All changes will be lost.')) {
+                    window.location.reload();
+                  }
+                }}
+              >
+                ยกเลิก
+              </button>
+              <button
+                type="submit"
+                className="btn-primary"
+              >
+                บันทึกข้อมูล
+              </button>
+            </>
           )}
         </div>
       </form>
