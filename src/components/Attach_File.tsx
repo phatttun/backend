@@ -73,10 +73,6 @@ const Attach_File: React.FC<AttachFileProps> = ({ attachFiles, setAttachFiles, i
   const validateForm = (): boolean => {
     const errors: Record<string, string> = {};
 
-    if (!formData.description.trim()) {
-      errors.description = 'Description is required';
-    }
-
     if (!formData.file) {
       errors.file = 'Attach File is required';
     } else if (formData.file.size > MAX_FILE_SIZE) {
@@ -323,12 +319,12 @@ const Attach_File: React.FC<AttachFileProps> = ({ attachFiles, setAttachFiles, i
 
             <div className="modal-body">
               <div className="form-field">
-                <label className="form-field-label">Description</label>
+                <label className="form-field-label">Description (Optional)</label>
                 <input
                   type="text"
                   value={formData.description}
                   onChange={(e) => handleInputChange('description', e.target.value)}
-                  placeholder="Please enter Description"
+                  placeholder="Please enter Description (Optional)"
                   className={`clearable-input ${formErrors.description ? 'input-error' : ''}`}
                 />
                 {formErrors.description && (

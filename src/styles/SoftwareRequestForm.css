@@ -1534,6 +1534,7 @@
   background: white;
   border-radius: 12px;
   overflow: hidden;
+  overflow-x: auto;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
   border: 1px solid var(--gray-200);
 }
@@ -1552,6 +1553,7 @@
 
 .parent-ci-table {
   width: 100%;
+  min-width: 600px;
   border-collapse: collapse;
 }
 
@@ -1586,6 +1588,12 @@
 .parent-ci-table td:last-child {
   border-right: none;
   text-align: center;
+}
+
+.parent-ci-table td:nth-child(2) {
+  max-width: 300px;
+  word-break: break-word;
+  white-space: normal;
 }
 
 .parent-ci-table tbody tr:hover {
@@ -1748,12 +1756,14 @@
   background: white;
   border-radius: 12px;
   overflow: hidden;
+  overflow-x: auto;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
   border: 1px solid var(--gray-200);
 }
 
 .attach-url-table {
   width: 100%;
+  min-width: 800px;
   border-collapse: collapse;
 }
 
@@ -1788,6 +1798,13 @@
 .attach-url-table td:last-child {
   border-right: none;
   text-align: center;
+}
+
+.attach-url-table td:first-child,
+.attach-url-table td:nth-child(2) {
+  max-width: 300px;
+  word-break: break-word;
+  white-space: normal;
 }
 
 .attach-url-table tbody tr:hover {
@@ -1920,12 +1937,14 @@
   background: white;
   border-radius: 12px;
   overflow: hidden;
+  overflow-x: auto;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
   border: 1px solid var(--gray-200);
 }
 
 .attach-file-table {
   width: 100%;
+  min-width: 800px;
   border-collapse: collapse;
 }
 
@@ -1960,6 +1979,13 @@
 .attach-file-table td:last-child {
   border-right: none;
   text-align: center;
+}
+
+.attach-file-table td:first-child,
+.attach-file-table td:nth-child(2) {
+  max-width: 300px;
+  word-break: break-word;
+  white-space: normal;
 }
 
 .attach-file-table tbody tr:hover {
