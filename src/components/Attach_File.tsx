@@ -20,10 +20,9 @@ interface AttachFileItem {
 interface AttachFileProps {
   attachFiles: AttachFileItem[];
   setAttachFiles: (files: AttachFileItem[]) => void;
-  isViewMode?: boolean;
 }
 
-const Attach_File: React.FC<AttachFileProps> = ({ attachFiles, setAttachFiles, isViewMode = false }) => {
+const Attach_File: React.FC<AttachFileProps> = ({ attachFiles, setAttachFiles }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [formData, setFormData] = useState({
@@ -245,7 +244,7 @@ const Attach_File: React.FC<AttachFileProps> = ({ attachFiles, setAttachFiles, i
                 type="button"
                 className="btn-add-file"
                 onClick={() => setShowModal(true)}
-                disabled={isViewMode}
+                disabled={false}
               >
                 <Plus size={16} />
                 แนบเอกสาร
@@ -291,7 +290,7 @@ const Attach_File: React.FC<AttachFileProps> = ({ attachFiles, setAttachFiles, i
                             className="btn-delete"
                             onClick={(e) => { e.preventDefault(); e.stopPropagation(); handleRemoveAttachFile(item.id); }}
                             title="Remove Attach File"
-                            disabled={isViewMode}
+                            disabled={false}
                             type="button"
                           >
                             <Trash2 size={16} />
@@ -364,7 +363,7 @@ const Attach_File: React.FC<AttachFileProps> = ({ attachFiles, setAttachFiles, i
                 type="button"
                 className="btn-secondary"
                 onClick={() => setShowModal(false)}
-                disabled={isViewMode}
+                disabled={false}
               >
                 Cancel
               </button>
@@ -372,7 +371,7 @@ const Attach_File: React.FC<AttachFileProps> = ({ attachFiles, setAttachFiles, i
                 type="button"
                 className="btn-primary"
                 onClick={handleAddAttachFile}
-                disabled={isViewMode}
+                disabled={false}
               >
                 Confirm
               </button>

@@ -17,7 +17,6 @@ interface AttachURLItem {
 interface AttachURLProps {
   attachURLs: AttachURLItem[];
   setAttachURLs: React.Dispatch<React.SetStateAction<AttachURLItem[]>>;
-  isViewMode?: boolean;
 }
 
 interface AddAttachURLModalProps {
@@ -27,7 +26,6 @@ interface AddAttachURLModalProps {
   handleAddAttachURL: (e?: React.MouseEvent) => void;
   setShowModal: (show: boolean) => void;
   urlInputRef: React.RefObject<HTMLInputElement | null>;
-  isViewMode: boolean;
 }
 
 const AddAttachURLModal: React.FC<AddAttachURLModalProps> = ({
@@ -36,8 +34,7 @@ const AddAttachURLModal: React.FC<AddAttachURLModalProps> = ({
   formErrors,
   handleAddAttachURL,
   setShowModal,
-  urlInputRef,
-  isViewMode
+  urlInputRef
 }) => (
   <div className="modal-overlay" onClick={() => setShowModal(false)}>
     <div className="modal-content modal-medium" onClick={e => e.stopPropagation()}>
@@ -84,7 +81,7 @@ const AddAttachURLModal: React.FC<AddAttachURLModalProps> = ({
           type="button"
           className="btn-secondary"
           onClick={() => setShowModal(false)}
-          disabled={isViewMode}
+          disabled={false}
         >
           Cancel
         </button>
@@ -92,7 +89,7 @@ const AddAttachURLModal: React.FC<AddAttachURLModalProps> = ({
           type="button"
           className="btn-primary"
           onClick={handleAddAttachURL}
-          disabled={isViewMode}
+          disabled={false}
         >
           Confirm
         </button>
@@ -101,7 +98,7 @@ const AddAttachURLModal: React.FC<AddAttachURLModalProps> = ({
   </div>
 );
 
-const Attach_URL: React.FC<AttachURLProps> = ({ attachURLs, setAttachURLs, isViewMode = false }) => {
+const Attach_URL: React.FC<AttachURLProps> = ({ attachURLs, setAttachURLs }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [formData, setFormData] = useState({
@@ -239,7 +236,7 @@ const Attach_URL: React.FC<AttachURLProps> = ({ attachURLs, setAttachURLs, isVie
                 type="button"
                 className="btn-add-url"
                 onClick={() => setShowModal(true)}
-                disabled={isViewMode}
+                disabled={false}
               >
                 <Plus size={16} />
                 แนบ URL
@@ -283,7 +280,7 @@ const Attach_URL: React.FC<AttachURLProps> = ({ attachURLs, setAttachURLs, isVie
                             className="btn-delete"
                             onClick={(e) => { e.preventDefault(); e.stopPropagation(); handleRemoveAttachURL(item.id); }}
                             title="Remove Attach URL"
-                            disabled={isViewMode}
+                            disabled={false}
                             type="button"
                           >
                             <Trash2 size={16} />
@@ -307,7 +304,6 @@ const Attach_URL: React.FC<AttachURLProps> = ({ attachURLs, setAttachURLs, isVie
           handleAddAttachURL={handleAddAttachURL}
           setShowModal={setShowModal}
           urlInputRef={urlInputRef}
-          isViewMode={isViewMode}
         />, 
         document.body
       )}

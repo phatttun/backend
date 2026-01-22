@@ -124,7 +124,7 @@ const getStatusBadgeColor = (status: CIStatus): string => {
 export function SoftwareRequestForm() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const [isViewMode, setIsViewMode] = useState(!!id);
+  const [isViewMode] = useState(!!id);
   const [isLoading, setIsLoading] = useState(!!id);
 
   const [formData, setFormData] = useState({
@@ -559,13 +559,19 @@ export function SoftwareRequestForm() {
   const handleSave = async () => {
     if (!id) return;
     try {
-      console.log('Saving form data:', formData);
+      const completeFormData = {
+        ...formData,
+        parentCIs,
+        attachURLs,
+        attachFiles
+      };
+      console.log('Saving form data:', completeFormData);
       const response = await fetch(`http://localhost:8080/software-requests/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(completeFormData),
       });
       
       console.log('Response status:', response.status);
@@ -1407,7 +1413,6 @@ export function SoftwareRequestForm() {
                 currentCIId={formData.ciId}
                 parentCIs={parentCIs}
                 setParentCIs={setParentCIs}
-                isViewMode={isViewMode}
               />
             </div>
           </div>
@@ -1420,14 +1425,12 @@ export function SoftwareRequestForm() {
               <Attach_URL 
                 attachURLs={attachURLs}
                 setAttachURLs={setAttachURLs}
-                isViewMode={isViewMode}
               />
             </div>
             <div className="form-field full-width">
               <Attach_File 
                 attachFiles={attachFiles}
                 setAttachFiles={setAttachFiles}
-                isViewMode={isViewMode}
               />
             </div>
           </div>

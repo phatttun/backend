@@ -37,11 +37,10 @@ const MOCK_CMDB_CIS: CI[] = [
 interface ParentCIProps {
   currentCIId?: string;
   parentCIs: Array<{ id: string; ciName: string }>;
-  setParentCIs: (cis: Array<{ id: string; ciName: string }>) => void;
-  isViewMode?: boolean;
+  setParentCIs: React.Dispatch<React.SetStateAction<Array<{ id: string; ciName: string }>>>;
 }
 
-const ParentCI: React.FC<ParentCIProps> = ({ currentCIId, parentCIs, setParentCIs, isViewMode }) => {
+const ParentCI: React.FC<ParentCIProps> = ({ currentCIId, parentCIs, setParentCIs }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [modalSearchQuery, setModalSearchQuery] = useState('');
@@ -246,7 +245,7 @@ const ParentCI: React.FC<ParentCIProps> = ({ currentCIId, parentCIs, setParentCI
                 type="button"
                 className="btn-add-ci"
                 onClick={() => setShowModal(true)}
-                disabled={isViewMode}
+                disabled={false}
               >
                 <Plus size={16} />
                 เพิ่ม CI
@@ -277,7 +276,7 @@ const ParentCI: React.FC<ParentCIProps> = ({ currentCIId, parentCIs, setParentCI
                             className="btn-delete"
                             onClick={(e) => { e.preventDefault(); e.stopPropagation(); handleRemoveParentCI(ci.id); }}
                             title="Remove Parent CI"
-                            disabled={isViewMode}
+                            disabled={false}
                             type="button"
                           >
                             <Trash2 size={16} />
