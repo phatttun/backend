@@ -9,17 +9,18 @@ interface AttachURLItem {
   id: string;
   description: string;
   url: string;
-  step: number;
-  updateBy: string;
-  updateDate: string;
+  step?: number;
+  updateBy?: string;
+  updateDate?: string;
 }
 
 interface AttachURLProps {
-  // Props if needed
+  attachURLs: AttachURLItem[];
+  setAttachURLs: (urls: AttachURLItem[]) => void;
+  isViewMode?: boolean;
 }
 
-const Attach_URL: React.FC<AttachURLProps> = () => {
-  const [attachURLs, setAttachURLs] = useState<AttachURLItem[]>([]);
+const Attach_URL: React.FC<AttachURLProps> = ({ attachURLs, setAttachURLs, isViewMode = false }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [formData, setFormData] = useState({
@@ -86,7 +87,11 @@ const Attach_URL: React.FC<AttachURLProps> = () => {
   };
 
   // Add new attach URL
-  const handleAddAttachURL = () => {
+  const handleAddAttachURL = (e?: React.MouseEvent) => {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
     if (!validateForm()) return;
 
     const newItem: AttachURLItem = {
@@ -158,12 +163,14 @@ const Attach_URL: React.FC<AttachURLProps> = () => {
           <button
             className="btn-secondary"
             onClick={() => setShowModal(false)}
+            disabled={isViewMode}
           >
             Cancel
           </button>
           <button
             className="btn-primary"
             onClick={handleAddAttachURL}
+            disabled={isViewMode}
           >
             Confirm
           </button>
@@ -201,6 +208,7 @@ const Attach_URL: React.FC<AttachURLProps> = () => {
               <button
                 className="btn-add-url"
                 onClick={() => setShowModal(true)}
+                disabled={isViewMode}
               >
                 <Plus size={16} />
                 แนบ URL
@@ -242,8 +250,10 @@ const Attach_URL: React.FC<AttachURLProps> = () => {
                         <td>
                           <button
                             className="btn-delete"
-                            onClick={() => handleRemoveAttachURL(item.id)}
+                            onClick={(e) => { e.preventDefault(); e.stopPropagation(); handleRemoveAttachURL(item.id); }}
                             title="Remove Attach URL"
+                            disabled={isViewMode}
+                            type="button"
                           >
                             <Trash2 size={16} />
                           </button>

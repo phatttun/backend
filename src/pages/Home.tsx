@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Search,
@@ -11,7 +11,7 @@ import {
 import '../styles/Home.css';
 
 interface RequestRow {
-  id: string;
+  id: number;
   requestNo: string;
   ciId: string;
   ciName: string;
@@ -20,150 +20,82 @@ interface RequestRow {
   requester: string;
   requestDate: string;
   status: "Draft" | "Pending" | "Approved" | "Rejected";
-  operator: string;
+  currentOperator: string;
 }
-
-const DUMMY_DATA: RequestRow[] = [
-  {
-    id: "1",
-    requestNo: "REQ-2025-0001",
-    ciId: "CI-001",
-    ciName: "Payment Gateway Service",
-    ciVersion: "2.1.0",
-    serviceName: "Payment Service",
-    requester: "Alice Johnson",
-    requestDate: "2025-12-28",
-    status: "Pending",
-    operator: "Bob Smith",
-  },
-  {
-    id: "2",
-    requestNo: "REQ-2025-0002",
-    ciId: "CI-002",
-    ciName: "User Authentication Module",
-    ciVersion: "1.5.2",
-    serviceName: "Auth Service",
-    requester: "Carol White",
-    requestDate: "2025-12-25",
-    status: "Approved",
-    operator: "David Lee",
-  },
-  {
-    id: "3",
-    requestNo: "REQ-2025-0003",
-    ciId: "CI-003",
-    ciName: "Email Notification System",
-    ciVersion: "3.0.1",
-    serviceName: "Email Service",
-    requester: "Emily Brown",
-    requestDate: "2025-12-22",
-    status: "Draft",
-    operator: "Frank Miller",
-  },
-  {
-    id: "4",
-    requestNo: "REQ-2025-0004",
-    ciId: "CI-004",
-    ciName: "Data Analytics Platform",
-    ciVersion: "1.8.0",
-    serviceName: "Analytics Service",
-    requester: "Grace Lee",
-    requestDate: "2025-12-20",
-    status: "Pending",
-    operator: "Henry Davis",
-  },
-  {
-    id: "5",
-    requestNo: "REQ-2025-0005",
-    ciId: "CI-005",
-    ciName: "API Gateway",
-    ciVersion: "2.3.1",
-    serviceName: "Gateway Service",
-    requester: "Isaac Wilson",
-    requestDate: "2025-12-18",
-    status: "Rejected",
-    operator: "Jane Martinez",
-  },
-  {
-    id: "6",
-    requestNo: "REQ-2025-0006",
-    ciId: "CI-006",
-    ciName: "Database Connection Pool",
-    ciVersion: "1.2.0",
-    serviceName: "Database Service",
-    requester: "Karen Taylor",
-    requestDate: "2025-12-15",
-    status: "Approved",
-    operator: "Leo Anderson",
-  },
-  {
-    id: "7",
-    requestNo: "REQ-2025-0007",
-    ciId: "CI-007",
-    ciName: "Logging Service",
-    ciVersion: "4.1.2",
-    serviceName: "Logging Service",
-    requester: "Michael Chen",
-    requestDate: "2025-12-12",
-    status: "Pending",
-    operator: "Nina Thompson",
-  },
-  {
-    id: "8",
-    requestNo: "REQ-2025-0008",
-    ciId: "CI-008",
-    ciName: "Caching Module",
-    ciVersion: "2.0.0",
-    serviceName: "Cache Service",
-    requester: "Oscar Garcia",
-    requestDate: "2025-12-10",
-    status: "Draft",
-    operator: "Paula White",
-  },
-  {
-    id: "9",
-    requestNo: "REQ-2025-0009",
-    ciId: "CI-009",
-    ciName: "File Upload Handler",
-    ciVersion: "1.4.3",
-    serviceName: "File Service",
-    requester: "Quinn Rodriguez",
-    requestDate: "2025-12-08",
-    status: "Approved",
-    operator: "Rita Jones",
-  },
-  {
-    id: "10",
-    requestNo: "REQ-2025-0010",
-    ciId: "CI-010",
-    ciName: "Search Engine Integration",
-    ciVersion: "3.5.0",
-    serviceName: "Search Service",
-    requester: "Samuel Brown",
-    requestDate: "2025-12-05",
-    status: "Pending",
-    operator: "Tina Kim",
-  },
-];
 
 export default function Home() {
   const navigate = useNavigate();
+  const [data, setData] = useState<RequestRow[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
-  const totalItems = DUMMY_DATA.length;
-  const totalPages = Math.ceil(totalItems / itemsPerPage);
 
-  const filteredData = DUMMY_DATA.filter((item) =>
+  useEffect(() => {
+    console.log('Fetching data from API...');
+    fetch('http://localhost:8080/software-requests')
+      .then(response => {
+        console.log('Response status:', response.status);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(data => {
+        console.log('Data received:', data);
+        setData(data || []);
+        setLoading(false);
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+        setError(`Failed to load data: ${error.message}`);
+        setLoading(false);
+      });
+  }, []);
+
+  const filteredData = data.filter((item) =>
     Object.values(item).some((value) =>
       value.toString().toLowerCase().includes(searchQuery.toLowerCase())
     )
   );
 
+  const totalItems = filteredData.length;
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
+
   const paginatedData = filteredData.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
+
+  console.log('Rendering Home component, loading:', loading, 'error:', error, 'data length:', data.length);
+
+  if (error) {
+    return (
+      <div className="bg-gray-50 home-container">
+        <div className="flex-1 flex flex-col overflow-hidden">
+          <header className="bg-white border-b border-gray-200 px-8 py-4 shadow-sm header">
+            <div className="flex items-center justify-between mb-4">
+              <nav className="breadcrumbs">
+                <div className="breadcrumb-item">
+                  <a href="#" className="breadcrumb-link">
+                    <HomeIcon size={16} className="breadcrumb-icon" />
+                    Home
+                  </a>
+                </div>
+              </nav>
+            </div>
+          </header>
+          <div className="flex-1 overflow-auto p-8 content-area">
+            <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+              <p>Error loading data: {error}</p>
+              <p>Please check if the backend server is running at http://localhost:8080</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-gray-50 home-container">
@@ -256,11 +188,21 @@ export default function Home() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200">
-                  {paginatedData.length > 0 ? (
+                  {loading ? (
+                    <tr>
+                      <td
+                        colSpan={10}
+                        className="px-3 py-4 text-center text-gray-500 empty-state"
+                      >
+                        กำลังโหลด...
+                      </td>
+                    </tr>
+                  ) : paginatedData.length > 0 ? (
                     paginatedData.map((row) => (
                       <tr
                         key={row.id}
-                        className="hover:bg-gray-50 transition"
+                        className="hover:bg-gray-50 transition cursor-pointer"
+                        onClick={() => navigate(`/request-form/${row.id}`)}
                       >
                         <td className="px-3 py-2 text-xs text-gray-800 font-medium cell-bold">
                           {row.requestNo}
@@ -299,7 +241,7 @@ export default function Home() {
                           </span>
                         </td>
                         <td className="px-3 py-2 text-xs text-gray-600">
-                          {row.operator}
+                          {row.currentOperator}
                         </td>
                         <td className="px-3 py-2 text-center">
                           <button className="action-btn">

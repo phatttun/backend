@@ -8,20 +8,22 @@ import '../styles/SoftwareRequestForm.css';
 interface AttachFileItem {
   id: string;
   description: string;
-  file: File;
+  file?: File;
   fileName: string;
   fileSize: number;
-  step: number;
-  updateBy: string;
-  updateDate: string;
+  fileBase64?: string; // Store file as base64 string for database persistence
+  step?: number;
+  updateBy?: string;
+  updateDate?: string;
 }
 
 interface AttachFileProps {
-  // Props if needed
+  attachFiles: AttachFileItem[];
+  setAttachFiles: (files: AttachFileItem[]) => void;
+  isViewMode?: boolean;
 }
 
-const Attach_File: React.FC<AttachFileProps> = () => {
-  const [attachFiles, setAttachFiles] = useState<AttachFileItem[]>([]);
+const Attach_File: React.FC<AttachFileProps> = ({ attachFiles, setAttachFiles, isViewMode = false }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [formData, setFormData] = useState({
@@ -91,48 +93,126 @@ const Attach_File: React.FC<AttachFileProps> = () => {
   };
 
   // Add new attach file
-  const handleAddAttachFile = () => {
+  const handleAddAttachFile = (e?: React.MouseEvent) => {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
     if (!validateForm() || !formData.file) return;
 
-    const newItem: AttachFileItem = {
-      id: `FILE-${Date.now()}`,
-      description: formData.description.trim(),
-      file: formData.file,
-      fileName: formData.file.name,
-      fileSize: formData.file.size,
-      step: attachFiles.length + 1,
-      updateBy: 'Requester', // In real app, get from user context
-      updateDate: new Date().toLocaleDateString()
+    // Convert file to base64 for database storage
+    const file = formData.file;
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const base64String = event.target?.result as string;
+      
+      const newItem: AttachFileItem = {
+        id: `FILE-${Date.now()}`,
+        description: formData.description.trim(),
+        file: file,
+        fileName: file.name,
+        fileSize: file.size,
+        fileBase64: base64String, // Store base64 for database
+        step: attachFiles.length + 1,
+        updateBy: 'Requester',
+        updateDate: new Date().toLocaleDateString()
+      };
+
+      setAttachFiles([...attachFiles, newItem]);
+      setFormData({ description: '', file: null });
+      setShowModal(false);
+
+      // Reset file input
+      const fileInput = document.getElementById('file-input') as HTMLInputElement;
+      if (fileInput) fileInput.value = '';
     };
-
-    setAttachFiles(prev => [...prev, newItem]);
-    setFormData({ description: '', file: null });
-    setShowModal(false);
-
-    // Reset file input
-    const fileInput = document.getElementById('file-input') as HTMLInputElement;
-    if (fileInput) fileInput.value = '';
+    
+    reader.readAsDataURL(file);
   };
 
   // Remove attach file
   const handleRemoveAttachFile = (id: string) => {
-    setAttachFiles(prev => {
-      const updated = prev.filter(item => item.id !== id);
-      // Re-number steps
-      return updated.map((item, index) => ({ ...item, step: index + 1 }));
-    });
+    const updated = attachFiles.filter((item: AttachFileItem) => item.id !== id);
+    // Re-number steps
+    const renumbered = updated.map((item: AttachFileItem, index: number) => ({ ...item, step: index + 1 }));
+    setAttachFiles(renumbered);
   };
 
-  // Open file
-  const handleOpenFile = (file: File) => {
-    const url = URL.createObjectURL(file);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = file.name;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
+  // Open file - handles both File objects and base64 strings
+  const handleOpenFile = (e: React.MouseEvent, fileItem: AttachFileItem) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    console.log('Opening file:', fileItem);
+    console.log('File object:', fileItem.file);
+    console.log('Base64:', fileItem.fileBase64 ? `exists (${fileItem.fileBase64.length} chars)` : 'not found');
+    
+    try {
+      // If file object exists, use it directly
+      if (fileItem.file && fileItem.file instanceof File) {
+        console.log('Using File object directly');
+        const url = URL.createObjectURL(fileItem.file);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = fileItem.fileName;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        setTimeout(() => URL.revokeObjectURL(url), 100);
+        return;
+      } 
+      // Otherwise, try to convert base64 string to blob
+      else if (fileItem.fileBase64 && typeof fileItem.fileBase64 === 'string') {
+        console.log('Converting base64 to blob');
+        try {
+          // Extract base64 data - handle both "data:...;base64,XXX" and just "XXX" formats
+          let base64Data = fileItem.fileBase64;
+          if (base64Data.includes(',')) {
+            base64Data = base64Data.split(',')[1] || base64Data;
+          }
+          
+          // Clean up base64 string (remove newlines and spaces)
+          base64Data = base64Data.replace(/\s/g, '');
+          
+          console.log('Base64 data length:', base64Data.length);
+          
+          // Decode base64
+          const byteCharacters = atob(base64Data);
+          const byteNumbers = new Array(byteCharacters.length);
+          for (let i = 0; i < byteCharacters.length; i++) {
+            byteNumbers[i] = byteCharacters.charCodeAt(i);
+          }
+          const byteArray = new Uint8Array(byteNumbers);
+          
+          // Create blob and download
+          const blob = new Blob([byteArray], { type: 'application/octet-stream' });
+          console.log('Created blob:', blob);
+          const url = URL.createObjectURL(blob);
+          
+          const link = document.createElement('a');
+          link.href = url;
+          link.download = fileItem.fileName;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          
+          // Clean up the URL after a delay to ensure download completes
+          setTimeout(() => URL.revokeObjectURL(url), 100);
+        } catch (decodeError) {
+          console.error('Error decoding base64:', decodeError);
+          alert('ไฟล์ไม่สามารถถอดรหัสได้');
+          return;
+        }
+      }
+      else {
+        console.warn('No file or base64 available', { file: fileItem.file, base64: fileItem.fileBase64 });
+        alert('ไฟล์ไม่พร้อมใช้งาน');
+        return;
+      }
+    } catch (error) {
+      console.error('Error downloading file:', error);
+      alert('เกิดข้อผิดพลาดในการดาวน์โหลดไฟล์: ' + (error instanceof Error ? error.message : 'ไม่ทราบข้อผิดพลาด'));
+    }
   };
 
   return (
@@ -164,6 +244,7 @@ const Attach_File: React.FC<AttachFileProps> = () => {
               <button
                 className="btn-add-file"
                 onClick={() => setShowModal(true)}
+                disabled={isViewMode}
               >
                 <Plus size={16} />
                 แนบเอกสาร
@@ -192,8 +273,9 @@ const Attach_File: React.FC<AttachFileProps> = () => {
                         <td>
                           <button
                             className="file-link"
-                            onClick={() => handleOpenFile(item.file)}
+                            onClick={(e) => handleOpenFile(e, item)}
                             title={`Download ${item.fileName}`}
+                            type="button"
                           >
                             <FileText size={16} />
                             {item.fileName}
@@ -206,8 +288,10 @@ const Attach_File: React.FC<AttachFileProps> = () => {
                         <td>
                           <button
                             className="btn-delete"
-                            onClick={() => handleRemoveAttachFile(item.id)}
+                            onClick={(e) => { e.preventDefault(); e.stopPropagation(); handleRemoveAttachFile(item.id); }}
                             title="Remove Attach File"
+                            disabled={isViewMode}
+                            type="button"
                           >
                             <Trash2 size={16} />
                           </button>
@@ -275,12 +359,14 @@ const Attach_File: React.FC<AttachFileProps> = () => {
               <button
                 className="btn-secondary"
                 onClick={() => setShowModal(false)}
+                disabled={isViewMode}
               >
                 Cancel
               </button>
               <button
                 className="btn-primary"
                 onClick={handleAddAttachFile}
+                disabled={isViewMode}
               >
                 Confirm
               </button>

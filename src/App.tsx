@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { useState } from 'react';
 import Home from './pages/Home';
 import Master from './pages/Master';
+import RequestDetail from './pages/RequestDetail';
 import { SoftwareRequestForm } from './components/SoftwareRequestForm';
 import Sidebar from './components/Sidebar';
 import './components/Sidebar.css';
@@ -18,6 +19,8 @@ export default function App() {
             <Route path="/" element={<Home />} />
             <Route path="/master" element={<Master />} />
             <Route path="/request-form" element={<SoftwareRequestForm />} />
+            <Route path="/request-form/:id" element={<SoftwareRequestForm />} />
+            <Route path="/request-detail/:id" element={<RequestDetail />} />
           </Routes>
         </div>
       </div>

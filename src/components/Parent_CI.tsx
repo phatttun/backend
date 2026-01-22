@@ -35,11 +35,13 @@ const MOCK_CMDB_CIS: CI[] = [
 ];
 
 interface ParentCIProps {
-  currentCIId?: string; // Current CI ID to prevent self-selection
+  currentCIId?: string;
+  parentCIs: Array<{ id: string; ciName: string }>;
+  setParentCIs: (cis: Array<{ id: string; ciName: string }>) => void;
+  isViewMode?: boolean;
 }
 
-const ParentCI: React.FC<ParentCIProps> = ({ currentCIId }) => {
-  const [parentCIs, setParentCIs] = useState<CI[]>([]);
+const ParentCI: React.FC<ParentCIProps> = ({ currentCIId, parentCIs, setParentCIs, isViewMode }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [modalSearchQuery, setModalSearchQuery] = useState('');
@@ -94,7 +96,11 @@ const ParentCI: React.FC<ParentCIProps> = ({ currentCIId }) => {
   };
 
   // Add selected CIs to parent list
-  const handleAddSelectedCIs = () => {
+  const handleAddSelectedCIs = (e?: React.MouseEvent) => {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
     const selectedCIObjects = MOCK_CMDB_CIS.filter(ci => selectedCIs.has(ci.id));
     setParentCIs(prev => [...prev, ...selectedCIObjects]);
     setSelectedCIs(new Set());
@@ -235,6 +241,7 @@ const ParentCI: React.FC<ParentCIProps> = ({ currentCIId }) => {
               <button
                 className="btn-add-ci"
                 onClick={() => setShowModal(true)}
+                disabled={isViewMode}
               >
                 <Plus size={16} />
                 เพิ่ม CI
@@ -263,8 +270,10 @@ const ParentCI: React.FC<ParentCIProps> = ({ currentCIId }) => {
                         <td>
                           <button
                             className="btn-delete"
-                            onClick={() => handleRemoveParentCI(ci.id)}
+                            onClick={(e) => { e.preventDefault(); e.stopPropagation(); handleRemoveParentCI(ci.id); }}
                             title="Remove Parent CI"
+                            disabled={isViewMode}
+                            type="button"
                           >
                             <Trash2 size={16} />
                           </button>

@@ -1,4 +1,5 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Home as HomeIcon, X } from 'lucide-react';
 import '../styles/SoftwareRequestForm.css';
 import { Modal, MOCK_TYPES, MOCK_FUNCTIONS, MOCK_BRANDS, MOCK_LOCATIONS, MOCK_CUSTOMERS } from './modal';
@@ -121,6 +122,11 @@ const getStatusBadgeColor = (status: CIStatus): string => {
 };
 
 export function SoftwareRequestForm() {
+  const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
+  const [isViewMode, setIsViewMode] = useState(!!id);
+  const [isLoading, setIsLoading] = useState(!!id);
+
   const [formData, setFormData] = useState({
     // Header metadata
     requestNo: '-',
@@ -194,10 +200,49 @@ export function SoftwareRequestForm() {
     remark: ''
   });
 
+  // State for Parent CIs, Attach URLs, and Attach Files
+  const [parentCIs, setParentCIs] = useState<Array<{ id: string; ciName: string }>>([]);
+  const [attachURLs, setAttachURLs] = useState<Array<{ id: string; description: string; url: string }>>([]);
+  const [attachFiles, setAttachFiles] = useState<Array<{ id: string; description: string; fileName: string; fileSize: number }>>([]);
+
   const [errors, setErrors] = useState<Record<string, string>>({});
   
   // Create refs for form fields to enable auto-scroll
   const fieldRefs = useRef<Record<string, HTMLDivElement | null>>({});
+
+  // Load data if viewing existing request
+  useEffect(() => {
+    if (id && isLoading) {
+      console.log('Loading request data for id:', id);
+      fetch(`http://localhost:8080/software-requests/${id}`)
+        .then(response => {
+          if (!response.ok) throw new Error('Failed to load request');
+          return response.json();
+        })
+        .then(data => {
+          console.log('Loaded request data:', data);
+          const parsedFormData = typeof data.form_data === 'string' 
+            ? JSON.parse(data.form_data) 
+            : data.form_data;
+          setFormData(prev => ({
+            ...prev,
+            ...parsedFormData
+          }));
+          
+          // Load related data
+          if (parsedFormData.parentCIs) setParentCIs(parsedFormData.parentCIs);
+          if (parsedFormData.attachURLs) setAttachURLs(parsedFormData.attachURLs);
+          if (parsedFormData.attachFiles) setAttachFiles(parsedFormData.attachFiles);
+          
+          setIsLoading(false);
+        })
+        .catch(error => {
+          console.error('Error loading request:', error);
+          alert('Failed to load request data');
+          setIsLoading(false);
+        });
+    }
+  }, [id, isLoading]);
 
   // Modal state management
   const [activeModal, setActiveModal] = useState<string | null>(null);
@@ -361,6 +406,12 @@ export function SoftwareRequestForm() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
+    // If in view mode, don't submit
+    if (isViewMode) {
+      navigate('/');
+      return;
+    }
     
     const newErrors: Record<string, string> = {};
     
@@ -478,7 +529,31 @@ export function SoftwareRequestForm() {
     }
 
     console.log('Form submitted:', formData);
-    alert('Form submitted successfully!');
+    
+    // Send to backend
+    fetch('http://localhost:8080/software-requests', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        ...formData,
+        parentCIs,
+        attachURLs,
+        attachFiles
+      }),
+    })
+      .then(response => {
+        if (response.ok) {
+          navigate('/');
+        } else {
+          alert('Failed to save draft');
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('Error saving draft');
+      });
   };
 
   return (
@@ -498,7 +573,7 @@ export function SoftwareRequestForm() {
                   </a>
                 </div>
                 <div className="breadcrumb-item">
-                  <span>Software Request</span>
+                  <span>Software Request {isViewMode ? '(View)' : '(Create)'}</span>
                 </div>
               </nav>
             </div>
@@ -507,7 +582,12 @@ export function SoftwareRequestForm() {
 
         {/* Content Area */}
         <div className="flex-1 overflow-auto p-8 content-area">
-          <div className="form-container">
+          {isLoading ? (
+            <div className="text-center py-8">
+              <p className="text-gray-500">Loading request data...</p>
+            </div>
+          ) : (
+            <div className="form-container">
       {/* Header Section */}
       <div className="form-header">
         <div className="form-header-top">
@@ -1275,7 +1355,12 @@ export function SoftwareRequestForm() {
         <div className="form-section">
           <div className="form-grid cols-1">
             <div className="form-field full-width">
-              <Parent_CI currentCIId={formData.ciId} />
+              <Parent_CI 
+                currentCIId={formData.ciId}
+                parentCIs={parentCIs}
+                setParentCIs={setParentCIs}
+                isViewMode={isViewMode}
+              />
             </div>
           </div>
         </div>
@@ -1284,10 +1369,18 @@ export function SoftwareRequestForm() {
         <div className="form-section">
           <div className="form-grid cols-2">
             <div className="form-field full-width">
-              <Attach_URL />
+              <Attach_URL 
+                attachURLs={attachURLs}
+                setAttachURLs={setAttachURLs}
+                isViewMode={isViewMode}
+              />
             </div>
             <div className="form-field full-width">
-              <Attach_File />
+              <Attach_File 
+                attachFiles={attachFiles}
+                setAttachFiles={setAttachFiles}
+                isViewMode={isViewMode}
+              />
             </div>
           </div>
         </div>
@@ -1317,22 +1410,27 @@ export function SoftwareRequestForm() {
             type="button"
             className="btn-secondary"
             onClick={() => {
-              if (confirm('Are you sure you want to cancel? All changes will be lost.')) {
+              if (isViewMode) {
+                navigate('/');
+              } else if (confirm('Are you sure you want to cancel? All changes will be lost.')) {
                 window.location.reload();
               }
             }}
           >
-            ยกเลิก
+            {isViewMode ? 'ย้อนกลับ' : 'ยกเลิก'}
           </button>
-          <button
-            type="submit"
-            className="btn-primary"
-          >
-            บันทึกข้อมูล
-          </button>
+          {!isViewMode && (
+            <button
+              type="submit"
+              className="btn-primary"
+            >
+              บันทึกข้อมูล
+            </button>
+          )}
         </div>
       </form>
-          </div>
+            </div>
+          )}
         </div>
       </div>
 
