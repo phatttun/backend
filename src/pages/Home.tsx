@@ -8,6 +8,8 @@ import {
   ChevronRight,
   MoreVertical,
 } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
+import softwareRequestService from "@/services/softwareRequestService";
 import '../styles/Home.css';
 
 interface RequestRow {
@@ -45,6 +47,7 @@ const formatThailandDate = (dateString: string): string => {
 
 export default function Home() {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [data, setData] = useState<RequestRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -53,26 +56,27 @@ export default function Home() {
   const itemsPerPage = 10;
 
   useEffect(() => {
-    console.log('Fetching data from API...');
-    fetch('http://localhost:8080/software-requests')
-      .then(response => {
-        console.log('Response status:', response.status);
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-      })
-      .then(data => {
-        console.log('Data received:', data);
-        setData(data || []);
+    const fetchData = async () => {
+      try {
+        console.log('Fetching software requests for user:', user?.username);
+        const requests = await softwareRequestService.getDrafts();
+        
+        console.log('Requests received:', requests);
+        console.log('Setting data directly (backend already filters by user_id)');
+        setData(requests || []);
+        setError(null);
+      } catch (err: any) {
+        console.error('Error fetching data:', err);
+        setError(err.message || 'Failed to load data');
+      } finally {
         setLoading(false);
-      })
-      .catch(error => {
-        console.error('Error fetching data:', error);
-        setError(`Failed to load data: ${error.message}`);
-        setLoading(false);
-      });
-  }, []);
+      }
+    };
+
+    if (user) {
+      fetchData();
+    }
+  }, [user]);
 
   const filteredData = data.filter((item) =>
     Object.values(item).some((value) =>

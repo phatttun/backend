@@ -19,8 +19,8 @@ func main() {
 	// CORS middleware
 	r.Use(func(c *gin.Context) {
 		c.Header("Access-Control-Allow-Origin", "*")
-		c.Header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
-		c.Header("Access-Control-Allow-Headers", "Origin, Content-Type, Accept")
+		c.Header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, PATCH, OPTIONS")
+		c.Header("Access-Control-Allow-Headers", "Origin, Content-Type, Accept, Authorization")
 		if c.Request.Method == "OPTIONS" {
 			c.AbortWithStatus(204)
 			return
@@ -28,12 +28,23 @@ func main() {
 		c.Next()
 	})
 
-	// Routes
-	r.POST("/software-requests", handlers.CreateSoftwareRequest)
-	r.GET("/software-requests", handlers.GetSoftwareRequests)
-	r.GET("/software-requests/:id", handlers.GetSoftwareRequestByID)
-	r.PUT("/software-requests/:id", handlers.UpdateSoftwareRequest)
-	r.DELETE("/software-requests/:id", handlers.DeleteSoftwareRequest)
+	// Public Routes - No authentication required
+	r.POST("/auth/login", handlers.Login)
+	r.POST("/auth/logout", handlers.Logout)
+
+	// Protected Routes - Authentication required
+	protected := r.Group("")
+	protected.Use(handlers.AuthMiddleware())
+
+	// Auth routes
+	protected.GET("/auth/profile", handlers.GetProfile)
+
+	// Software Request routes (user-specific)
+	protected.POST("/software-requests", handlers.CreateSoftwareRequest)
+	protected.GET("/software-requests", handlers.GetSoftwareRequests)
+	protected.GET("/software-requests/:id", handlers.GetSoftwareRequestByID)
+	protected.PUT("/software-requests/:id", handlers.UpdateSoftwareRequest)
+	protected.DELETE("/software-requests/:id", handlers.DeleteSoftwareRequest)
 
 	// Start server
 	log.Println("Server starting on :8080")

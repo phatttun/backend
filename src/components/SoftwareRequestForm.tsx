@@ -7,6 +7,7 @@ import Parent_CI from './Parent_CI';
 import Attach_URL from './Attach_URL';
 import Attach_File from './Attach_File';
 import ClearableSelectInput from './ClearableSelectInput';
+import softwareRequestService from '@/services/softwareRequestService';
 
 // Clearable Input Component
 interface ClearableInputProps {
@@ -214,16 +215,12 @@ export function SoftwareRequestForm() {
   useEffect(() => {
     if (id && isLoading) {
       console.log('Loading request data for id:', id);
-      fetch(`http://localhost:8080/software-requests/${id}`)
-        .then(response => {
-          if (!response.ok) throw new Error('Failed to load request');
-          return response.json();
-        })
+      softwareRequestService.getDraftById(Number(id))
         .then(data => {
           console.log('Loaded request data:', data);
-          const parsedFormData = typeof data.form_data === 'string' 
-            ? JSON.parse(data.form_data) 
-            : data.form_data;
+          const parsedFormData = typeof data.formData === 'string' 
+            ? JSON.parse(data.formData) 
+            : data.formData;
           setFormData(prev => ({
             ...prev,
             ...parsedFormData
@@ -530,29 +527,19 @@ export function SoftwareRequestForm() {
 
     console.log('Form submitted:', formData);
     
-    // Send to backend
-    fetch('http://localhost:8080/software-requests', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        ...formData,
-        parentCIs,
-        attachURLs,
-        attachFiles
-      }),
+    // Send to backend using softwareRequestService (with JWT token)
+    softwareRequestService.createDraft({
+      ...formData,
+      parentCIs,
+      attachURLs,
+      attachFiles
     })
-      .then(response => {
-        if (response.ok) {
-          navigate('/');
-        } else {
-          alert('Failed to save draft');
-        }
+      .then(() => {
+        navigate('/');
       })
-      .catch(error => {
-        console.error('Error:', error);
-        alert('Error saving draft');
+      .catch((error) => {
+        console.error('Failed to save draft:', error);
+        alert(`Failed to save draft: ${error.message}`);
       });
   };
 
@@ -566,24 +553,9 @@ export function SoftwareRequestForm() {
         attachFiles
       };
       console.log('Saving form data:', completeFormData);
-      const response = await fetch(`http://localhost:8080/software-requests/${id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(completeFormData),
-      });
-      
-      console.log('Response status:', response.status);
-      const responseData = await response.json();
-      console.log('Response data:', responseData);
-      
-      if (response.ok) {
-        alert('บันทึกข้อมูลเรียบร้อยแล้ว');
-        navigate('/');
-      } else {
-        alert(`เกิดข้อผิดพลาดในการบันทึกข้อมูล: ${responseData.error || 'Unknown error'}`);
-      }
+      await softwareRequestService.updateDraft(Number(id), completeFormData);
+      alert('บันทึกข้อมูลเรียบร้อยแล้ว');
+      navigate('/');
     } catch (error) {
       console.error('Error saving request:', error);
       alert(`เกิดข้อผิดพลาดในการบันทึกข้อมูล: ${error}`);
@@ -594,15 +566,9 @@ export function SoftwareRequestForm() {
     if (!id) return;
     if (confirm('คุณต้องการยกเลิก Draft นี้หรือไม่? ข้อมูลจะถูกลบออกจากระบบ')) {
       try {
-        const response = await fetch(`http://localhost:8080/software-requests/${id}`, {
-          method: 'DELETE',
-        });
-        if (response.ok) {
-          alert('ยกเลิกเรียบร้อยแล้ว');
-          navigate('/');
-        } else {
-          alert('เกิดข้อผิดพลาดในการยกเลิก');
-        }
+        await softwareRequestService.deleteDraft(Number(id));
+        alert('ยกเลิกเรียบร้อยแล้ว');
+        navigate('/');
       } catch (error) {
         console.error('Error deleting request:', error);
         alert('เกิดข้อผิดพลาดในการยกเลิก');

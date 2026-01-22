@@ -1,5 +1,7 @@
 import { BrowserRouter, Routes, Route, useLocation, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { AuthProvider } from './contexts/AuthContext';
+import { ProtectedRoute } from './components/ProtectedRoute';
 import Home from './pages/Home';
 import Master from './pages/Master';
 import RequestDetail from './pages/RequestDetail';
@@ -11,18 +13,7 @@ import Login from './pages/Login';
 function AppContent() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const location = useLocation();
-  const navigate = useNavigate();
   const isLoginPage = location.pathname === '/login';
-
-  const handleLogin = (username: string, password: string) => {
-    // จำลองการตรวจสอบข้อมูล
-    if (username && password) {
-      // เข้าสู่ระบบสำเร็จ ไปหน้า Home
-      navigate('/');
-      return true;
-    }
-    return false;
-  };
 
   return (
     <div className={isLoginPage ? '' : 'sidebar-layout'}>
@@ -30,11 +21,46 @@ function AppContent() {
       <div className={isLoginPage ? 'w-full' : 'flex-1 flex flex-col overflow-visible'}>
         <Routes>
           <Route path="/login" element={<Login />} />
-          <Route path="/" element={<Home />} />
-          <Route path="/master" element={<Master />} />
-          <Route path="/request-form" element={<SoftwareRequestForm />} />
-          <Route path="/request-form/:id" element={<SoftwareRequestForm />} />
-          <Route path="/request-detail/:id" element={<RequestDetail />} />
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute>
+                <Home />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/master"
+            element={
+              <ProtectedRoute>
+                <Master />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/request-form"
+            element={
+              <ProtectedRoute>
+                <SoftwareRequestForm />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/request-form/:id"
+            element={
+              <ProtectedRoute>
+                <SoftwareRequestForm />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/request-detail/:id"
+            element={
+              <ProtectedRoute>
+                <RequestDetail />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
       </div>
     </div>
@@ -44,7 +70,9 @@ function AppContent() {
 export default function App() {
   return (
     <BrowserRouter>
-      <AppContent />
+      <AuthProvider>
+        <AppContent />
+      </AuthProvider>
     </BrowserRouter>
   );
 }

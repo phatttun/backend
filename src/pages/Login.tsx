@@ -1,24 +1,38 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Eye, EyeOff, ArrowRight, Shield } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { useAuth } from '@/contexts/AuthContext';
 import '../styles/Login.css';
 
-export default function App() {
+export default function Login() {
+  const navigate = useNavigate();
+  const { login, isLoading, error, clearError } = useAuth();
+  
   const [employeeId, setEmployeeId] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [loginError, setLoginError] = useState<string | null>(null);
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
+    setLoginError(null);
+    clearError();
     
-    setTimeout(() => {
-      console.log('Login attempt:', { employeeId, password });
-      setIsLoading(false);
-    }, 1500);
+    if (!employeeId.trim() || !password.trim()) {
+      setLoginError('Please enter both username and password');
+      return;
+    }
+
+    try {
+      await login(employeeId, password);
+      // Navigate to home page on successful login
+      navigate('/', { replace: true });
+    } catch (err: any) {
+      setLoginError(err.message || 'Login failed. Please try again.');
+    }
   };
 
   return (
@@ -103,6 +117,13 @@ export default function App() {
                   กรอกข้อมูลเพื่อเข้าใช้งานระบบ
                 </p>
               </div>
+
+              {/* Error Messages */}
+              {(loginError || error) && (
+                <div className="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-lg text-sm">
+                  {loginError || error}
+                </div>
+              )}
 
               <form onSubmit={handleLogin} className="space-y-7">
                 {/* Employee ID */}

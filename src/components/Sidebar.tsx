@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
 import "./Sidebar.css";
 
 interface SidebarProps {
@@ -48,6 +49,7 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }: SidebarProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const sidebarRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
+  const { user, logout } = useAuth();
 
   // Detect mobile screen
   useEffect(() => {
@@ -96,6 +98,13 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }: SidebarProps) {
     if (isMobile) {
       setSidebarOpen(false);
     }
+  };
+
+  // Handle logout
+  const handleLogout = () => {
+    logout();
+    navigate('/login', { replace: true });
+    setSidebarOpen(false);
   };
 
   // Filter menu items based on search
@@ -179,8 +188,8 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }: SidebarProps) {
           <div className="user">
             <User size={20} />
             <div>
-              <strong>John Doe</strong>
-              <small>Administrator</small>
+              <strong>{user?.username || 'User'}</strong>
+              <small>{user?.fullName || 'Employee'}</small>
             </div>
           </div>
 
@@ -206,6 +215,7 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }: SidebarProps) {
 
           <button
             className="logout-btn"
+            onClick={handleLogout}
             title={!sidebarOpen ? "Logout" : undefined}
             aria-label="Logout"
           >
