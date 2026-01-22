@@ -23,6 +23,26 @@ interface RequestRow {
   currentOperator: string;
 }
 
+// Format date to Thailand time format (dd/mm/yyyy hh:mm)
+const formatThailandDate = (dateString: string): string => {
+  try {
+    const date = new Date(dateString);
+    // Add 7 hours for Thailand timezone (UTC+7)
+    const thaiDate = new Date(date.getTime() + (7 * 60 * 60 * 1000));
+    
+    const day = String(thaiDate.getUTCDate()).padStart(2, '0');
+    const month = String(thaiDate.getUTCMonth() + 1).padStart(2, '0');
+    const year = thaiDate.getUTCFullYear() + 543; // Convert to Buddhist calendar
+    const hours = String(thaiDate.getUTCHours()).padStart(2, '0');
+    const minutes = String(thaiDate.getUTCMinutes()).padStart(2, '0');
+    
+    return `${day}/${month}/${year} ${hours}:${minutes}`;
+  } catch (error) {
+    console.error('Error formatting date:', error);
+    return dateString;
+  }
+};
+
 export default function Home() {
   const navigate = useNavigate();
   const [data, setData] = useState<RequestRow[]>([]);
@@ -182,16 +202,13 @@ export default function Home() {
                     <th className="px-3 py-2 text-left text-xs font-semibold text-gray-700">
                       Current Operator
                     </th>
-                    <th className="px-3 py-2 text-center text-xs font-semibold text-gray-700">
-                      Action
-                    </th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200">
                   {loading ? (
                     <tr>
                       <td
-                        colSpan={10}
+                        colSpan={9}
                         className="px-3 py-4 text-center text-gray-500 empty-state"
                       >
                         กำลังโหลด...
@@ -223,7 +240,7 @@ export default function Home() {
                           {row.requester}
                         </td>
                         <td className="px-3 py-2 text-xs text-gray-600">
-                          {row.requestDate}
+                          {formatThailandDate(row.requestDate)}
                         </td>
                         <td className="px-3 py-2 text-xs">
                           <span
@@ -243,20 +260,12 @@ export default function Home() {
                         <td className="px-3 py-2 text-xs text-gray-600">
                           {row.currentOperator || "-"}
                         </td>
-                        <td className="px-3 py-2 text-center">
-                          <button className="action-btn">
-                            <MoreVertical
-                              size={14}
-                              className="text-gray-600"
-                            />
-                          </button>
-                        </td>
                       </tr>
                     ))
                   ) : (
                     <tr>
                       <td
-                        colSpan={10}
+                        colSpan={9}
                         className="px-3 py-4 text-center text-gray-500 empty-state"
                       >
                         ไม่พบข้อมูล

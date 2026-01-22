@@ -66,7 +66,7 @@ func GetSoftwareRequests(c *gin.Context) {
 			CIVersion:       fd.CIVersion,
 			ServiceName:     fd.ServiceName,
 			Requester:       fd.CreatedBy,
-			RequestDate:     sr.RequestDate.Format("2006-01-02 15:04:05"),
+			RequestDate:     sr.RequestDate.In(time.FixedZone("ICT", 7*3600)).Format("2006-01-02 15:04:05"),
 			Status:          sr.Status,
 			CurrentOperator: "",
 		}
