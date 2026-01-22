@@ -123,7 +123,7 @@ const Attach_URL: React.FC<AttachURLProps> = ({ attachURLs, setAttachURLs, isVie
       <div className="modal-content modal-medium" onClick={e => e.stopPropagation()}>
         <div className="modal-header">
           <h2>Attach URL</h2>
-          <button className="modal-close-btn" onClick={() => setShowModal(false)}>
+          <button type="button" className="modal-close-btn" onClick={() => setShowModal(false)}>
             <X size={20} />
           </button>
         </div>
@@ -161,6 +161,7 @@ const Attach_URL: React.FC<AttachURLProps> = ({ attachURLs, setAttachURLs, isVie
 
         <div className="modal-footer">
           <button
+            type="button"
             className="btn-secondary"
             onClick={() => setShowModal(false)}
             disabled={isViewMode}
@@ -168,6 +169,7 @@ const Attach_URL: React.FC<AttachURLProps> = ({ attachURLs, setAttachURLs, isVie
             Cancel
           </button>
           <button
+            type="button"
             className="btn-primary"
             onClick={handleAddAttachURL}
             disabled={isViewMode}
@@ -206,6 +208,7 @@ const Attach_URL: React.FC<AttachURLProps> = ({ attachURLs, setAttachURLs, isVie
                 </div>
               </div>
               <button
+                type="button"
                 className="btn-add-url"
                 onClick={() => setShowModal(true)}
                 disabled={isViewMode}

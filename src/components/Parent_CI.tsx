@@ -120,7 +120,7 @@ const ParentCI: React.FC<ParentCIProps> = ({ currentCIId, parentCIs, setParentCI
       <div className="modal-content modal-large" onClick={e => e.stopPropagation()}>
         <div className="modal-header">
           <h2>Parent CI</h2>
-          <button className="modal-close-btn" onClick={() => setShowModal(false)}>
+          <button type="button" className="modal-close-btn" onClick={() => setShowModal(false)}>
             <X size={20} />
           </button>
         </div>
@@ -173,6 +173,7 @@ const ParentCI: React.FC<ParentCIProps> = ({ currentCIId, parentCIs, setParentCI
           {totalPages > 1 && (
             <div className="modal-pagination">
               <button
+                type="button"
                 onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
                 disabled={currentPage === 1}
                 className="pagination-btn"
@@ -183,6 +184,7 @@ const ParentCI: React.FC<ParentCIProps> = ({ currentCIId, parentCIs, setParentCI
                 Page {currentPage} of {totalPages}
               </span>
               <button
+                type="button"
                 onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
                 disabled={currentPage === totalPages}
                 className="pagination-btn"
@@ -195,12 +197,14 @@ const ParentCI: React.FC<ParentCIProps> = ({ currentCIId, parentCIs, setParentCI
 
         <div className="modal-footer">
           <button
+            type="button"
             className="btn-secondary"
             onClick={() => setShowModal(false)}
           >
             Cancel
           </button>
           <button
+            type="button"
             className="btn-primary"
             disabled={selectedCIs.size === 0}
             onClick={handleAddSelectedCIs}
@@ -239,6 +243,7 @@ const ParentCI: React.FC<ParentCIProps> = ({ currentCIId, parentCIs, setParentCI
                 </div>
               </div>
               <button
+                type="button"
                 className="btn-add-ci"
                 onClick={() => setShowModal(true)}
                 disabled={isViewMode}

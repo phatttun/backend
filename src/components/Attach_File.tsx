@@ -73,6 +73,10 @@ const Attach_File: React.FC<AttachFileProps> = ({ attachFiles, setAttachFiles, i
   const validateForm = (): boolean => {
     const errors: Record<string, string> = {};
 
+    if (!formData.description.trim()) {
+      errors.description = 'Description is required';
+    }
+
     if (!formData.file) {
       errors.file = 'Attach File is required';
     } else if (formData.file.size > MAX_FILE_SIZE) {
@@ -242,6 +246,7 @@ const Attach_File: React.FC<AttachFileProps> = ({ attachFiles, setAttachFiles, i
                 </div>
               </div>
               <button
+                type="button"
                 className="btn-add-file"
                 onClick={() => setShowModal(true)}
                 disabled={isViewMode}
@@ -311,7 +316,7 @@ const Attach_File: React.FC<AttachFileProps> = ({ attachFiles, setAttachFiles, i
           <div className="modal-content modal-medium file-modal-content" onClick={e => e.stopPropagation()}>
             <div className="modal-header">
               <h2>Attach File</h2>
-              <button className="modal-close-btn" onClick={() => setShowModal(false)}>
+              <button type="button" className="modal-close-btn" onClick={() => setShowModal(false)}>
                 <X size={20} />
               </button>
             </div>
@@ -324,8 +329,11 @@ const Attach_File: React.FC<AttachFileProps> = ({ attachFiles, setAttachFiles, i
                   value={formData.description}
                   onChange={(e) => handleInputChange('description', e.target.value)}
                   placeholder="Please enter Description"
-                  className="clearable-input"
+                  className={`clearable-input ${formErrors.description ? 'input-error' : ''}`}
                 />
+                {formErrors.description && (
+                  <span className="error-message">{formErrors.description}</span>
+                )}
               </div>
 
               <div className="form-field">
@@ -357,6 +365,7 @@ const Attach_File: React.FC<AttachFileProps> = ({ attachFiles, setAttachFiles, i
 
             <div className="modal-footer">
               <button
+                type="button"
                 className="btn-secondary"
                 onClick={() => setShowModal(false)}
                 disabled={isViewMode}
@@ -364,6 +373,7 @@ const Attach_File: React.FC<AttachFileProps> = ({ attachFiles, setAttachFiles, i
                 Cancel
               </button>
               <button
+                type="button"
                 className="btn-primary"
                 onClick={handleAddAttachFile}
                 disabled={isViewMode}
