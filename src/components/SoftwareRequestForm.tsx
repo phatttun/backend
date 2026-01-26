@@ -8,6 +8,7 @@ import Attach_URL from './Attach_URL';
 import Attach_File from './Attach_File';
 import ClearableSelectInput from './ClearableSelectInput';
 import softwareRequestService from '@/services/softwareRequestService';
+import { useAuth } from '@/contexts/AuthContext';
 
 // Clearable Input Component
 interface ClearableInputProps {
@@ -125,6 +126,7 @@ const getStatusBadgeColor = (status: CIStatus): string => {
 export function SoftwareRequestForm() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [isViewMode] = useState(!!id);
   const [isLoading, setIsLoading] = useState(!!id);
 
@@ -137,7 +139,7 @@ export function SoftwareRequestForm() {
       day: 'numeric' 
     }),
     requestStatus: 'Draft',
-    createdBy: 'John Smith',
+    createdBy: user?.fullName || user?.username || '',
     reasonRequest: '',
     
     // CI Information - UPDATED FIELDS
@@ -241,6 +243,17 @@ export function SoftwareRequestForm() {
         });
     }
   }, [id, isLoading]);
+
+  // Update createdBy when user changes
+  useEffect(() => {
+    if (user && !id) {
+      // Only update when creating new form, not when viewing existing
+      setFormData(prev => ({
+        ...prev,
+        createdBy: user.fullName || user.username || ''
+      }));
+    }
+  }, [user, id]);
 
   // Modal state management
   const [activeModal, setActiveModal] = useState<string | null>(null);
@@ -528,13 +541,16 @@ export function SoftwareRequestForm() {
 
     console.log('Form submitted:', formData);
     
-    // Send to backend using softwareRequestService (with JWT token)
-    softwareRequestService.createDraft({
+    // Prepare complete form data with attachments and parent CIs
+    const completeFormData = {
       ...formData,
       parentCIs,
       attachURLs,
       attachFiles
-    })
+    };
+    
+    // Send to backend using softwareRequestService (with JWT token)
+    softwareRequestService.createDraft(completeFormData)
       .then(() => {
         navigate('/');
       })
