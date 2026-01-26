@@ -114,15 +114,21 @@ func GetSoftwareRequestByID(c *gin.Context) {
 		return
 	}
 
+	log.Printf("===== GetSoftwareRequestByID START =====")
+	log.Printf("Request ID: %d, User ID: %v", id, userID)
+
 	var sr models.SoftwareRequest
 	// Ensure the request belongs to the current user
 	query := `SELECT id, form_data, status, request_date, request_no, ci_id FROM Dbsoftwarerequests WHERE id = ? AND user_id = ?`
 	err = database.DB.QueryRow(query, id, userID).Scan(&sr.ID, &sr.FormData, &sr.Status, &sr.RequestDate, &sr.RequestNo, &sr.CIID)
 	if err != nil {
+		log.Printf("Error querying request (id=%d, user_id=%v): %v", id, userID, err)
 		c.JSON(http.StatusNotFound, gin.H{"error": "Request not found or access denied"})
 		return
 	}
 
+	log.Printf("Found request: ID=%d, Status=%s, RequestNo=%v", sr.ID, sr.Status, sr.RequestNo)
+	log.Printf("===== GetSoftwareRequestByID END =====")
 	c.JSON(http.StatusOK, sr)
 }
 
@@ -142,6 +148,7 @@ func UpdateSoftwareRequest(c *gin.Context) {
 
 	var payload json.RawMessage
 	if err := c.ShouldBindJSON(&payload); err != nil {
+		log.Printf("Error binding JSON: %v", err)
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
@@ -168,8 +175,8 @@ func UpdateSoftwareRequest(c *gin.Context) {
 	if currentStatus == "Draft" {
 		// Update form_data only, keep as Draft
 		log.Printf("Updating as Draft (status stays Draft)")
-		query := `UPDATE Dbsoftwarerequests SET form_data = ?, updated_at = NOW() WHERE id = ? AND user_id = ?`
-		result, err := database.DB.Exec(query, payload, id, userID)
+		query := `UPDATE Dbsoftwarerequests SET form_data = ? WHERE id = ? AND user_id = ?`
+		result, err := database.DB.Exec(query, string(payload), id, userID)
 		if err != nil {
 			log.Printf("Error updating draft: %v", err)
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to update draft", "details": err.Error()})
@@ -194,8 +201,8 @@ func UpdateSoftwareRequest(c *gin.Context) {
 		log.Printf("Updating as Submitted (status changes to Submitted)")
 		requestNo := "REQ-" + strconv.Itoa(id)
 		ciID := "CI-" + strconv.Itoa(id)
-		query := `UPDATE Dbsoftwarerequests SET form_data = ?, status = ?, request_no = ?, ci_id = ?, updated_at = NOW() WHERE id = ? AND user_id = ?`
-		_, err = database.DB.Exec(query, payload, "Submitted", requestNo, ciID, id, userID)
+		query := `UPDATE Dbsoftwarerequests SET form_data = ?, status = ?, request_no = ?, ci_id = ? WHERE id = ? AND user_id = ?`
+		_, err = database.DB.Exec(query, string(payload), "Submitted", requestNo, ciID, id, userID)
 		if err != nil {
 			log.Printf("Error submitting request: %v", err)
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to submit request", "details": err.Error()})

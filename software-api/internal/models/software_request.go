@@ -10,8 +10,8 @@ type SoftwareRequest struct {
 	FormData    json.RawMessage `json:"form_data" db:"form_data"`
 	Status      string          `json:"status" db:"status"`
 	RequestDate time.Time       `json:"request_date" db:"request_date"`
-	RequestNo   string          `json:"request_no" db:"request_no"`
-	CIID        string          `json:"ci_id" db:"ci_id"`
+	RequestNo   *string         `json:"request_no" db:"request_no"`
+	CIID        *string         `json:"ci_id" db:"ci_id"`
 }
 
 type DraftListItem struct {

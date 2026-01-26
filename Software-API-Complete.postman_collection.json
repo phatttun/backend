@@ -1,0 +1,211 @@
+POST http://localhost:8080/software-requests
+
+{
+  "info": {
+    "_postman_id": "software-api-complete",
+    "name": "Software Request API - Complete",
+    "description": "Complete API collection for Software Request System with Authentication",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "1. Register New User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"EMP005\",\n  \"username\": \"emp005\",\n  \"password\": \"password123\",\n  \"fullName\": \"New Employee\",\n  \"email\": \"emp005@example.com\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/register",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "register"]
+            },
+            "description": "Create a new user account"
+          },
+          "response": []
+        },
+        {
+          "name": "2. Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"emp001\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/login",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "login"]
+            },
+            "description": "Login and get JWT token"
+          },
+          "response": []
+        },
+        {
+          "name": "3. Get Profile",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/auth/profile",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "profile"]
+            },
+            "description": "Get current user profile (requires JWT token)"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Software Requests",
+      "item": [
+        {
+          "name": "1. Get All Drafts",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/software-requests",
+              "host": ["{{base_url}}"],
+              "path": ["software-requests"]
+            },
+            "description": "Retrieve all Draft requests for current user (requires JWT token)"
+          },
+          "response": []
+        },
+        {
+          "name": "2. Create New Draft",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"ciName\": \"New CI Name\",\n  \"ciVersion\": \"1.0.0\",\n  \"serviceName\": \"API Service\",\n  \"createdBy\": \"emp001\",\n  \"reasonRequest\": \"Production deployment\",\n  \"ciStatus\": \"Active\",\n  \"service\": \"Service 1\",\n  \"supportGroup\": \"Support Team\",\n  \"type\": \"Type A\",\n  \"category\": \"Category 1\",\n  \"function\": \"Function 1\",\n  \"brand\": \"Brand 1\",\n  \"location\": \"Location 1\",\n  \"customer\": \"Customer 1\",\n  \"userGroup\": \"Users\",\n  \"installReleaseDate\": \"2026-02-01\",\n  \"remark\": \"Test deployment request\",\n  \"parentCIs\": [],\n  \"attachURLs\": [],\n  \"attachFiles\": []\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/software-requests",
+              "host": ["{{base_url}}"],
+              "path": ["software-requests"]
+            },
+            "description": "Create a new Draft request (requires JWT token)"
+          },
+          "response": []
+        },
+        {
+          "name": "3. Get Draft by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/software-requests/1",
+              "host": ["{{base_url}}"],
+              "path": ["software-requests", "1"]
+            },
+            "description": "Get a specific Draft by ID (replace 1 with actual ID)"
+          },
+          "response": []
+        },
+        {
+          "name": "4. Update Draft",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"ciName\": \"Updated CI Name\",\n  \"ciVersion\": \"2.0.0\",\n  \"serviceName\": \"Updated Service\",\n  \"createdBy\": \"emp001\",\n  \"reasonRequest\": \"Updated reason\",\n  \"ciStatus\": \"Inactive\",\n  \"service\": \"Service 2\",\n  \"supportGroup\": \"Support Team 2\",\n  \"type\": \"Type B\",\n  \"category\": \"Category 2\",\n  \"function\": \"Function 2\",\n  \"brand\": \"Brand 2\",\n  \"location\": \"Location 2\",\n  \"customer\": \"Customer 2\",\n  \"userGroup\": \"Admin\",\n  \"installReleaseDate\": \"2026-02-15\",\n  \"remark\": \"Updated deployment request\",\n  \"parentCIs\": [\n    {\n      \"id\": \"CI-001\",\n      \"ciName\": \"Payment Gateway\"\n    }\n  ],\n  \"attachURLs\": [\n    {\n      \"id\": \"URL-1\",\n      \"description\": \"API Documentation\",\n      \"url\": \"https://api.example.com/docs\",\n      \"step\": 1,\n      \"updateBy\": \"emp001\",\n      \"updateDate\": \"2026-01-22\"\n    }\n  ],\n  \"attachFiles\": [\n    {\n      \"id\": \"FILE-1\",\n      \"description\": \"Deployment Guide\",\n      \"fileName\": \"deployment-guide.pdf\",\n      \"fileSize\": 1024000,\n      \"step\": 1,\n      \"updateBy\": \"emp001\",\n      \"updateDate\": \"2026-01-22\"\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/software-requests/1",
+              "host": ["{{base_url}}"],
+              "path": ["software-requests", "1"]
+            },
+            "description": "Update a Draft request (replace 1 with actual ID)"
+          },
+          "response": []
+        },
+        {
+          "name": "5. Delete Draft",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/software-requests/1",
+              "host": ["{{base_url}}"],
+              "path": ["software-requests", "1"]
+            },
+            "description": "Delete a Draft request (replace 1 with actual ID)"
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8080",
+      "type": "string"
+    },
+    {
+      "key": "jwt_token",
+      "value": "",
+      "type": "string",
+      "description": "JWT token from login response - paste here after login"
+    }
+  ]
+}

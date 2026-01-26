@@ -7,6 +7,15 @@ import apiClient from './apiClient';
 
 export interface SoftwareRequest {
   id: number;
+  form_data: any;  // JSON form data stored as object or string
+  status: string;
+  request_date: string;
+  request_no: string | null;
+  ci_id: string | null;
+}
+
+export interface SoftwareRequestListItem {
+  id: number;
   requestNo: string;
   ciId: string;
   ciName: string;
@@ -30,9 +39,9 @@ const softwareRequestService = {
   /**
    * Get all software requests for the current user (Draft status)
    */
-  getDrafts: async (): Promise<SoftwareRequest[]> => {
+  getDrafts: async (): Promise<SoftwareRequestListItem[]> => {
     try {
-      const response = await apiClient.get<SoftwareRequest[]>('/software-requests');
+      const response = await apiClient.get<SoftwareRequestListItem[]>('/software-requests');
       return response.data;
     } catch (error: any) {
       throw {

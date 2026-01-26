@@ -218,18 +218,19 @@ export function SoftwareRequestForm() {
       softwareRequestService.getDraftById(Number(id))
         .then(data => {
           console.log('Loaded request data:', data);
-          const parsedFormData = typeof data.formData === 'string' 
-            ? JSON.parse(data.formData) 
-            : data.formData;
+          // Backend returns form_data (snake_case) as JSON object or string
+          const parsedFormData = typeof data.form_data === 'string' 
+            ? JSON.parse(data.form_data) 
+            : data.form_data;
           setFormData(prev => ({
             ...prev,
             ...parsedFormData
           }));
           
           // Load related data
-          if (parsedFormData.parentCIs) setParentCIs(parsedFormData.parentCIs);
-          if (parsedFormData.attachURLs) setAttachURLs(parsedFormData.attachURLs);
-          if (parsedFormData.attachFiles) setAttachFiles(parsedFormData.attachFiles);
+          if (parsedFormData?.parentCIs) setParentCIs(parsedFormData.parentCIs);
+          if (parsedFormData?.attachURLs) setAttachURLs(parsedFormData.attachURLs);
+          if (parsedFormData?.attachFiles) setAttachFiles(parsedFormData.attachFiles);
           
           setIsLoading(false);
         })

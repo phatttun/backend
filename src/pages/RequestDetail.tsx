@@ -1,14 +1,15 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Home as HomeIcon } from "lucide-react";
+import apiClient from "@/services/apiClient";
 
 interface SoftwareRequest {
   id: number;
   form_data: any;
   status: string;
   request_date: string;
-  request_no: string;
-  ci_id: string;
+  request_no: string | null;
+  ci_id: string | null;
 }
 
 export default function RequestDetail() {
@@ -16,61 +17,92 @@ export default function RequestDetail() {
   const navigate = useNavigate();
   const [request, setRequest] = useState<SoftwareRequest | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (id) {
-      fetch(`http://localhost:8080/software-requests/${id}`)
-        .then(response => response.json())
-        .then(data => {
-          setRequest(data);
+      const fetchRequestData = async () => {
+        try {
+          console.log('Fetching request detail for ID:', id);
+          const response = await apiClient.get<SoftwareRequest>(`/software-requests/${id}`);
+          setRequest(response.data);
+          setError(null);
           setLoading(false);
-        })
-        .catch(error => {
-          console.error('Error fetching request:', error);
+        } catch (err: any) {
+          console.error('Error fetching request:', err);
+          const errorMessage = err.response?.data?.error || err.message || 'Failed to load request data';
+          setError(errorMessage);
           setLoading(false);
-        });
+        }
+      };
+
+      fetchRequestData();
     }
   }, [id]);
 
   async function handleSave() {
     if (!request) return;
     try {
-      const response = await fetch(`http://localhost:8080/software-requests/${id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(request.form_data),
-      });
-      if (response.ok) {
-        alert('บันทึกข้อมูลเรียบร้อยแล้ว');
-        navigate('/');
-      } else {
-        alert('เกิดข้อผิดพลาดในการบันทึกข้อมูล');
-      }
-    } catch (error) {
-      console.error('Error saving request:', error);
-      alert('เกิดข้อผิดพลาดในการบันทึกข้อมูล');
+      console.log('Saving request:', id);
+      await apiClient.put(`/software-requests/${id}`, request.form_data);
+      alert('บันทึกข้อมูลเรียบร้อยแล้ว');
+      navigate('/');
+    } catch (err: any) {
+      console.error('Error saving request:', err);
+      const errorMessage = err.response?.data?.error || err.message || 'เกิดข้อผิดพลาดในการบันทึกข้อมูล';
+      alert(errorMessage);
     }
   }
 
   async function handleCancel() {
     if (confirm('คุณต้องการยกเลิก Draft นี้หรือไม่? ข้อมูลจะถูกลบออกจากระบบ')) {
       try {
-        const response = await fetch(`http://localhost:8080/software-requests/${id}`, {
-          method: 'DELETE',
-        });
-        if (response.ok) {
-          alert('ยกเลิกเรียบร้อยแล้ว');
-          navigate('/');
-        } else {
-          alert('เกิดข้อผิดพลาดในการยกเลิก');
-        }
-      } catch (error) {
-        console.error('Error deleting request:', error);
-        alert('เกิดข้อผิดพลาดในการยกเลิก');
+        console.log('Deleting request:', id);
+        await apiClient.delete(`/software-requests/${id}`);
+        alert('ยกเลิกเรียบร้อยแล้ว');
+        navigate('/');
+      } catch (err: any) {
+        console.error('Error deleting request:', err);
+        const errorMessage = err.response?.data?.error || err.message || 'เกิดข้อผิดพลาดในการยกเลิก';
+        alert(errorMessage);
       }
     }
+  }
+
+  if (error) {
+    return (
+      <div className="bg-gray-50 home-container">
+        <div className="flex-1 flex flex-col overflow-hidden">
+          <header className="bg-white border-b border-gray-200 px-8 py-4 shadow-sm header">
+            <div className="flex items-center gap-4">
+              <nav className="breadcrumbs">
+                <div className="breadcrumb-item">
+                  <button onClick={() => navigate('/')} className="breadcrumb-link">
+                    <HomeIcon size={16} className="breadcrumb-icon" />
+                    Home
+                  </button>
+                </div>
+                <div className="breadcrumb-item">
+                  Request Detail
+                </div>
+              </nav>
+            </div>
+          </header>
+          <div className="flex-1 overflow-auto p-8 content-area">
+            <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+              <p className="font-semibold">Failed to load request data</p>
+              <p className="text-sm mt-2">{error}</p>
+              <button
+                onClick={() => navigate('/')}
+                className="mt-4 bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
+              >
+                กลับไปหน้าแรก
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   if (loading) {
