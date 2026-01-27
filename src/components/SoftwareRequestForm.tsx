@@ -473,10 +473,10 @@ export function SoftwareRequestForm() {
     }
 
     // MA Information validation
+    if (!formData.pendingContinue) {
+      newErrors.pendingContinue = 'Pending Continue is required';
+    }
     if (formData.needContinueMA === 'Yes') {
-      if (!formData.pendingContinue) {
-        newErrors.pendingContinue = 'Pending Continue is required';
-      }
       if (!formData.projectName) {
         newErrors.projectName = 'Project Name is required';
       }
@@ -1119,7 +1119,7 @@ export function SoftwareRequestForm() {
               }}
             >
               <label className="form-field-label">
-                Pending Continue {formData.needContinueMA === 'Yes' && <span className="required">*</span>}
+                Pending Continue <span className="required">*</span>
               </label>
               <div className="radio-group">
                 <label className="radio-item">

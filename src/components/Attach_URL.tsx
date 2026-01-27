@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import ReactDOM from 'react-dom';
 import { Search, X, Plus, Trash2 } from 'lucide-react';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from './ui/accordion';
-import '../styles/SoftwareRequestForm.css';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from './ui/accordion';import { useAuth } from '@/contexts/AuthContext';import '../styles/SoftwareRequestForm.css';
 
 // Interface for Attach URL item
 interface AttachURLItem {
@@ -99,6 +98,7 @@ const AddAttachURLModal: React.FC<AddAttachURLModalProps> = ({
 );
 
 const Attach_URL: React.FC<AttachURLProps> = ({ attachURLs, setAttachURLs }) => {
+  const { user } = useAuth();
   const [searchQuery, setSearchQuery] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [formData, setFormData] = useState({
@@ -188,7 +188,7 @@ const Attach_URL: React.FC<AttachURLProps> = ({ attachURLs, setAttachURLs }) => 
       description: formData.description.trim(),
       url: formData.url.trim(),
       step: attachURLs.length + 1,
-      updateBy: 'Current User', // In real app, get from user context
+      updateBy: user?.fullName || 'Unknown User',
       updateDate: new Date().toLocaleDateString()
     };
 
@@ -273,8 +273,8 @@ const Attach_URL: React.FC<AttachURLProps> = ({ attachURLs, setAttachURLs }) => 
                           </a>
                         </td>
                         <td>{item.description}</td>
-                        <td>{item.step}</td>
-                        <td>{item.updateBy}</td>
+                        <td>Requester</td>
+                        <td>{user?.fullName || 'Unknown User'}</td>
                         <td>
                           <button
                             className="btn-delete"

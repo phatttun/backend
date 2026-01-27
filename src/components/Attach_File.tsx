@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import { Search, X, Plus, Trash2, FileText } from 'lucide-react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from './ui/accordion';
+import { useAuth } from '@/contexts/AuthContext';
 import '../styles/SoftwareRequestForm.css';
 
 // Interface for Attach File item
@@ -23,6 +24,7 @@ interface AttachFileProps {
 }
 
 const Attach_File: React.FC<AttachFileProps> = ({ attachFiles, setAttachFiles }) => {
+  const { user } = useAuth();
   const [searchQuery, setSearchQuery] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [formData, setFormData] = useState({
@@ -113,7 +115,7 @@ const Attach_File: React.FC<AttachFileProps> = ({ attachFiles, setAttachFiles })
         fileSize: file.size,
         fileBase64: base64String, // Store base64 for database
         step: attachFiles.length + 1,
-        updateBy: 'Requester',
+        updateBy: user?.fullName || 'Unknown User',
         updateDate: new Date().toLocaleDateString()
       };
 
@@ -283,8 +285,8 @@ const Attach_File: React.FC<AttachFileProps> = ({ attachFiles, setAttachFiles })
                           <span className="file-size-display">({formatFileSize(item.fileSize)})</span>
                         </td>
                         <td>{item.description}</td>
-                        <td>{item.step}</td>
-                        <td>{item.updateBy}</td>
+                        <td>Requester</td>
+                        <td>{user?.fullName || 'Unknown User'}</td>
                         <td>
                           <button
                             className="btn-delete"
