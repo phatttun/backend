@@ -5,13 +5,15 @@ import { Search, X } from 'lucide-react';
 // Type definitions for Master Data
 interface MasterService {
   id: string;
+  service: string;
   serviceName: string;
+  supportGroup: string;
   supportGroupName: string;
 }
 
 interface MasterSupportGroup {
   id: string;
-  code: string;
+  supportGroup: string;
   supportGroupName: string;
 }
 
@@ -85,33 +87,33 @@ interface MasterSRRelease {
 
 // Mock Master Data
 export const MOCK_SERVICES: MasterService[] = [
-  { id: 'SVC001', serviceName: 'Application Development', supportGroupName: 'Dev Team' },
-  { id: 'SVC002', serviceName: 'Infrastructure', supportGroupName: 'Infra Team' },
-  { id: 'SVC003', serviceName: 'Database Management', supportGroupName: 'DB Team' },
-  { id: 'SVC004', serviceName: 'Cloud Services', supportGroupName: 'Cloud Team' },
-  { id: 'SVC005', serviceName: 'Security', supportGroupName: 'Security Team' },
-  { id: 'SVC006', serviceName: 'Network Services', supportGroupName: 'Network Team' },
-  { id: 'SVC007', serviceName: 'Data Analytics', supportGroupName: 'Analytics Team' },
-  { id: 'SVC008', serviceName: 'Mobile Development', supportGroupName: 'Mobile Team' },
-  { id: 'SVC009', serviceName: 'Integration Services', supportGroupName: 'Integration Team' },
-  { id: 'SVC010', serviceName: 'Testing & QA', supportGroupName: 'QA Team' },
-  { id: 'SVC011', serviceName: 'DevOps', supportGroupName: 'DevOps Team' },
-  { id: 'SVC012', serviceName: 'Support Services', supportGroupName: 'Support Team' },
+  { id: 'SVC001', service: 'APP_DEV', serviceName: 'Application Development', supportGroup: 'DEV_TEAM', supportGroupName: 'Dev Team' },
+  { id: 'SVC002', service: 'INFRA', serviceName: 'Infrastructure', supportGroup: 'INFRA_TEAM', supportGroupName: 'Infra Team' },
+  { id: 'SVC003', service: 'DB_MGMT', serviceName: 'Database Management', supportGroup: 'DB_TEAM', supportGroupName: 'DB Team' },
+  { id: 'SVC004', service: 'CLOUD', serviceName: 'Cloud Services', supportGroup: 'CLOUD_TEAM', supportGroupName: 'Cloud Team' },
+  { id: 'SVC005', service: 'SEC', serviceName: 'Security', supportGroup: 'SEC_TEAM', supportGroupName: 'Security Team' },
+  { id: 'SVC006', service: 'NET_SVC', serviceName: 'Network Services', supportGroup: 'NET_TEAM', supportGroupName: 'Network Team' },
+  { id: 'SVC007', service: 'DATA_ANALYTICS', serviceName: 'Data Analytics', supportGroup: 'ANALYTICS_TEAM', supportGroupName: 'Analytics Team' },
+  { id: 'SVC008', service: 'MOBILE_DEV', serviceName: 'Mobile Development', supportGroup: 'MOBILE_TEAM', supportGroupName: 'Mobile Team' },
+  { id: 'SVC009', service: 'INT_SVC', serviceName: 'Integration Services', supportGroup: 'INT_TEAM', supportGroupName: 'Integration Team' },
+  { id: 'SVC010', service: 'QA', serviceName: 'Testing & QA', supportGroup: 'QA_TEAM', supportGroupName: 'QA Team' },
+  { id: 'SVC011', service: 'DEVOPS', serviceName: 'DevOps', supportGroup: 'DEVOPS_TEAM', supportGroupName: 'DevOps Team' },
+  { id: 'SVC012', service: 'SUPPORT', serviceName: 'Support Services', supportGroup: 'SUPPORT_TEAM', supportGroupName: 'Support Team' },
 ];
 
 export const MOCK_SUPPORT_GROUPS: MasterSupportGroup[] = [
-  { id: 'SG001', code: 'SG001', supportGroupName: 'Dev Team' },
-  { id: 'SG002', code: 'SG002', supportGroupName: 'Infra Team' },
-  { id: 'SG003', code: 'SG003', supportGroupName: 'DB Team' },
-  { id: 'SG004', code: 'SG004', supportGroupName: 'Cloud Team' },
-  { id: 'SG005', code: 'SG005', supportGroupName: 'Security Team' },
-  { id: 'SG006', code: 'SG006', supportGroupName: 'Network Team' },
-  { id: 'SG007', code: 'SG007', supportGroupName: 'Analytics Team' },
-  { id: 'SG008', code: 'SG008', supportGroupName: 'Mobile Team' },
-  { id: 'SG009', code: 'SG009', supportGroupName: 'Integration Team' },
-  { id: 'SG010', code: 'SG010', supportGroupName: 'QA Team' },
-  { id: 'SG011', code: 'SG011', supportGroupName: 'DevOps Team' },
-  { id: 'SG012', code: 'SG012', supportGroupName: 'Support Team' },
+  { id: 'SG001', supportGroup: 'DEV_TEAM', supportGroupName: 'Dev Team' },
+  { id: 'SG002', supportGroup: 'INFRA_TEAM', supportGroupName: 'Infra Team' },
+  { id: 'SG003', supportGroup: 'DB_TEAM', supportGroupName: 'DB Team' },
+  { id: 'SG004', supportGroup: 'CLOUD_TEAM', supportGroupName: 'Cloud Team' },
+  { id: 'SG005', supportGroup: 'SEC_TEAM', supportGroupName: 'Security Team' },
+  { id: 'SG006', supportGroup: 'NET_TEAM', supportGroupName: 'Network Team' },
+  { id: 'SG007', supportGroup: 'ANALYTICS_TEAM', supportGroupName: 'Analytics Team' },
+  { id: 'SG008', supportGroup: 'MOBILE_TEAM', supportGroupName: 'Mobile Team' },
+  { id: 'SG009', supportGroup: 'INT_TEAM', supportGroupName: 'Integration Team' },
+  { id: 'SG010', supportGroup: 'QA_TEAM', supportGroupName: 'QA Team' },
+  { id: 'SG011', supportGroup: 'DEVOPS_TEAM', supportGroupName: 'DevOps Team' },
+  { id: 'SG012', supportGroup: 'SUPPORT_TEAM', supportGroupName: 'Support Team' },
 ];
 
 export const MOCK_TYPES: MasterType[] = [
@@ -637,7 +639,7 @@ export const Modal: React.FC<ModalProps> = ({ activeModal, onClose, onConfirm, s
                     className={`modal-table-row ${selectedItem?.id === group.id ? 'selected' : ''}`}
                     onClick={() => handleSelectItem(group)}
                   >
-                    <td>{group.code}</td>
+                    <td>{group.supportGroup}</td>
                     <td>{group.supportGroupName}</td>
                     <td>
                       <span className={`checkmark ${selectedItem?.id === group.id ? 'visible' : 'hidden'}`}>✓</span>

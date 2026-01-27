@@ -292,10 +292,10 @@ export function SoftwareRequestForm() {
         clearFieldError('supportGroup');
         setFormData(prev => ({
           ...prev,
-          service: selectedData.id,
+          service: selectedData.service,
           serviceId: selectedData.id,
           serviceName: selectedData.serviceName,
-          supportGroup: selectedData.supportGroupName,
+          supportGroup: selectedData.supportGroup,
           supportGroupId: selectedData.id,
           supportGroupName: selectedData.supportGroupName,
           systemName: null, // Clear system name when service changes
@@ -306,7 +306,7 @@ export function SoftwareRequestForm() {
         clearFieldError('supportGroup');
         setFormData(prev => ({
           ...prev,
-          supportGroup: selectedData.id,
+          supportGroup: selectedData.supportGroup,
           supportGroupId: selectedData.id,
           supportGroupName: selectedData.supportGroupName
         }));
@@ -764,7 +764,7 @@ export function SoftwareRequestForm() {
               </label>
               <ClearableSelectInput
                 value={formData.service}
-                displayText={formData.serviceName}
+                displayText={formData.service}
                 onSelect={() => openModal('service')}
                 onClear={() => {
                   handleInputChange('service', '');
@@ -811,7 +811,7 @@ export function SoftwareRequestForm() {
               </label>
               <ClearableSelectInput
                 value={formData.supportGroup}
-                displayText={formData.supportGroupName}
+                displayText={formData.supportGroup}
                 onSelect={() => openModal('supportGroup')}
                 onClear={() => {
                   handleInputChange('supportGroup', '');

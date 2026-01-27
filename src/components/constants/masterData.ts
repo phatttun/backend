@@ -1,12 +1,15 @@
 // Type definitions for Master Data
 export interface MasterService {
   id: string;
+  service: string;
   serviceName: string;
+  supportGroup: string;
   supportGroupName: string;
 }
 
 export interface MasterSupportGroup {
   id: string;
+  supportGroup: string;
   supportGroupName: string;
 }
 
@@ -39,21 +42,21 @@ export interface MasterCustomer {
 
 // Mock Master Data
 export const MOCK_SERVICES: MasterService[] = [
-  { id: 'SVC001', serviceName: 'Application Development', supportGroupName: 'Dev Team' },
-  { id: 'SVC002', serviceName: 'Infrastructure', supportGroupName: 'Infra Team' },
-  { id: 'SVC003', serviceName: 'Database Management', supportGroupName: 'DB Team' },
-  { id: 'SVC004', serviceName: 'Cloud Services', supportGroupName: 'Cloud Team' },
-  { id: 'SVC005', serviceName: 'Security', supportGroupName: 'Security Team' },
-  { id: 'SVC006', serviceName: 'Network Services', supportGroupName: 'Network Team' },
+  { id: 'SVC001', service: 'APP_DEV', serviceName: 'Application Development', supportGroup: 'DEV_TEAM', supportGroupName: 'Dev Team' },
+  { id: 'SVC002', service: 'INFRA', serviceName: 'Infrastructure', supportGroup: 'INFRA_TEAM', supportGroupName: 'Infra Team' },
+  { id: 'SVC003', service: 'DB_MGMT', serviceName: 'Database Management', supportGroup: 'DB_TEAM', supportGroupName: 'DB Team' },
+  { id: 'SVC004', service: 'CLOUD', serviceName: 'Cloud Services', supportGroup: 'CLOUD_TEAM', supportGroupName: 'Cloud Team' },
+  { id: 'SVC005', service: 'SEC', serviceName: 'Security', supportGroup: 'SEC_TEAM', supportGroupName: 'Security Team' },
+  { id: 'SVC006', service: 'NET_SVC', serviceName: 'Network Services', supportGroup: 'NET_TEAM', supportGroupName: 'Network Team' },
 ];
 
 export const MOCK_SUPPORT_GROUPS: MasterSupportGroup[] = [
-  { id: 'SG001', supportGroupName: 'Dev Team' },
-  { id: 'SG002', supportGroupName: 'Infra Team' },
-  { id: 'SG003', supportGroupName: 'DB Team' },
-  { id: 'SG004', supportGroupName: 'Cloud Team' },
-  { id: 'SG005', supportGroupName: 'Security Team' },
-  { id: 'SG006', supportGroupName: 'Network Team' },
+  { id: 'SG001', supportGroup: 'DEV_TEAM', supportGroupName: 'Dev Team' },
+  { id: 'SG002', supportGroup: 'INFRA_TEAM', supportGroupName: 'Infra Team' },
+  { id: 'SG003', supportGroup: 'DB_TEAM', supportGroupName: 'DB Team' },
+  { id: 'SG004', supportGroup: 'CLOUD_TEAM', supportGroupName: 'Cloud Team' },
+  { id: 'SG005', supportGroup: 'SEC_TEAM', supportGroupName: 'Security Team' },
+  { id: 'SG006', supportGroup: 'NET_TEAM', supportGroupName: 'Network Team' },
 ];
 
 export const MOCK_TYPES: MasterType[] = [
